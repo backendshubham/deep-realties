@@ -1,21 +1,487 @@
 <%- include('../../layouts/main', { content: `
 <div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
         <div class="mb-8">
-            <div class="flex items-center justify-between">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                     <h1 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">Manage Events</h1>
-                    <p class="text-gray-600 dark:text-gray-400">View and manage events and exhibitions</p>
+                    <p class="text-gray-600 dark:text-gray-400">Create and manage real estate events</p>
                 </div>
-                <a href="/admin/dashboard" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
-                    ← Back to Dashboard
-                </a>
+                <div class="flex gap-3">
+                    <button onclick="openEventModal()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors shadow-sm">
+                        + Add New Event
+                    </button>
+                    <a href="/admin/dashboard" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                        ← Back to Dashboard
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <p class="text-center text-gray-600 dark:text-gray-400">Event management coming soon...</p>
+
+        <!-- Filters -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 mb-6">
+            <div class="flex flex-wrap gap-4">
+                <select id="statusFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="">All Events</option>
+                    <option value="upcoming">Upcoming Events</option>
+                    <option value="past">Past Events</option>
+                </select>
+                <select id="typeFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="">All Types</option>
+                    <option value="builder_meetup">Builder Meetups</option>
+                    <option value="dealer_meetup">Dealer Meetups</option>
+                    <option value="inauguration">Inauguration</option>
+                </select>
+                <input type="text" id="searchInput" placeholder="Search events..." class="flex-1 min-w-[200px] px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+        </div>
+
+        <!-- Events List -->
+        <div id="eventsContainer" class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+            <div id="loadingState" class="text-center py-12">
+                <div class="inline-loader-spinner mx-auto mb-4"></div>
+                <p class="text-gray-600 dark:text-gray-400">Loading events...</p>
+            </div>
+            <div id="emptyState" class="hidden text-center py-12">
+                <p class="text-gray-600 dark:text-gray-400">No events found</p>
+            </div>
+            <div id="eventsList" class="hidden space-y-4"></div>
         </div>
     </div>
 </div>
-` }) %>
 
+<!-- Event Modal -->
+<div id="eventModal" class="modal-overlay hidden">
+    <div class="modal-content w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white">Add New Event</h2>
+                <button onclick="closeEventModal()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <form id="eventForm" onsubmit="saveEvent(event)">
+                <div class="space-y-4">
+                    <!-- Event Title -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Title *</label>
+                        <input type="text" id="eventTitle" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+
+                    <!-- Event Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Type *</label>
+                        <select id="eventType" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="builder_meetup">Builder Meetup</option>
+                            <option value="dealer_meetup">Dealer / Channel Partner Meetup</option>
+                            <option value="inauguration">Colony / Project Inauguration</option>
+                        </select>
+                    </div>
+
+                    <!-- Related Project (for inauguration) -->
+                    <div id="relatedProjectField" class="hidden">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Related Project</label>
+                        <input type="text" id="relatedProject" placeholder="Project name or ID" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+
+                    <!-- Date & Time -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Date *</label>
+                            <input type="date" id="eventDate" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Time</label>
+                            <input type="time" id="eventTime" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Location -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Location / Address *</label>
+                            <input type="text" id="eventLocation" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City *</label>
+                            <input type="text" id="eventCity" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Map Location -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Map Location (Google Maps Embed URL or Coordinates)</label>
+                        <input type="text" id="mapLocation" placeholder="https://maps.google.com/..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+
+                    <!-- Description -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Short Description</label>
+                        <textarea id="eventDescription" rows="3" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    </div>
+
+                    <!-- Agenda -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Detailed Agenda / Highlights</label>
+                        <textarea id="eventAgenda" rows="5" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Person</label>
+                            <input type="text" id="contactPerson" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Email</label>
+                            <input type="email" id="contactEmail" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Contact Phone</label>
+                            <input type="tel" id="contactPhone" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- RSVP Info -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">RSVP Information</label>
+                        <textarea id="rsvpInfo" rows="2" placeholder="RSVP instructions or link" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                    </div>
+
+                    <!-- Registration Link & Max Attendees -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Registration Link</label>
+                            <input type="url" id="registrationLink" placeholder="https://..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Max Attendees</label>
+                            <input type="number" id="maxAttendees" min="1" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        </div>
+                    </div>
+
+                    <!-- Banner Image -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Banner Image URL</label>
+                        <input type="url" id="bannerImage" placeholder="https://..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-3 mt-6">
+                    <button type="button" onclick="closeEventModal()" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">
+                        Save Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentEditingId = null;
+    let currentPage = 1;
+    let totalPages = 1;
+
+    // Show/hide related project field based on event type
+    document.getElementById('eventType').addEventListener('change', function() {
+        const relatedProjectField = document.getElementById('relatedProjectField');
+        if (this.value === 'inauguration') {
+            relatedProjectField.classList.remove('hidden');
+        } else {
+            relatedProjectField.classList.add('hidden');
+        }
+    });
+
+    // Load events on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadEvents();
+        
+        // Filter listeners
+        document.getElementById('statusFilter').addEventListener('change', function() {
+            currentPage = 1;
+            loadEvents();
+        });
+        document.getElementById('typeFilter').addEventListener('change', function() {
+            currentPage = 1;
+            loadEvents();
+        });
+        document.getElementById('searchInput').addEventListener('input', function() {
+            currentPage = 1;
+            loadEvents();
+        });
+    });
+
+    async function loadEvents() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const eventsList = document.getElementById('eventsList');
+
+        loadingState.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        eventsList.classList.add('hidden');
+
+        const statusFilter = document.getElementById('statusFilter').value;
+        const typeFilter = document.getElementById('typeFilter').value;
+        const search = document.getElementById('searchInput').value.trim();
+
+        const params = new URLSearchParams({
+            page: currentPage.toString(),
+            limit: '20'
+        });
+        if (statusFilter === 'upcoming') params.append('is_past', 'false');
+        else if (statusFilter === 'past') params.append('is_past', 'true');
+        if (typeFilter) params.append('event_type', typeFilter);
+        if (search) params.append('city', search);
+
+        try {
+            const response = await fetch('/api/events?' + params.toString(), {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (!response.ok) throw new Error('Failed to load events');
+
+            const data = await response.json();
+            const events = data.events || [];
+
+            loadingState.classList.add('hidden');
+
+            if (events.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            eventsList.classList.remove('hidden');
+            eventsList.innerHTML = events.map(event => {
+                const eventDate = new Date(event.event_date).toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const eventTime = event.event_time || '';
+                const eventTypeLabels = {
+                    'builder_meetup': 'Builder Meetup',
+                    'dealer_meetup': 'Dealer Meetup',
+                    'inauguration': 'Inauguration'
+                };
+                const isPast = event.is_past || new Date(event.event_date) < new Date();
+
+                return '<div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow">' +
+                    '<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">' +
+                        '<div class="flex-1">' +
+                            '<div class="flex items-center gap-3 mb-2">' +
+                                '<h3 class="text-lg font-semibold text-gray-900 dark:text-white">' + (event.title || 'Untitled Event') + '</h3>' +
+                                '<span class="px-2 py-1 text-xs rounded-full ' +
+                                    (isPast ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400' : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300') +
+                                '">' + (isPast ? 'Past' : 'Upcoming') + '</span>' +
+                                '<span class="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">' +
+                                    (eventTypeLabels[event.event_type] || event.event_type) +
+                                '</span>' +
+                            '</div>' +
+                            '<p class="text-sm text-gray-600 dark:text-gray-400 mb-1">' +
+                                '<strong>Date:</strong> ' + eventDate + (eventTime ? ' at ' + eventTime : '') +
+                            '</p>' +
+                            '<p class="text-sm text-gray-600 dark:text-gray-400">' +
+                                '<strong>Location:</strong> ' + (event.location || '') + ', ' + (event.city || '') +
+                            '</p>' +
+                        '</div>' +
+                        '<div class="flex gap-2">' +
+                            '<button onclick="editEvent(\'' + event.id + '\')" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors text-sm">Edit</button>' +
+                            '<button onclick="deleteEvent(\'' + event.id + '\')" class="px-4 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-800 dark:text-red-300 rounded-lg transition-colors text-sm">Delete</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+        } catch (error) {
+            console.error('Error loading events:', error);
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            if (typeof window.showError === 'function') {
+                window.showError('Failed to load events. Please try again.');
+            }
+        }
+    }
+
+    function openEventModal(eventId = null) {
+        currentEditingId = eventId;
+        const modal = document.getElementById('eventModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const form = document.getElementById('eventForm');
+
+        if (eventId) {
+            modalTitle.textContent = 'Edit Event';
+            loadEventData(eventId);
+        } else {
+            modalTitle.textContent = 'Add New Event';
+            form.reset();
+            document.getElementById('relatedProjectField').classList.add('hidden');
+        }
+
+        modal.classList.remove('hidden');
+        modal.classList.add('show');
+    }
+
+    function closeEventModal() {
+        const modal = document.getElementById('eventModal');
+        modal.classList.remove('show');
+        setTimeout(() => modal.classList.add('hidden'), 200);
+        currentEditingId = null;
+        document.getElementById('eventForm').reset();
+    }
+
+    async function loadEventData(eventId) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/events/' + eventId, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            const data = await response.json();
+            const event = data.event;
+
+            // Populate form
+            document.getElementById('eventTitle').value = event.title || '';
+            document.getElementById('eventType').value = event.event_type || 'builder_meetup';
+            document.getElementById('relatedProject').value = event.related_project_id || '';
+            document.getElementById('eventDate').value = event.event_date ? event.event_date.split('T')[0] : '';
+            document.getElementById('eventTime').value = event.event_time || '';
+            document.getElementById('eventLocation').value = event.location || '';
+            document.getElementById('eventCity').value = event.city || '';
+            document.getElementById('mapLocation').value = event.map_location || '';
+            document.getElementById('eventDescription').value = event.description || '';
+            document.getElementById('eventAgenda').value = event.agenda || '';
+            document.getElementById('contactPerson').value = event.contact_person || '';
+            document.getElementById('contactEmail').value = event.contact_email || '';
+            document.getElementById('contactPhone').value = event.contact_phone || '';
+            document.getElementById('rsvpInfo').value = event.rsvp_info || '';
+            document.getElementById('registrationLink').value = event.registration_link || '';
+            document.getElementById('maxAttendees').value = event.max_attendees || '';
+            document.getElementById('bannerImage').value = event.banner_image || '';
+
+            // Show/hide related project field
+            if (event.event_type === 'inauguration') {
+                document.getElementById('relatedProjectField').classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Error loading event:', error);
+            if (typeof window.showError === 'function') {
+                window.showError('Failed to load event data.');
+            }
+        }
+    }
+
+    async function saveEvent(e) {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+
+        const eventData = {
+            title: document.getElementById('eventTitle').value,
+            event_type: document.getElementById('eventType').value,
+            related_project_id: document.getElementById('relatedProject').value || null,
+            event_date: document.getElementById('eventDate').value,
+            event_time: document.getElementById('eventTime').value || null,
+            location: document.getElementById('eventLocation').value,
+            city: document.getElementById('eventCity').value,
+            map_location: document.getElementById('mapLocation').value || null,
+            description: document.getElementById('eventDescription').value || null,
+            agenda: document.getElementById('eventAgenda').value || null,
+            contact_person: document.getElementById('contactPerson').value || null,
+            contact_email: document.getElementById('contactEmail').value || null,
+            contact_phone: document.getElementById('contactPhone').value || null,
+            rsvp_info: document.getElementById('rsvpInfo').value || null,
+            registration_link: document.getElementById('registrationLink').value || null,
+            max_attendees: document.getElementById('maxAttendees').value ? parseInt(document.getElementById('maxAttendees').value) : null,
+            banner_image: document.getElementById('bannerImage').value || null
+        };
+
+        try {
+            const url = currentEditingId ? '/api/events/' + currentEditingId : '/api/events';
+            const method = currentEditingId ? 'PUT' : 'POST';
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(eventData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to save event');
+            }
+
+            if (typeof window.showSuccess === 'function') {
+                window.showSuccess(data.message || 'Event saved successfully!');
+            }
+
+            closeEventModal();
+            loadEvents();
+        } catch (error) {
+            console.error('Error saving event:', error);
+            if (typeof window.showError === 'function') {
+                window.showError(error.message || 'Failed to save event. Please try again.');
+            }
+        }
+    }
+
+    function editEvent(eventId) {
+        openEventModal(eventId);
+    }
+
+    async function deleteEvent(eventId) {
+        if (typeof window.showConfirm === 'function') {
+            window.showConfirm(
+                'Delete Event',
+                'Are you sure you want to delete this event? This action cannot be undone.',
+                'Delete',
+                async () => {
+                    const token = localStorage.getItem('token');
+                    try {
+                        const response = await fetch('/api/events/' + eventId, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': 'Bearer ' + token
+                            }
+                        });
+
+                        if (!response.ok) throw new Error('Failed to delete event');
+
+                        if (typeof window.showSuccess === 'function') {
+                            window.showSuccess('Event deleted successfully!');
+                        }
+
+                        loadEvents();
+                    } catch (error) {
+                        console.error('Error deleting event:', error);
+                        if (typeof window.showError === 'function') {
+                            window.showError('Failed to delete event. Please try again.');
+                        }
+                    }
+                }
+            );
+        }
+    }
+</script>
+` }) %>
