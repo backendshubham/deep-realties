@@ -1,0 +1,284 @@
+<%- include('../../layouts/main', { content: `
+<div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">Manage Properties</h1>
+                    <p class="text-gray-600 dark:text-gray-400">Approve, reject, or manage property listings</p>
+                </div>
+                <a href="/admin/dashboard" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div class="flex flex-wrap gap-4">
+                <select id="statusFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <button onclick="loadProperties()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
+                    Filter
+                </button>
+            </div>
+        </div>
+        
+        <!-- Properties List -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div id="propertiesList" class="p-6">
+                <div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading properties...</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadProperties() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        const container = document.getElementById('propertiesList');
+        container.innerHTML = '<div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading properties...</p></div>';
+        
+        const status = document.getElementById('statusFilter').value;
+        const url = '/api/admin/properties' + (status ? '?status=' + status : '');
+        
+        try {
+            console.log('Fetching properties from:', url);
+            const response = await fetch(url, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            console.log('Response status:', response.status);
+            
+            if (response.status === 403) {
+                showConfirm('Access Denied', 'Admin access required. Redirecting to dashboard...', function() {
+                    window.location.href = '/dashboard';
+                });
+                return;
+            }
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: 'Failed to load properties' }));
+                throw new Error(errorData.error || 'Failed to load properties');
+            }
+            
+            const data = await response.json();
+            console.log('Properties data:', data);
+            console.log('Properties array:', data.properties);
+            console.log('Is array?', Array.isArray(data.properties));
+            console.log('Length:', data.properties ? data.properties.length : 0);
+            
+            if (!data) {
+                container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">No data received from API</p></div>';
+                return;
+            }
+            
+            // Handle case where API might return properties directly or in a properties property
+            const propertiesArray = data.properties || (Array.isArray(data) ? data : []);
+            
+            if (propertiesArray && Array.isArray(propertiesArray) && propertiesArray.length > 0) {
+                console.log('Found', propertiesArray.length, 'properties to display');
+                try {
+                    const tableRows = propertiesArray.map(function(p) {
+                        const statusClass = p.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : p.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+                        const createdAt = p.created_at ? new Date(p.created_at).toLocaleDateString() : '';
+                        const showActions = p.status === 'pending';
+                        return '<tr class="hover:bg-gray-50 dark:hover:bg-gray-700"><td class="px-6 py-4"><div class="text-sm font-medium text-gray-900 dark:text-white">' + (p.title || 'N/A') + '</div><div class="text-sm text-gray-500 dark:text-gray-400">' + (p.property_type || '') + '</div><div class="text-xs text-gray-400 dark:text-gray-500 mt-1">Listed: ' + createdAt + '</div></td><td class="px-6 py-4"><div class="text-sm text-gray-900 dark:text-white">' + (p.locality || '') + ', ' + (p.city || '') + '</div><div class="text-xs text-gray-500 dark:text-gray-400">' + (p.state || '') + '</div></td><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-gray-900 dark:text-white">₹' + (p.price ? p.price.toLocaleString() : '0') + '</div><div class="text-xs text-gray-500 dark:text-gray-400">' + (p.area_sqft ? p.area_sqft + ' sqft' : '') + '</div></td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ' + statusClass + '">' + (p.status || 'pending') + '</span></td><td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><div class="flex gap-2 flex-wrap">' + (showActions ? '<button data-property-id="' + p.id + '" class="approve-property-btn px-3 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors text-xs">Approve</button><button data-property-id="' + p.id + '" class="reject-property-btn px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded transition-colors text-xs">Reject</button>' : '') + '<button data-property-id="' + p.id + '" class="view-property-btn px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors text-xs">View</button><button data-property-id="' + p.id + '" class="delete-property-btn px-3 py-1 bg-gray-600 hover:bg-gray-700 text-white rounded transition-colors text-xs">Delete</button></div></td></tr>';
+                    });
+                    
+                    container.innerHTML = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"><thead class="bg-gray-50 dark:bg-gray-700"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Property</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Location</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Price</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">' + tableRows.join('') + '</tbody></table></div>';
+                    console.log('Table rendered successfully');
+                    
+                    // Attach event listeners using event delegation
+                    attachPropertyEventListeners();
+                } catch (renderError) {
+                    console.error('Error rendering table:', renderError);
+                    container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">Error rendering properties table</p><p class="text-sm text-gray-600 dark:text-gray-400">' + renderError.message + '</p></div>';
+                }
+            } else {
+                console.log('No properties found or empty array');
+                console.log('Data structure:', JSON.stringify(data, null, 2));
+                console.log('Properties array:', propertiesArray);
+                const message = propertiesArray && Array.isArray(propertiesArray) && propertiesArray.length === 0 
+                    ? 'No properties found. Try adjusting your filters.' 
+                    : 'No properties data available. Check console for API response details.';
+                container.innerHTML = '<div class="text-center py-12"><svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><p class="mt-4 text-gray-600 dark:text-gray-400">' + message + '</p><p class="mt-2 text-sm text-gray-500 dark:text-gray-500">Check browser console (F12) for more details</p></div>';
+            }
+        } catch (error) {
+            console.error('Error loading properties:', error);
+            const container = document.getElementById('propertiesList');
+            container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">Error loading properties</p><p class="text-sm text-gray-600 dark:text-gray-400">' + (error.message || 'Please try again later') + '</p></div>';
+        }
+    }
+    
+    function attachPropertyEventListeners() {
+        const container = document.getElementById('propertiesList');
+        if (!container) return;
+        
+        container.addEventListener('click', function(e) {
+            const target = e.target.closest('button');
+            if (!target) return;
+            
+            const propertyId = target.getAttribute('data-property-id');
+            if (!propertyId) return;
+            
+            if (target.classList.contains('approve-property-btn')) {
+                approveProperty(propertyId);
+            } else if (target.classList.contains('reject-property-btn')) {
+                rejectProperty(propertyId);
+            } else if (target.classList.contains('view-property-btn')) {
+                viewProperty(propertyId);
+            } else if (target.classList.contains('delete-property-btn')) {
+                deleteProperty(propertyId);
+            }
+        });
+    }
+    
+    async function approveProperty(id) {
+        const token = localStorage.getItem('token');
+        showConfirm('Confirm Approval', 'Are you sure you want to approve this property? It will be made visible to all users.', function() {
+            performApproveProperty(id);
+        });
+    }
+    
+    async function performApproveProperty(id) {
+        const token = localStorage.getItem('token');
+        
+        const container = document.getElementById('propertiesList');
+        const originalContent = container.innerHTML;
+        container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">Processing...</p>';
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id + '/approve', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                container.innerHTML = '<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-4">Property approved successfully!</div>';
+                setTimeout(loadProperties, 1000);
+            } else {
+                container.innerHTML = originalContent;
+                showError(result.error || 'Failed to approve property');
+            }
+        } catch (error) {
+            console.error('Error approving property:', error);
+            container.innerHTML = originalContent;
+            showError('Error approving property. Please try again.');
+        }
+    }
+    
+    async function rejectProperty(id) {
+        const token = localStorage.getItem('token');
+        showConfirm('Confirm Rejection', 'Are you sure you want to reject this property? This action cannot be undone easily.', function() {
+            performRejectProperty(id);
+        });
+    }
+    
+    async function performRejectProperty(id) {
+        const token = localStorage.getItem('token');
+        
+        const container = document.getElementById('propertiesList');
+        const originalContent = container.innerHTML;
+        container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">Processing...</p>';
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id + '/reject', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                container.innerHTML = '<div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded-lg mb-4">Property rejected successfully!</div>';
+                setTimeout(loadProperties, 1000);
+            } else {
+                container.innerHTML = originalContent;
+                showError(result.error || 'Failed to reject property');
+            }
+        } catch (error) {
+            console.error('Error rejecting property:', error);
+            container.innerHTML = originalContent;
+            showError('Error rejecting property. Please try again.');
+        }
+    }
+    
+    async function viewProperty(id) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/admin/properties/' + id, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                const p = data.property;
+                const statusClass = p.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : p.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+                
+                const content = '<div class="space-y-4"><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Title</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.title || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Property Type</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.property_type || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Price</label><p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">₹' + (p.price ? p.price.toLocaleString() : '0') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Area</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.area_sqft || 'N/A') + ' sqft</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Location</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.locality || '') + ', ' + (p.city || '') + ', ' + (p.state || '') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</label><p class="mt-1"><span class="px-3 py-1 text-sm font-semibold rounded-full ' + statusClass + '">' + (p.status || 'pending') + '</span></p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Bedrooms</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.bedrooms || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Bathrooms</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.bathrooms || 'N/A') + '</p></div></div><div class="mt-4"><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</label><p class="text-gray-700 dark:text-gray-300 mt-1 whitespace-pre-wrap">' + (p.description || 'No description') + '</p></div></div>';
+                
+                showModal('Property Details', content);
+            } else {
+                showError('Failed to load property details');
+            }
+        } catch (error) {
+            console.error('Error viewing property:', error);
+            showError('Error loading property details');
+        }
+    }
+    
+    async function deleteProperty(id) {
+        const token = localStorage.getItem('token');
+        showConfirm('Confirm Deletion', 'Are you sure you want to permanently delete this property? This action cannot be undone.', function() {
+            performDeleteProperty(id);
+        });
+    }
+    
+    async function performDeleteProperty(id) {
+        const token = localStorage.getItem('token');
+        
+        const container = document.getElementById('propertiesList');
+        const originalContent = container.innerHTML;
+        container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">Processing...</p>';
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                container.innerHTML = '<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-4">Property deleted successfully!</div>';
+                setTimeout(loadProperties, 1000);
+            } else {
+                container.innerHTML = originalContent;
+                showError(result.error || 'Failed to delete property');
+            }
+        } catch (error) {
+            console.error('Error deleting property:', error);
+            container.innerHTML = originalContent;
+            showError('Error deleting property. Please try again.');
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProperties();
+    });
+</script>
+` }) %>
+

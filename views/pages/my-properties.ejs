@@ -1,0 +1,685 @@
+<%- include('../layouts/main', { content: `
+<div class="min-h-screen py-4 sm:py-6 lg:py-8 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <!-- Header with Add Property Button -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+            <div>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">My Properties</h1>
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Manage and track all your listed properties</p>
+            </div>
+            <a href="/sell" class="w-full sm:w-auto inline-flex items-center justify-center px-4 sm:px-6 py-2.5 sm:py-3 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md text-sm sm:text-base">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Add Property
+            </a>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Search -->
+                <div class="md:col-span-2">
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Search</label>
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Search by title, location, or property type..."
+                            class="w-full px-3 sm:px-4 py-2 sm:py-2.5 pl-9 sm:pl-10 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                        <svg class="absolute left-2.5 sm:left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Status Filter -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Status</label>
+                    <select 
+                        id="statusFilter" 
+                        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+
+                <!-- Property Type Filter -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">Type</label>
+                    <select 
+                        id="typeFilter" 
+                        class="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                        <option value="">All Types</option>
+                        <option value="land">Land</option>
+                        <option value="plot">Plot</option>
+                        <option value="flat">Flat</option>
+                        <option value="house">House</option>
+                        <option value="villa">Villa</option>
+                        <option value="apartment">Apartment</option>
+                        <option value="commercial">Commercial</option>
+                        <option value="farmland">Farm Land</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Clear Filters Button -->
+            <div class="mt-4 flex justify-end">
+                <button 
+                    id="clearFilters" 
+                    class="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                    Clear Filters
+                </button>
+            </div>
+        </div>
+
+        <!-- Properties List -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+            <div id="propertiesContainer" class="p-4 sm:p-5 lg:p-6">
+                <div id="loadingState" class="text-center py-8">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600"></div>
+                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">Loading properties...</p>
+                    <button id="retryLoadingBtn" class="mt-4 px-4 py-2 text-sm bg-emerald-600 text-white rounded-lg hover:bg-emerald-700">
+                        Retry Loading
+                    </button>
+                </div>
+                <div id="emptyState" class="hidden text-center py-12">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                    <h3 class="mt-4 text-lg font-semibold text-gray-900 dark:text-white">No properties found</h3>
+                    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Get started by adding your first property.</p>
+                    <a href="/sell" class="mt-4 inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors text-sm">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Property
+                    </a>
+                </div>
+                <div id="propertiesList" class="hidden space-y-3 sm:space-y-4">
+                    <!-- Properties will be loaded here -->
+                </div>
+                
+                <!-- Pagination -->
+                <div id="paginationContainer" class="hidden mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 px-4 sm:px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+                    <div class="text-sm text-gray-600 dark:text-gray-400">
+                        Showing <span id="paginationInfo" class="font-medium text-gray-900 dark:text-white">0-0</span> of <span id="paginationTotal" class="font-medium text-gray-900 dark:text-white">0</span> properties
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button id="prevPage" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            Previous
+                        </button>
+                        <div id="pageNumbers" class="flex items-center gap-1">
+                            <!-- Page numbers will be inserted here -->
+                        </div>
+                        <button id="nextPage" class="px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 1;
+    let totalPages = 1;
+    let totalProperties = 0;
+    let limit = 10;
+    let paginationData = null;
+
+    async function loadProperties(page = 1) {
+        console.log('[My Properties] loadProperties called, page:', page);
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log('[My Properties] No token found, redirecting to login');
+            if (typeof window.showWarning === 'function') {
+                window.showWarning('Please login to view your properties');
+            }
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 1500);
+            return;
+        }
+
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const propertiesList = document.getElementById('propertiesList');
+        const paginationContainer = document.getElementById('paginationContainer');
+        
+        if (loadingState) {
+            loadingState.classList.remove('hidden');
+        }
+        if (emptyState) {
+            emptyState.classList.add('hidden');
+        }
+        if (propertiesList) {
+            propertiesList.classList.add('hidden');
+        }
+        if (paginationContainer) {
+            paginationContainer.classList.add('hidden');
+        }
+        
+        // Get filter values
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        
+        const search = searchInput ? searchInput.value.trim() : '';
+        const status = statusFilter ? statusFilter.value : '';
+        const propertyType = typeFilter ? typeFilter.value : '';
+        
+        // Build query params
+        const params = new URLSearchParams({
+            page: page.toString(),
+            limit: limit.toString()
+        });
+        if (search) params.append('search', search);
+        if (status) params.append('status', status);
+        if (propertyType) params.append('property_type', propertyType);
+        
+        try {
+            const apiUrl = '/api/properties/my-properties/list?' + params.toString();
+            console.log('[My Properties] ====== API CALL START ======');
+            console.log('[My Properties] URL:', apiUrl);
+            console.log('[My Properties] Token exists:', !!token);
+            console.log('[My Properties] Token preview:', token ? token.substring(0, 20) + '...' : 'none');
+            
+            const fetchOptions = {
+                method: 'GET',
+                headers: { 
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            };
+            
+            console.log('[My Properties] Fetch options:', JSON.stringify(fetchOptions, null, 2));
+            
+            const response = await fetch(apiUrl, fetchOptions);
+            
+            console.log('[My Properties] ====== API CALL COMPLETE ======');
+            console.log('[My Properties] Response status:', response.status);
+            console.log('[My Properties] Response ok:', response.ok);
+
+            if (!response.ok) {
+                let errorMessage = 'Failed to load properties';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.error || errorMessage;
+                    console.error('[My Properties] API Error:', errorData);
+                } catch (e) {
+                    console.error('[My Properties] Failed to parse error response');
+                }
+                
+                if (response.status === 401) {
+                    // Unauthorized - token expired or invalid
+                    localStorage.removeItem('token');
+                    if (typeof window.showError === 'function') {
+                        window.showError('Session expired. Please login again.');
+                    }
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                    return;
+                }
+                
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+            console.log('[My Properties] API Response:', data);
+            
+            const properties = Array.isArray(data.properties) ? data.properties : [];
+            paginationData = data.pagination || { page: 1, limit: 10, total: 0, pages: 1 };
+            
+            currentPage = paginationData.page || 1;
+            totalPages = paginationData.pages || 1;
+            totalProperties = paginationData.total || 0;
+            
+            console.log('[My Properties] Loaded', properties.length, 'properties (Page', currentPage, 'of', totalPages, ', Total:', totalProperties + ')');
+
+            renderProperties(properties);
+            renderPagination();
+        } catch (error) {
+            console.error('[My Properties] Error loading properties:', error);
+            console.error('[My Properties] Error stack:', error.stack);
+            
+            // ALWAYS hide loading state on error
+            const loadingStateEl = document.getElementById('loadingState');
+            const emptyStateEl = document.getElementById('emptyState');
+            
+            if (loadingStateEl) {
+                loadingStateEl.classList.add('hidden');
+                console.log('[My Properties] Loading state hidden after error');
+            }
+            if (emptyStateEl) {
+                emptyStateEl.classList.remove('hidden');
+            }
+            
+            const errorMsg = error.message || 'Failed to load properties. Please try again.';
+            console.error('[My Properties] Showing error:', errorMsg);
+            
+            if (typeof window.showError === 'function') {
+                window.showError(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+        }
+    }
+
+    function renderProperties(properties) {
+        console.log('[My Properties] renderProperties called with', properties.length, 'properties');
+        
+        const container = document.getElementById('propertiesList');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const paginationContainer = document.getElementById('paginationContainer');
+
+        if (!container || !loadingState || !emptyState) {
+            console.error('[My Properties] Required DOM elements not found');
+            // Still hide loading state even if elements are missing
+            if (loadingState) loadingState.classList.add('hidden');
+            return;
+        }
+
+        // Hide loading state FIRST
+        loadingState.classList.add('hidden');
+
+        // Check if we have properties
+        if (!properties || properties.length === 0) {
+            console.log('[My Properties] No properties to display, showing empty state');
+            container.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            if (paginationContainer) paginationContainer.classList.add('hidden');
+            return;
+        }
+
+        console.log('[My Properties] Rendering', properties.length, 'properties');
+        emptyState.classList.add('hidden');
+        container.classList.remove('hidden');
+
+        try {
+            container.innerHTML = properties.map(p => {
+                if (!p || !p.id) {
+                    console.warn('Invalid property:', p);
+                    return '';
+                }
+                
+                const propertyType = p.bedrooms ? p.bedrooms + 'BHK' : (p.property_type || '').charAt(0).toUpperCase() + (p.property_type || '').slice(1);
+                let location = (p.locality || '') + ', ' + (p.city || '');
+                location = location.trim().replace(/^,|,$/g, '');
+                if (!location || location === ',') {
+                    location = 'Location not specified';
+                }
+
+                const statusClass = p.status === 'approved' 
+                    ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' 
+                    : p.status === 'pending' 
+                    ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' 
+                    : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
+
+                const statusIcon = p.status === 'approved' 
+                    ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+                    : p.status === 'pending'
+                    ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+                    : '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+
+                const price = p.price ? parseFloat(p.price).toLocaleString('en-IN') : '0';
+                const description = p.description ? p.description.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+                const title = (p.title || 'Untitled Property').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+                return '<div data-property-id="' + p.id + '" class="property-card border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4 hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800">' +
+                    '<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">' +
+                        '<div class="flex-1 min-w-0">' +
+                            '<div class="flex items-start justify-between gap-2 mb-2">' +
+                                '<h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white truncate">' + title + '</h3>' +
+                                '<span class="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium flex items-center gap-1.5 flex-shrink-0 ' + statusClass + '">' +
+                                    statusIcon +
+                                    '<span class="capitalize">' + (p.status || 'pending') + '</span>' +
+                                '</span>' +
+                            '</div>' +
+                            '<div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2">' +
+                                '<span class="font-medium">' + propertyType + '</span>' +
+                                '<span class="text-gray-400">•</span>' +
+                                '<span class="truncate">' + location + '</span>' +
+                                (p.area_sqft ? '<span class="text-gray-400">•</span><span>' + p.area_sqft + ' sqft</span>' : '') +
+                            '</div>' +
+                            '<p class="text-emerald-600 dark:text-emerald-400 font-bold text-lg sm:text-xl mb-2">₹' + price + '</p>' +
+                            (description ? '<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 line-clamp-2">' + description.substring(0, 100) + (description.length > 100 ? '...' : '') + '</p>' : '') +
+                        '</div>' +
+                        '<div class="flex gap-2 sm:flex-col sm:gap-2 w-full sm:w-auto">' +
+                            '<a href="/properties/' + p.id + '" class="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition-colors text-center">' +
+                                'View Details' +
+                            '</a>' +
+                            '<button data-property-edit-id="' + p.id + '" class="edit-property-btn flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-medium transition-colors">' +
+                                'Edit' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                    '</div>';
+            }).filter(html => html).join('');
+            
+            console.log('[My Properties] Properties rendered successfully');
+        } catch (error) {
+            console.error('[My Properties] Error rendering properties:', error);
+            container.innerHTML = '<div class="text-center py-8 text-red-600 dark:text-red-400">Error rendering properties. Please refresh the page.</div>';
+        }
+    }
+    
+    // Add click event listener using event delegation
+    function setupEventListeners() {
+        // Property card click handler (delegated)
+        document.addEventListener('click', function(e) {
+            const card = e.target.closest('.property-card');
+            if (card && !e.target.closest('a') && !e.target.closest('button')) {
+                const propertyId = card.getAttribute('data-property-id');
+                if (propertyId) {
+                    window.location.href = '/properties/' + propertyId;
+                }
+            }
+        });
+        
+        // Edit button click handler (delegated)
+        document.addEventListener('click', function(e) {
+            const editBtn = e.target.closest('.edit-property-btn');
+            if (editBtn) {
+                const propertyId = editBtn.getAttribute('data-property-edit-id');
+                if (propertyId) {
+                    editProperty(propertyId);
+                }
+            }
+        });
+        
+        // Page number click handler (delegated)
+        document.addEventListener('click', function(e) {
+            const pageBtn = e.target.closest('.page-btn');
+            if (pageBtn) {
+                const page = parseInt(pageBtn.getAttribute('data-page'));
+                if (page && !isNaN(page)) {
+                    goToPage(page);
+                }
+            }
+        });
+    }
+
+    function renderPagination() {
+            const paginationContainer = document.getElementById('paginationContainer');
+            const paginationInfo = document.getElementById('paginationInfo');
+            const paginationTotal = document.getElementById('paginationTotal');
+            const pageNumbers = document.getElementById('pageNumbers');
+            const prevPageBtn = document.getElementById('prevPage');
+            const nextPageBtn = document.getElementById('nextPage');
+            
+            if (!paginationContainer || totalPages <= 1) {
+                if (paginationContainer) paginationContainer.classList.add('hidden');
+                return;
+            }
+            
+            paginationContainer.classList.remove('hidden');
+            
+            // Update pagination info
+            const start = totalProperties === 0 ? 0 : (currentPage - 1) * limit + 1;
+            const end = Math.min(currentPage * limit, totalProperties);
+            if (paginationInfo) {
+                paginationInfo.textContent = start + '-' + end;
+            }
+            if (paginationTotal) {
+                paginationTotal.textContent = totalProperties;
+            }
+            
+            // Update prev/next buttons
+            if (prevPageBtn) {
+                prevPageBtn.disabled = currentPage === 1;
+            }
+            if (nextPageBtn) {
+                nextPageBtn.disabled = currentPage === totalPages;
+            }
+            
+            // Render page numbers
+            if (pageNumbers) {
+                let html = '';
+                const maxVisible = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+                
+                if (endPage - startPage < maxVisible - 1) {
+                    startPage = Math.max(1, endPage - maxVisible + 1);
+                }
+                
+                // First page
+                if (startPage > 1) {
+                    html += '<button data-page="1" class="page-btn px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">1</button>';
+                    if (startPage > 2) {
+                        html += '<span class="px-2 text-gray-500">...</span>';
+                    }
+                }
+                
+                // Page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    const isActive = i === currentPage;
+                    html += '<button data-page="' + i + '" class="page-btn px-3 py-2 text-sm font-medium ' + 
+                        (isActive 
+                            ? 'bg-emerald-600 text-white' 
+                            : 'text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600') + 
+                        ' rounded-lg transition-colors">' + i + '</button>';
+                }
+                
+                // Last page
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        html += '<span class="px-2 text-gray-500">...</span>';
+                    }
+                    html += '<button data-page="' + totalPages + '" class="page-btn px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">' + totalPages + '</button>';
+                }
+                
+                pageNumbers.innerHTML = html;
+            }
+        }
+        
+    function goToPage(page) {
+            if (page < 1 || page > totalPages || page === currentPage) return;
+            currentPage = page;
+            loadProperties(page);
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+    function filterProperties() {
+            // Reset to first page when filtering
+            currentPage = 1;
+            loadProperties(1);
+        }
+
+    function clearFilters() {
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const typeFilter = document.getElementById('typeFilter');
+            
+            if (searchInput) searchInput.value = '';
+            if (statusFilter) statusFilter.value = '';
+            if (typeFilter) typeFilter.value = '';
+            
+            // Reset to first page
+            currentPage = 1;
+            loadProperties(1);
+        }
+
+    function editProperty(id) {
+            // TODO: Implement edit functionality
+            if (typeof window.showInfo === 'function') {
+                window.showInfo('Edit functionality coming soon!');
+            }
+        }
+
+    // Check if user is admin and redirect
+    async function checkUserRole() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const userRes = await fetch('/api/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (userRes.ok) {
+                    const userData = await userRes.json();
+                    if (userData.user && userData.user.role === 'admin') {
+                        window.location.href = '/admin/dashboard';
+                        return true;
+                    }
+                }
+            } catch (e) {
+                console.log('[My Properties] Could not check user role:', e);
+            }
+        }
+        return false;
+    }
+
+    // Initialize page
+    async function initializePage() {
+        console.log('[My Properties] Initializing...');
+        
+        // Make functions globally available FIRST
+        window.editProperty = editProperty;
+        window.loadProperties = loadProperties;
+        window.filterProperties = filterProperties;
+        window.clearFilters = clearFilters;
+        window.goToPage = goToPage;
+        window.loadMyProperties = loadProperties;
+        
+        // Set up event listeners
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const typeFilter = document.getElementById('typeFilter');
+        const clearFiltersBtn = document.getElementById('clearFilters');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        
+        if (searchInput) searchInput.addEventListener('input', filterProperties);
+        if (statusFilter) statusFilter.addEventListener('change', filterProperties);
+        if (typeFilter) typeFilter.addEventListener('change', filterProperties);
+        if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+        
+        // Retry loading button
+        const retryBtn = document.getElementById('retryLoadingBtn');
+        if (retryBtn) {
+            retryBtn.addEventListener('click', function() {
+                if (typeof loadProperties === 'function') {
+                    loadProperties(1);
+                } else if (typeof window.loadMyProperties === 'function') {
+                    window.loadMyProperties(1);
+                } else {
+                    location.reload();
+                }
+            });
+        }
+        
+        if (prevPageBtn) {
+            prevPageBtn.addEventListener('click', () => {
+                if (currentPage > 1) goToPage(currentPage - 1);
+            });
+        }
+        if (nextPageBtn) {
+            nextPageBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) goToPage(currentPage + 1);
+            });
+        }
+        
+        setupEventListeners();
+        
+        // Load properties immediately (don't wait for admin check)
+        console.log('[My Properties] Calling loadProperties(1) immediately...');
+        loadProperties(1);
+        
+        // Check if admin (non-blocking, won't block property loading)
+        checkUserRole().then(isAdmin => {
+            if (isAdmin) {
+                console.log('[My Properties] Admin detected, redirecting...');
+                // Redirect will happen, but properties already loading
+            }
+        }).catch(error => {
+            console.error('[My Properties] Error in admin check:', error);
+            // Ignore admin check errors, properties already loading
+        });
+    }
+    
+    // Initialize when DOM is ready (same pattern as dashboard.ejs)
+    console.log('[My Properties] Script loaded, readyState:', document.readyState);
+    console.log('[My Properties] initializePage function exists:', typeof initializePage);
+    console.log('[My Properties] loadProperties function exists:', typeof loadProperties);
+    
+    if (document.readyState === 'loading') {
+        console.log('[My Properties] Waiting for DOMContentLoaded');
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('[My Properties] DOMContentLoaded fired');
+            initializePage();
+        });
+    } else {
+        // DOM already loaded, initialize immediately
+        console.log('[My Properties] DOM ready, initializing immediately');
+        setTimeout(function() {
+            initializePage();
+        }, 100);
+    }
+    
+    // Safety timeout - hide loading state after 10 seconds if still visible
+    setTimeout(function() {
+        const loadingState = document.getElementById('loadingState');
+        if (loadingState && !loadingState.classList.contains('hidden')) {
+            console.warn('[My Properties] Loading timeout - hiding loading state');
+            loadingState.classList.add('hidden');
+            const emptyState = document.getElementById('emptyState');
+            if (emptyState) {
+                emptyState.classList.remove('hidden');
+            }
+            if (typeof window.showError === 'function') {
+                window.showError('Request timed out. Please refresh the page.');
+            }
+        }
+    }, 10000);
+    
+    // Also make it available globally for manual testing
+    window.initializeMyProperties = initializePage;
+    
+    // DIRECT TEST - Try calling API immediately
+    console.log('[My Properties] DIRECT TEST - Attempting immediate API call');
+    setTimeout(function() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            console.log('[My Properties] DIRECT TEST - Token found, testing API call');
+            fetch('/api/properties/my-properties/list?page=1&limit=10', {
+                method: 'GET',
+                headers: { 
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log('[My Properties] DIRECT TEST - Response status:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('[My Properties] DIRECT TEST - Success! Data:', data);
+                // If direct test works, call the actual function
+                if (typeof loadProperties === 'function') {
+                    console.log('[My Properties] DIRECT TEST - Calling loadProperties now');
+                    loadProperties(1);
+                }
+            })
+            .catch(error => {
+                console.error('[My Properties] DIRECT TEST - Error:', error);
+            });
+        } else {
+            console.log('[My Properties] DIRECT TEST - No token found');
+        }
+    }, 500);
+</script>
+` }) %>
+

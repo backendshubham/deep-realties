@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate' %></title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind dark mode to use class strategy
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        /* Ensure desktop menu is always hidden on mobile */
+        @media (max-width: 767px) {
+            #userMenu,
+            #authButtons,
+            #mainNav,
+            #mainNav * {
+                display: none !important;
+                visibility: hidden !important;
+            }
+            
+            /* Hide all desktop navigation dropdowns on mobile */
+            #navServices,
+            #navMore,
+            #navProperties {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
+        
+        /* Ensure mobile menu is always hidden on desktop */
+        @media (min-width: 768px) {
+            #mobileMenu {
+                display: none !important;
+                visibility: hidden !important;
+            }
+        }
+        
+        /* Force hide auth buttons when user is logged in */
+        #authButtons.hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        
+        /* Force show user menu when user is logged in (on desktop) */
+        #userMenu:not(.hidden) {
+            display: flex !important;
+            visibility: visible !important;
+        }
+        
+        @media (max-width: 767px) {
+            #userMenu:not(.hidden) {
+                display: none !important;
+            }
+        }
+        :root {
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            --teal-500: #14b8a6;
+            --gold-500: #C9A962;
+            --champagne-500: #D4AF37;
+        }
+        
+        body {
+            font-family: 'Outfit', system-ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', Georgia, serif;
+        }
+        
+        .font-accent {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        
+        /* Dark mode styles */
+        .dark {
+            color-scheme: dark;
+        }
+        
+        /* Smooth transitions for theme changes */
+        * {
+            transition-property: background-color, border-color, color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 200ms;
+        }
+        
+        /* Theme Toggle Elegant Animations */
+        #themeToggle {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #themeToggle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        #themeToggle:active::before {
+            width: 200%;
+            height: 200%;
+        }
+        
+        #themeToggleCircle {
+            will-change: transform;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        background-color 0.3s ease,
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        #themeToggle:hover #themeToggleCircle {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .dark #themeToggle:hover #themeToggleCircle {
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+        
+        #sunIcon, #moonIcon {
+            will-change: transform, opacity;
+            transition: transform 0.3s ease,
+                        opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Smooth icon transitions */
+        #sunIcon.hidden, #moonIcon.hidden {
+            opacity: 0;
+            transform: scale(0.8) rotate(90deg);
+            display: none !important;
+        }
+        
+        #sunIcon:not(.hidden), #moonIcon:not(.hidden) {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+            display: flex !important;
+        }
+        
+        /* Ensure icons are perfectly centered */
+        #themeToggleCircle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #themeToggleCircle svg {
+            vertical-align: middle;
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Subtle hover effect */
+        #themeToggle:hover {
+            transform: scale(1.02);
+        }
+        
+        #themeToggle:active {
+            transform: scale(0.98);
+        }
+        
+        /* Input focus styles */
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.5);
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-top: 2px solid rgb(16, 185, 129);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        .dark .spinner {
+            border-color: rgba(16, 185, 129, 0.3);
+            border-top-color: rgb(16, 185, 129);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Full page loader overlay */
+        .page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .dark .page-loader {
+            background: rgba(17, 24, 39, 0.6);
+        }
+        
+        .page-loader.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .page-loader:not(.show) {
+            pointer-events: none;
+        }
+        
+        .loader-container {
+            text-align: center;
+        }
+        
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(16, 185, 129, 0.2);
+            border-top: 4px solid rgb(16, 185, 129);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        .dark .loader-spinner {
+            border-color: rgba(16, 185, 129, 0.3);
+            border-top-color: rgb(16, 185, 129);
+        }
+        
+        /* Content loader skeleton */
+        .skeleton-loader {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+        
+        .dark .skeleton-loader {
+            background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+            background-size: 200% 100%;
+        }
+        
+        @keyframes skeleton-loading {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+        
+        /* Inline loader for sections */
+        .inline-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+        }
+        
+        .inline-loader-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(16, 185, 129, 0.2);
+            border-top: 3px solid rgb(16, 185, 129);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+        
+        .dark .inline-loader-spinner {
+            border-color: rgba(16, 185, 129, 0.3);
+            border-top-color: rgb(16, 185, 129);
+        }
+        
+        .inline-loader-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        .dark .inline-loader-text {
+            color: #9ca3af;
+        }
+        
+        /* Button loader */
+        .btn-loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        /* Error message animation */
+        .error-message {
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Modal styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .modal-overlay.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.95);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .dark .modal-content {
+            background: #1f2937;
+        }
+        
+        .modal-overlay.show .modal-content {
+            transform: scale(1);
+        }
+        
+        /* Confirmation dialog styles */
+        .confirm-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        
+        .confirm-overlay.show {
+            opacity: 1;
+        }
+        
+        .confirm-content {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            max-width: 500px;
+            width: 90vw;
+            transform: scale(0.95);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .dark .confirm-content {
+            background: #1f2937;
+        }
+        
+        .confirm-overlay.show .confirm-content {
+            transform: scale(1);
+        }
+        
+        /* Toast notification styles */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 400px;
+            pointer-events: none;
+        }
+        
+        .toast {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 300px;
+            max-width: 400px;
+            pointer-events: auto;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        .toast.success {
+            border-left: 4px solid #10b981;
+        }
+        
+        .toast.error {
+            border-left: 4px solid #ef4444;
+        }
+        
+        .toast.warning {
+            border-left: 4px solid #f59e0b;
+        }
+        
+        .toast.info {
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .dark .toast {
+            background: #1f2937;
+        }
+        
+        .toast-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+        }
+        
+        .toast-content {
+            flex: 1;
+        }
+        
+        .toast-title {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 2px;
+        }
+        
+        .toast-message {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+        
+        .toast.success .toast-title {
+            color: #059669;
+        }
+        
+        .toast.success .toast-message {
+            color: #047857;
+        }
+        
+        .dark .toast.success .toast-title {
+            color: #34d399;
+        }
+        
+        .dark .toast.success .toast-message {
+            color: #6ee7b7;
+        }
+        
+        .toast.error .toast-title {
+            color: #dc2626;
+        }
+        
+        .toast.error .toast-message {
+            color: #b91c1c;
+        }
+        
+        .dark .toast.error .toast-title {
+            color: #f87171;
+        }
+        
+        .dark .toast.error .toast-message {
+            color: #fca5a5;
+        }
+        
+        .toast.warning .toast-title {
+            color: #d97706;
+        }
+        
+        .toast.warning .toast-message {
+            color: #b45309;
+        }
+        
+        .dark .toast.warning .toast-title {
+            color: #fbbf24;
+        }
+        
+        .dark .toast.warning .toast-message {
+            color: #fcd34d;
+        }
+        
+        .toast.info .toast-title {
+            color: #2563eb;
+        }
+        
+        .toast.info .toast-message {
+            color: #1e40af;
+        }
+        
+        .dark .toast.info .toast-title {
+            color: #60a5fa;
+        }
+        
+        .dark .toast.info .toast-message {
+            color: #93c5fd;
+        }
+        
+        .toast-close {
+            flex-shrink: 0;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #6b7280;
+            transition: color 0.2s;
+        }
+        
+        .toast-close:hover {
+            color: #374151;
+        }
+        
+        .dark .toast-close {
+            color: #9ca3af;
+        }
+        
+        .dark .toast-close:hover {
+            color: #d1d5db;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+    </style>
+    
+    <script>
+        // Dark mode initialization - must run before body renders
+        // Default to light theme - only apply dark if explicitly set
+        (function() {
+            try {
+                const html = document.documentElement;
+                // Only add dark class if user explicitly enabled dark mode
+                const darkMode = localStorage.getItem('darkMode') === 'true';
+                if (darkMode) {
+                    html.classList.add('dark');
+                } else {
+                    // Ensure light theme (remove dark class if present)
+                    html.classList.remove('dark');
+                    // Set default to light if not set
+                    if (localStorage.getItem('darkMode') === null) {
+                        localStorage.setItem('darkMode', 'false');
+                    }
+                }
+            } catch (e) {
+                console.error('Dark mode initialization error:', e);
+                // On error, ensure light theme
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+    <%- include('../partials/navbar') %>
+    
+    <main class="flex-grow">
+        <%- typeof content !== 'undefined' ? content : '' %>
+    </main>
+    
+    <%- include('../partials/footer') %>
+    
+    <!-- Floating Chat Button -->
+    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+        <button 
+            class="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center group touch-manipulation"
+            aria-label="Chat with us"
+            onclick="window.open('https://wa.me/918305551215', '_blank')"
+        >
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Modal Component -->
+    <div id="detailModal" class="modal-overlay hidden">
+        <div class="modal-content w-full max-w-2xl mx-3 sm:mx-4 p-4 sm:p-5 lg:p-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-3 sm:mb-4">
+                <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Details</h2>
+                <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalBody" class="text-gray-700 dark:text-gray-300"></div>
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Confirmation Dialog Component -->
+    <div id="confirmDialog" class="confirm-overlay hidden">
+        <div class="confirm-content p-6">
+            <div class="mb-4">
+                <h3 id="confirmTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Confirm Action</h3>
+                <p id="confirmMessage" class="text-gray-700 dark:text-gray-300"></p>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button id="confirmCancel" onclick="closeConfirm()" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                    Cancel
+                </button>
+                <button id="confirmOk" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg transition-colors">
+                    Confirm
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Full Page Loader -->
+    <div id="pageLoader" class="page-loader show">
+        <div class="loader-spinner"></div>
+    </div>
+    
+    <!-- Global Scripts -->
+    <script>
+        // Update theme toggle animation
+        function updateThemeToggle(isDark) {
+            const toggle = document.getElementById('themeToggle');
+            const circle = document.getElementById('themeToggleCircle');
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            if (!toggle || !circle) return;
+            
+            // Wait for layout to be ready
+            setTimeout(() => {
+                // Get actual dimensions
+                const toggleWidth = toggle.offsetWidth || (window.innerWidth >= 640 ? 56 : 44);
+                const circleWidth = circle.offsetWidth || (window.innerWidth >= 640 ? 20 : 16);
+                const padding = window.innerWidth >= 640 ? 6 : 4;
+                
+                // Calculate positions - circle should be centered vertically and positioned horizontally
+                const leftPosition = padding;
+                const rightPosition = toggleWidth - circleWidth - padding;
+                const translateX = isDark ? rightPosition : leftPosition;
+                
+                if (isDark) {
+                    // Move circle to right (dark mode) - perfectly centered vertically
+                    circle.style.left = translateX + 'px';
+                    circle.style.transform = 'translateY(-50%)';
+                    
+                    // Switch icons smoothly
+                    if (sunIcon) {
+                        sunIcon.classList.add('hidden');
+                    }
+                    if (moonIcon) {
+                        moonIcon.classList.remove('hidden');
+                    }
+                } else {
+                    // Move circle to left (light mode) - perfectly centered vertically
+                    circle.style.left = translateX + 'px';
+                    circle.style.transform = 'translateY(-50%)';
+                    
+                    // Switch icons smoothly
+                    if (sunIcon) {
+                        sunIcon.classList.remove('hidden');
+                    }
+                    if (moonIcon) {
+                        moonIcon.classList.add('hidden');
+                    }
+                }
+            }, 10);
+        }
+        
+        // Enhanced dark mode toggle function with animations
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.contains('dark');
+            const toggle = document.getElementById('themeToggle');
+            const circle = document.getElementById('themeToggleCircle');
+            
+            // Add click animation
+            if (toggle) {
+                toggle.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    toggle.style.transform = 'scale(1)';
+                }, 150);
+            }
+            
+            if (isDark) {
+                // Switch to light mode
+                html.classList.remove('dark');
+                localStorage.setItem('darkMode', 'false');
+                updateThemeToggle(false);
+            } else {
+                // Switch to dark mode
+                html.classList.add('dark');
+                localStorage.setItem('darkMode', 'true');
+                updateThemeToggle(true);
+            }
+        }
+        
+        // Make toggleDarkMode globally available
+        window.toggleDarkMode = toggleDarkMode;
+        
+        // Check authentication status and user role
+        async function checkAuth() {
+            // Wait a bit for DOM to be ready if needed
+            let retries = 0;
+            const maxRetries = 10;
+            
+            const getElements = () => {
+                return {
+                    token: localStorage.getItem('token'),
+                    // Desktop elements
+                    authButtons: document.getElementById('authButtons'),
+                    userMenu: document.getElementById('userMenu'),
+                    dashboardLink: document.getElementById('dashboardLink'),
+                    mainNav: document.getElementById('mainNav'),
+                    navProperties: document.getElementById('navProperties'),
+                    navServices: document.getElementById('navServices'),
+                    navMore: document.getElementById('navMore'),
+                    // Mobile elements
+                    mobileAuthButtons: document.getElementById('mobileAuthButtons'),
+                    mobileUserMenu: document.getElementById('mobileUserMenu'),
+                    mobileDashboardLink: document.getElementById('mobileDashboardLink'),
+                    mobileNavProperties: document.getElementById('mobileNavProperties'),
+                    mobileNavServices: document.getElementById('mobileNavServices'),
+                    mobileNavMore: document.getElementById('mobileNavMore')
+                };
+            };
+            
+            let elements = getElements();
+            
+            // Retry if elements don't exist yet
+            while ((!elements.authButtons || !elements.userMenu || !elements.mobileAuthButtons || !elements.mobileUserMenu) && retries < maxRetries) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+                elements = getElements();
+                retries++;
+            }
+            
+            const { token, authButtons, userMenu, dashboardLink, mainNav, navProperties, navServices, navMore, mobileAuthButtons, mobileUserMenu, mobileDashboardLink, mobileNavProperties, mobileNavServices, mobileNavMore } = elements;
+            
+            // If no token, show auth buttons and hide user menu immediately
+            if (!token) {
+                // Desktop
+                if (authButtons) {
+                    authButtons.classList.remove('hidden');
+                    authButtons.style.display = '';
+                }
+                if (userMenu) {
+                    userMenu.classList.add('hidden');
+                    userMenu.style.display = 'none';
+                }
+                if (mainNav) mainNav.classList.remove('hidden');
+                
+                // Mobile
+                if (mobileAuthButtons) {
+                    mobileAuthButtons.classList.remove('hidden');
+                }
+                if (mobileUserMenu) {
+                    mobileUserMenu.classList.add('hidden');
+                }
+                
+                return;
+            }
+            
+            // If token exists, hide auth buttons and show user menu immediately
+            // Desktop - ensure it only shows on md+ screens
+            if (authButtons) {
+                authButtons.classList.add('hidden');
+                authButtons.style.display = 'none';
+            }
+            if (userMenu) {
+                // Remove hidden, but keep md:flex to ensure it only shows on desktop
+                userMenu.classList.remove('hidden');
+                userMenu.style.display = '';
+                if (!userMenu.classList.contains('md:flex')) {
+                    userMenu.classList.add('md:flex');
+                }
+            }
+            
+            // Mobile - show user menu in mobile dropdown
+            if (mobileAuthButtons) {
+                mobileAuthButtons.classList.add('hidden');
+            }
+            if (mobileUserMenu) {
+                mobileUserMenu.classList.remove('hidden');
+            }
+            
+            // Fetch user info to check role
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.user && data.user.role === 'admin') {
+                        // Hide Properties, Services, and More for admin - Desktop
+                        if (navProperties) navProperties.classList.add('hidden');
+                        if (navServices) navServices.classList.add('hidden');
+                        if (navMore) navMore.classList.add('hidden');
+                        if (mainNav) mainNav.classList.add('hidden');
+                        
+                        // Hide Properties, Services, and More for admin - Mobile
+                        if (mobileNavProperties) mobileNavProperties.classList.add('hidden');
+                        if (mobileNavServices) mobileNavServices.classList.add('hidden');
+                        if (mobileNavMore) mobileNavMore.classList.add('hidden');
+                        
+                        // Update dashboard links to Admin Dashboard
+                        if (dashboardLink) {
+                            dashboardLink.href = '/admin/dashboard';
+                            dashboardLink.textContent = 'Admin Dashboard';
+                        }
+                        if (mobileDashboardLink) {
+                            mobileDashboardLink.href = '/admin/dashboard';
+                            mobileDashboardLink.textContent = 'Admin Dashboard';
+                        }
+                    } else {
+                        // Show all navigation items for regular users - Desktop
+                        // CSS will handle hiding on mobile via media queries
+                        if (navProperties) navProperties.classList.remove('hidden');
+                        if (navServices) navServices.classList.remove('hidden');
+                        if (navMore) navMore.classList.remove('hidden');
+                        if (mainNav) mainNav.classList.remove('hidden');
+                        
+                        // Show all navigation items for regular users - Mobile
+                        if (mobileNavProperties) mobileNavProperties.classList.remove('hidden');
+                        if (mobileNavServices) mobileNavServices.classList.remove('hidden');
+                        if (mobileNavMore) mobileNavMore.classList.remove('hidden');
+                        
+                        // Regular dashboard links
+                        if (dashboardLink) {
+                            dashboardLink.href = '/dashboard';
+                            dashboardLink.textContent = 'Dashboard';
+                        }
+                        if (mobileDashboardLink) {
+                            mobileDashboardLink.href = '/dashboard';
+                            mobileDashboardLink.textContent = 'Dashboard';
+                        }
+                    }
+                } else {
+                    // Token is invalid, clear it and show auth buttons
+                    localStorage.removeItem('token');
+                    
+                    // Desktop
+                    if (authButtons) {
+                        authButtons.classList.remove('hidden');
+                        authButtons.style.display = '';
+                    }
+                    if (userMenu) {
+                        userMenu.classList.add('hidden');
+                        userMenu.style.display = 'none';
+                    }
+                    if (mainNav) mainNav.classList.remove('hidden');
+                    
+                    // Mobile
+                    if (mobileAuthButtons) {
+                        mobileAuthButtons.classList.remove('hidden');
+                    }
+                    if (mobileUserMenu) {
+                        mobileUserMenu.classList.add('hidden');
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+                // On error, assume token is invalid and show auth buttons
+                localStorage.removeItem('token');
+                
+                // Desktop
+                if (authButtons) {
+                    authButtons.classList.remove('hidden');
+                    authButtons.style.display = '';
+                }
+                if (userMenu) {
+                    userMenu.classList.add('hidden');
+                    userMenu.style.display = 'none';
+                }
+                if (mainNav) mainNav.classList.remove('hidden');
+                
+                // Mobile
+                if (mobileAuthButtons) {
+                    mobileAuthButtons.classList.remove('hidden');
+                }
+                if (mobileUserMenu) {
+                    mobileUserMenu.classList.add('hidden');
+                }
+            }
+        }
+        
+        // Make checkAuth globally available
+        window.checkAuth = checkAuth;
+        
+        // Logout function
+        function handleLogout() {
+            showConfirm(
+                'Confirm Logout',
+                'Are you sure you want to logout? You will need to login again to access your account.',
+                function() {
+                    // User confirmed logout
+                    localStorage.removeItem('token');
+                    showSuccess('Logged out successfully');
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 500);
+                },
+                function() {
+                    // User cancelled - do nothing
+                },
+                'Logout',  // Confirm button text
+                'Cancel',  // Cancel button text
+                true       // isDanger - makes button red
+            );
+        }
+        
+        // Make logout function globally available
+        window.handleLogout = handleLogout;
+        
+        // Modal functions
+        function showModal(title, content) {
+            const modal = document.getElementById('detailModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            modalTitle.textContent = title;
+            modalBody.innerHTML = content;
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.add('show'), 10);
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('detailModal');
+            modal.classList.remove('show');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+        
+        // Make modal functions globally available
+        window.showModal = showModal;
+        window.closeModal = closeModal;
+        
+        // Confirmation dialog function
+        function showConfirm(title, message, onConfirm, onCancel, confirmText = 'Confirm', cancelText = 'Cancel', isDanger = false) {
+            const dialog = document.getElementById('confirmDialog');
+            const confirmTitle = document.getElementById('confirmTitle');
+            const confirmMessage = document.getElementById('confirmMessage');
+            const confirmOk = document.getElementById('confirmOk');
+            const confirmCancel = document.getElementById('confirmCancel');
+            
+            confirmTitle.textContent = title;
+            confirmMessage.textContent = message;
+            confirmOk.textContent = confirmText;
+            confirmCancel.textContent = cancelText;
+            
+            // Update button style for danger actions (like logout)
+            if (isDanger) {
+                confirmOk.className = 'px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-white rounded-lg transition-colors';
+            } else {
+                confirmOk.className = 'px-4 py-2 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg transition-colors';
+            }
+            
+            // Remove existing event listeners by cloning
+            const newOkBtn = confirmOk.cloneNode(true);
+            const newCancelBtn = confirmCancel.cloneNode(true);
+            confirmOk.parentNode.replaceChild(newOkBtn, confirmOk);
+            confirmCancel.parentNode.replaceChild(newCancelBtn, confirmCancel);
+            
+            // Add new event listeners
+            newOkBtn.addEventListener('click', function() {
+                closeConfirm();
+                if (onConfirm) onConfirm();
+            });
+            
+            newCancelBtn.addEventListener('click', function() {
+                closeConfirm();
+                if (onCancel) onCancel();
+            });
+            
+            dialog.classList.remove('hidden');
+            setTimeout(() => dialog.classList.add('show'), 10);
+        }
+        
+        function closeConfirm() {
+            const dialog = document.getElementById('confirmDialog');
+            dialog.classList.remove('show');
+            setTimeout(() => dialog.classList.add('hidden'), 200);
+        }
+        
+        // Make confirmation functions globally available
+        window.showConfirm = showConfirm;
+        window.closeConfirm = closeConfirm;
+        
+        // Toast notification functions
+        function showToast(message, type = 'info', duration = 5000) {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            
+            const icons = {
+                success: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+                error: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+                warning: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>',
+                info: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+            };
+            
+            const titles = {
+                success: 'Success',
+                error: 'Error',
+                warning: 'Warning',
+                info: 'Info'
+            };
+            
+            toast.innerHTML = '<div class="toast-icon">' + (icons[type] || icons.info) + '</div>' +
+                '<div class="toast-content">' +
+                    '<div class="toast-title">' + (titles[type] || 'Notification') + '</div>' +
+                    '<div class="toast-message">' + message + '</div>' +
+                '</div>' +
+                '<button class="toast-close" onclick="this.parentElement.remove()">' +
+                    '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                        '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>' +
+                    '</svg>' +
+                '</button>';
+            
+            container.appendChild(toast);
+            
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Auto remove after duration
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.remove();
+                    }
+                }, 300);
+            }, duration);
+        }
+        
+        function showSuccess(message, duration) {
+            showToast(message, 'success', duration);
+        }
+        
+        function showError(message, duration) {
+            showToast(message, 'error', duration);
+        }
+        
+        function showWarning(message, duration) {
+            showToast(message, 'warning', duration);
+        }
+        
+        function showInfo(message, duration) {
+            showToast(message, 'info', duration);
+        }
+        
+        // Make toast functions globally available
+        window.showToast = showToast;
+        window.showSuccess = showSuccess;
+        window.showError = showError;
+        window.showWarning = showWarning;
+        window.showInfo = showInfo;
+        
+        // Page loader functions
+        function showPageLoader(text = 'Loading...') {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                const loaderText = loader.querySelector('.loader-text');
+                if (loaderText) {
+                    loaderText.textContent = text;
+                }
+                loader.classList.add('show');
+            }
+        }
+        
+        function hidePageLoader() {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.remove('show');
+            }
+        }
+        
+        // Inline loader helper function
+        function getInlineLoaderHTML(text = 'Loading...') {
+            return '<div class="inline-loader">' +
+                '<div class="inline-loader-spinner"></div>' +
+                '<p class="inline-loader-text">' + text + '</p>' +
+            '</div>';
+        }
+        
+        // Make loader functions globally available
+        window.showPageLoader = showPageLoader;
+        window.hidePageLoader = hidePageLoader;
+        window.getInlineLoaderHTML = getInlineLoaderHTML;
+        
+        // Loader is already visible by default (has 'show' class in HTML)
+        // This ensures it shows immediately when page loads
+        
+        // Show loader on page navigation (for SPA-like behavior)
+        let isLoading = false;
+        let loaderTimeout;
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+            // Don't show loader for auth checks, small requests, or my-properties list
+            const url = args[0];
+            if (typeof url === 'string' && (
+                url.includes('/api/auth/me') || 
+                url.includes('/api/auth/check') ||
+                url.includes('/api/auth/verify') ||
+                url.includes('/api/properties/my-properties/list') ||
+                url.includes('/api/enquiries/') ||
+                url.length < 50
+            )) {
+                return originalFetch.apply(this, args);
+            }
+            
+            // Clear any existing timeout
+            if (loaderTimeout) {
+                clearTimeout(loaderTimeout);
+            }
+            
+            if (!isLoading) {
+                isLoading = true;
+                showPageLoader('Loading...');
+            }
+            
+            return originalFetch.apply(this, args)
+                .finally(() => {
+                    // Hide loader after a short delay to ensure smooth transition
+                    loaderTimeout = setTimeout(() => {
+                        isLoading = false;
+                        hidePageLoader();
+                    }, 500);
+                });
+        };
+        
+        // Hide loader when page is fully loaded
+        if (document.readyState === 'complete') {
+            setTimeout(() => {
+                hidePageLoader();
+            }, 500);
+        } else {
+            window.addEventListener('load', function() {
+                setTimeout(() => {
+                    hidePageLoader();
+                }, 500);
+            });
+            
+            // Also hide on DOMContentLoaded as backup
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(() => {
+                    hidePageLoader();
+                }, 800);
+            });
+        }
+        
+        // Show loader on link clicks (for navigation)
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#')) {
+                const href = link.getAttribute('href');
+                // Only show loader for internal links
+                if (href && (href.startsWith('/') || href.includes(window.location.hostname))) {
+                    // Don't show for links that open in new tab
+                    if (!link.target || link.target === '_self') {
+                        setTimeout(() => {
+                            showPageLoader('Loading page...');
+                        }, 100);
+                    }
+                }
+            }
+        });
+        
+        // Close modal/dialog on overlay click
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('detailModal');
+            const confirm = document.getElementById('confirmDialog');
+            
+            if (e.target === modal) {
+                closeModal();
+            }
+            if (e.target === confirm) {
+                closeConfirm();
+            }
+        });
+        
+        // Close modal/dialog on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('detailModal');
+                const confirm = document.getElementById('confirmDialog');
+                
+                if (!modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+                if (!confirm.classList.contains('hidden')) {
+                    closeConfirm();
+                }
+            }
+        });
+        
+        // Initialize on page load
+        function initializePage() {
+            // Initialize dark mode - default to light theme
+            const darkMode = localStorage.getItem('darkMode') === 'true';
+            if (darkMode) {
+                document.documentElement.classList.add('dark');
+            } else {
+                // Ensure light theme is active
+                document.documentElement.classList.remove('dark');
+                // Set default to light if not set
+                if (localStorage.getItem('darkMode') === null) {
+                    localStorage.setItem('darkMode', 'false');
+                }
+            }
+            // Initialize theme toggle position with animation
+            setTimeout(() => {
+                updateThemeToggle(darkMode);
+            }, 100);
+            
+            // Check auth status immediately and retry if needed
+            checkAuth().catch(err => {
+                console.error('Auth check error:', err);
+                // Retry after a short delay
+                setTimeout(() => checkAuth(), 200);
+            });
+        }
+        
+        // Run immediately if DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializePage);
+        } else {
+            initializePage();
+        }
+        
+        // Also run on DOMContentLoaded as backup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Small delay to ensure all elements are rendered
+            setTimeout(() => {
+                checkAuth().catch(err => console.error('Auth check error:', err));
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+

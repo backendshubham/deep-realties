@@ -1,0 +1,268 @@
+<%- include('../../layouts/main', { content: `
+<div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">Manage Users</h1>
+                    <p class="text-gray-600 dark:text-gray-400">View and manage user accounts</p>
+                </div>
+                <a href="/admin/dashboard" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+        
+        <!-- Filters -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6">
+            <div class="flex flex-wrap gap-4">
+                <select id="roleFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <option value="">All Roles</option>
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                    <option value="admin">Admin</option>
+                </select>
+                <select id="statusFilter" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                    <option value="">All Status</option>
+                    <option value="true">Active</option>
+                    <option value="false">Inactive</option>
+                </select>
+                <button onclick="loadUsers()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">
+                    Filter
+                </button>
+            </div>
+        </div>
+        
+        <!-- Users List -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div id="usersList" class="p-6">
+                <div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading users...</p></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadUsers() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        const container = document.getElementById('usersList');
+        container.innerHTML = '<div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading users...</p></div>';
+        
+        const role = document.getElementById('roleFilter').value;
+        const isActive = document.getElementById('statusFilter').value;
+        let url = '/api/admin/users';
+        const params = [];
+        if (role) params.push('role=' + encodeURIComponent(role));
+        if (isActive) params.push('is_active=' + encodeURIComponent(isActive));
+        if (params.length > 0) url += '?' + params.join('&');
+        
+        try {
+            console.log('Fetching users from:', url);
+            const response = await fetch(url, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            console.log('Response status:', response.status);
+            
+            if (response.status === 403) {
+                showConfirm('Access Denied', 'Admin access required. Redirecting to dashboard...', function() {
+                    window.location.href = '/dashboard';
+                });
+                return;
+            }
+            
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ error: 'Failed to load users' }));
+                throw new Error(errorData.error || 'Failed to load users');
+            }
+            
+            const data = await response.json();
+            console.log('Users data:', data);
+            console.log('Users array:', data.users);
+            console.log('Is array?', Array.isArray(data.users));
+            console.log('Length:', data.users ? data.users.length : 0);
+            
+            const container = document.getElementById('usersList');
+            
+            if (!data) {
+                container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">No data received from API</p><p class="text-sm text-gray-600 dark:text-gray-400">Response: ' + JSON.stringify(data) + '</p></div>';
+                return;
+            }
+            
+            // Handle case where API might return users directly or in a users property
+            const usersArray = data.users || (Array.isArray(data) ? data : []);
+            
+            if (usersArray && Array.isArray(usersArray) && usersArray.length > 0) {
+                console.log('Found', usersArray.length, 'users to display');
+                try {
+                    const tableRows = usersArray.map(function(u) {
+                        const isActiveBool = u.is_active === true || u.is_active === 'true' || u.is_active === 1;
+                        const statusClass = isActiveBool ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+                        const roleClass = u.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : u.role === 'seller' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                        const createdAt = u.created_at ? new Date(u.created_at).toLocaleDateString() : 'N/A';
+                        const isAdmin = u.role === 'admin';
+                        return '<tr class="hover:bg-gray-50 dark:hover:bg-gray-700"><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-gray-900 dark:text-white">' + (u.full_name || 'N/A') + '</div><div class="text-xs text-gray-500 dark:text-gray-400">Joined: ' + createdAt + '</div></td><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900 dark:text-white">' + (u.email || '') + '</div></td><td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-gray-900 dark:text-white">' + (u.phone || 'N/A') + '</div></td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ' + roleClass + '">' + (u.role || 'buyer') + '</span></td><td class="px-6 py-4 whitespace-nowrap"><span class="px-2 py-1 text-xs font-semibold rounded-full ' + statusClass + '">' + (isActiveBool ? 'Active' : 'Inactive') + '</span></td><td class="px-6 py-4 whitespace-nowrap text-sm font-medium"><div class="flex gap-2 flex-wrap"><button data-user-id="' + u.id + '" data-is-active="' + isActiveBool + '" class="toggle-user-btn px-3 py-1 rounded text-xs ' + (isActiveBool ? 'bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-300 dark:hover:bg-red-900/50' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:hover:bg-emerald-900/50') + ' transition-colors">' + (isActiveBool ? 'Deactivate' : 'Activate') + '</button><button data-user-id="' + u.id + '" class="view-user-btn px-3 py-1 bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50 rounded text-xs transition-colors">View</button>' + (!isAdmin ? '<button data-user-id="' + u.id + '" class="delete-user-btn px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded text-xs transition-colors">Delete</button>' : '') + '</div></td></tr>';
+                    });
+                    
+                    container.innerHTML = '<div class="overflow-x-auto"><table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700"><thead class="bg-gray-50 dark:bg-gray-700"><tr><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Phone</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Role</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th><th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th></tr></thead><tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">' + tableRows.join('') + '</tbody></table></div>';
+                    console.log('Table rendered successfully');
+                    
+                    // Attach event listeners using event delegation
+                    attachUserEventListeners();
+                } catch (renderError) {
+                    console.error('Error rendering table:', renderError);
+                    container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">Error rendering users table</p><p class="text-sm text-gray-600 dark:text-gray-400">' + renderError.message + '</p></div>';
+                }
+            } else {
+                console.log('No users found or empty array');
+                console.log('Data structure:', JSON.stringify(data, null, 2));
+                console.log('Users array:', usersArray);
+                const message = usersArray && Array.isArray(usersArray) && usersArray.length === 0 
+                    ? 'No users found. Try adjusting your filters.' 
+                    : 'No users data available. Check console for API response details.';
+                container.innerHTML = '<div class="text-center py-12"><svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg><p class="mt-4 text-gray-600 dark:text-gray-400">' + message + '</p><p class="mt-2 text-sm text-gray-500 dark:text-gray-500">Check browser console (F12) for more details</p></div>';
+            }
+        } catch (error) {
+            console.error('Error loading users:', error);
+            const container = document.getElementById('usersList');
+            container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">Error loading users</p><p class="text-sm text-gray-600 dark:text-gray-400">' + (error.message || 'Please try again later') + '</p></div>';
+        }
+    }
+    
+    async function toggleUserStatus(id, currentStatus) {
+        const token = localStorage.getItem('token');
+        const action = currentStatus ? 'deactivate' : 'activate';
+        const actionText = currentStatus ? 'deactivate' : 'activate';
+        const message = 'Are you sure you want to ' + actionText + ' this user? ' + (currentStatus ? 'They will not be able to access their account.' : 'They will regain access to their account.');
+        
+        showConfirm('Confirm ' + actionText.charAt(0).toUpperCase() + actionText.slice(1), message, function() {
+            performToggleUserStatus(id, currentStatus, actionText);
+        });
+    }
+    
+    async function performToggleUserStatus(id, currentStatus, actionText) {
+        const token = localStorage.getItem('token');
+        
+        const container = document.getElementById('usersList');
+        const originalContent = container.innerHTML;
+        container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">Processing...</p>';
+        
+        try {
+            const response = await fetch('/api/admin/users/' + id + '/toggle', {
+                method: 'PUT',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                container.innerHTML = '<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-4">User ' + actionText + 'd successfully!</div>';
+                setTimeout(loadUsers, 1000);
+            } else {
+                container.innerHTML = originalContent;
+                showError(result.error || 'Failed to ' + actionText + ' user');
+            }
+        } catch (error) {
+            console.error('Error toggling user status:', error);
+            container.innerHTML = originalContent;
+            showError('Error updating user status. Please try again.');
+        }
+    }
+    
+    async function viewUser(id) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/admin/users/' + id, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                const u = data.user;
+                const isActive = u.is_active === true || u.is_active === 'true' || u.is_active === 1;
+                const statusClass = isActive ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+                const roleClass = u.role === 'admin' ? 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300' : u.role === 'seller' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+                
+                const content = '<div class="space-y-4"><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Full Name</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (u.full_name || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Email</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (u.email || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Phone</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (u.phone || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Role</label><p class="mt-1"><span class="px-3 py-1 text-sm font-semibold rounded-full ' + roleClass + '">' + (u.role || 'buyer') + '</span></p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</label><p class="mt-1"><span class="px-3 py-1 text-sm font-semibold rounded-full ' + statusClass + '">' + (isActive ? 'Active' : 'Inactive') + '</span></p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Joined Date</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (u.created_at ? new Date(u.created_at).toLocaleString() : 'N/A') + '</p></div></div></div>';
+                
+                showModal('User Details', content);
+            } else {
+                showError('Failed to load user details');
+            }
+        } catch (error) {
+            console.error('Error viewing user:', error);
+            showError('Error loading user details');
+        }
+    }
+    
+    async function deleteUser(id) {
+        const token = localStorage.getItem('token');
+        showConfirm('Confirm Deactivation', 'Are you sure you want to deactivate this user? They will not be able to access their account.', function() {
+            performDeleteUser(id);
+        });
+    }
+    
+    async function performDeleteUser(id) {
+        const token = localStorage.getItem('token');
+        
+        const container = document.getElementById('usersList');
+        const originalContent = container.innerHTML;
+        container.innerHTML = '<p class="text-center text-gray-600 dark:text-gray-400 py-8">Processing...</p>';
+        
+        try {
+            const response = await fetch('/api/admin/users/' + id, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                container.innerHTML = '<div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-4 py-3 rounded-lg mb-4">User deactivated successfully!</div>';
+                setTimeout(loadUsers, 1000);
+            } else {
+                container.innerHTML = originalContent;
+                showError(result.error || 'Failed to deactivate user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            container.innerHTML = originalContent;
+            showError('Error deactivating user. Please try again.');
+        }
+    }
+    
+    function attachUserEventListeners() {
+        // Use event delegation for dynamic buttons
+        const container = document.getElementById('usersList');
+        if (!container) return;
+        
+        container.addEventListener('click', function(e) {
+            const target = e.target.closest('button');
+            if (!target) return;
+            
+            if (target.classList.contains('toggle-user-btn')) {
+                const userId = target.getAttribute('data-user-id');
+                const isActive = target.getAttribute('data-is-active') === 'true';
+                toggleUserStatus(userId, isActive);
+            } else if (target.classList.contains('view-user-btn')) {
+                const userId = target.getAttribute('data-user-id');
+                viewUser(userId);
+            } else if (target.classList.contains('delete-user-btn')) {
+                const userId = target.getAttribute('data-user-id');
+                deleteUser(userId);
+            }
+        });
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadUsers();
+    });
+</script>
+` }) %>
+

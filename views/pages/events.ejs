@@ -1,0 +1,68 @@
+<%- include('../layouts/main', { content: `
+<div class="min-h-screen py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-display font-bold mb-8">Upcoming Events</h1>
+        
+        <div id="eventsList" class="space-y-6">
+            <!-- Events will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadEvents() {
+        const response = await fetch('/api/events?is_past=false');
+        const data = await response.json();
+        
+        const container = document.getElementById('eventsList');
+        if (data.events && data.events.length > 0) {
+            container.innerHTML = data.events.map(function(event) {
+                const eventImage = (event.images && event.images[0]) ? event.images[0] : '/images/placeholder.jpg';
+                const eventDescription = event.description || '';
+                const eventDate = new Date(event.event_date).toLocaleDateString();
+                return '<div class="bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">' +
+                    '<div class="flex flex-col md:flex-row gap-6">' +
+                        '<img src="' + eventImage + '" alt="' + event.title + '" class="w-full md:w-48 h-48 object-cover rounded">' +
+                        '<div class="flex-1">' +
+                            '<h3 class="text-2xl font-semibold mb-2">' + event.title + '</h3>' +
+                            '<p class="text-gray-600 dark:text-gray-400 mb-4">' + eventDescription + '</p>' +
+                            '<p class="text-sm mb-2"><strong>Location:</strong> ' + event.location + ', ' + event.city + '</p>' +
+                            '<p class="text-sm mb-4"><strong>Date:</strong> ' + eventDate + '</p>' +
+                            '<button onclick="registerForEvent(\'' + event.id + '\')" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">' +
+                                'Register Now' +
+                            '</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        } else {
+            container.innerHTML = '<p class="text-center">No upcoming events</p>';
+        }
+    }
+    
+    function registerForEvent(eventId) {
+        const name = prompt('Enter your full name:');
+        const email = prompt('Enter your email:');
+        const phone = prompt('Enter your phone:');
+        
+        if (name && email && phone) {
+            fetch('/api/events/' + eventId + '/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ full_name: name, email, phone })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.message) {
+                    showSuccess('Successfully registered for the event!');
+                } else {
+                    showError(data.error || 'Registration failed');
+                }
+            });
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
+` }) %>
+

@@ -1,0 +1,138 @@
+<%- include('../layouts/main', { content: `
+<div class="min-h-screen py-4 sm:py-6 lg:py-8">
+    <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-display font-bold mb-4 sm:mb-6 lg:mb-8 text-gray-900 dark:text-white">Dashboard</h1>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6 mb-6 sm:mb-8">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-gray-900 dark:text-white">My Properties</h3>
+                <p id="propertyCount" class="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">-</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700">
+                <h3 class="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-gray-900 dark:text-white">Enquiries Sent</h3>
+                <p id="sentEnquiries" class="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">-</p>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700 sm:col-span-2 lg:col-span-1">
+                <h3 class="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2 text-gray-900 dark:text-white">Enquiries Received</h3>
+                <p id="receivedEnquiries" class="text-2xl sm:text-3xl font-bold text-emerald-600 dark:text-emerald-400">-</p>
+            </div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-white">My Properties</h2>
+                <a href="/my-properties" class="text-sm sm:text-base text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors">
+                    View All →
+                </a>
+            </div>
+            <div id="myProperties" class="space-y-3 sm:space-y-4">
+                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function loadDashboard() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        // Check if user is admin and redirect
+        try {
+            const userRes = await fetch('/api/auth/me', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (userRes.ok) {
+                const userData = await userRes.json();
+                if (userData.user && userData.user.role === 'admin') {
+                    window.location.href = '/admin/dashboard';
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error('Error checking user role:', error);
+        }
+        
+        try {
+            // Load my properties
+            const propertiesRes = await fetch('/api/properties/my-properties/list', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const propertiesData = await propertiesRes.json();
+            
+            // Load enquiries
+            const sentRes = await fetch('/api/enquiries/sent', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const sentData = await sentRes.json();
+            
+            const receivedRes = await fetch('/api/enquiries/received', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const receivedData = await receivedRes.json();
+            
+            // Update counts
+            document.getElementById('propertyCount').textContent = propertiesData.properties?.length || 0;
+            document.getElementById('sentEnquiries').textContent = sentData.enquiries?.length || 0;
+            document.getElementById('receivedEnquiries').textContent = receivedData.enquiries?.length || 0;
+            
+            // Display properties (limit to 5)
+            const container = document.getElementById('myProperties');
+            const propertiesToShow = (propertiesData.properties || []).slice(0, 5);
+            if (propertiesToShow.length > 0) {
+                container.innerHTML = propertiesToShow.map(p => {
+                    const propertyType = p.bedrooms ? p.bedrooms + 'BHK' : (p.property_type || '').charAt(0).toUpperCase() + (p.property_type || '').slice(1);
+                    let location = (p.locality || '') + ', ' + (p.city || '');
+                    location = location.trim();
+                    if (location.startsWith(',')) {
+                        location = location.substring(1).trim();
+                    }
+                    if (location.endsWith(',')) {
+                        location = location.substring(0, location.length - 1).trim();
+                    }
+                    const statusClass = p.status === 'approved' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : p.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
+                    return '<div data-property-id="' + p.id + '" class="property-card border border-gray-200 dark:border-gray-600 rounded-lg p-3 sm:p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-white dark:bg-gray-800 hover:shadow-md transition-shadow cursor-pointer">' +
+                        '<div class="flex-1 min-w-0">' +
+                            '<div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">' +
+                                '<span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300">' + propertyType + '</span>' +
+                                '<span class="text-gray-400 hidden sm:inline">•</span>' +
+                                '<span class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">' + location + '</span>' +
+                            '</div>' +
+                            '<p class="text-emerald-600 dark:text-emerald-400 font-bold text-base sm:text-lg">₹' + p.price.toLocaleString() + '</p>' +
+                        '</div>' +
+                        '<div class="flex-shrink-0">' +
+                            '<span class="px-2 sm:px-3 py-1 rounded text-xs sm:text-sm ' + statusClass + '">' +
+                                p.status +
+                            '</span>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+                
+                // Add "View All" link if there are more properties
+                if (propertiesData.properties.length > 5) {
+                    container.innerHTML += '<div class="pt-4 border-t border-gray-200 dark:border-gray-700"><a href="/my-properties" class="block text-center text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium transition-colors">View All ' + propertiesData.properties.length + ' Properties →</a></div>';
+                }
+                
+                // Add click event listeners using event delegation
+                container.addEventListener('click', function(e) {
+                    const card = e.target.closest('.property-card');
+                    if (card) {
+                        const propertyId = card.getAttribute('data-property-id');
+                        window.location.href = '/properties/' + propertyId;
+                    }
+                });
+            } else {
+                container.innerHTML = '<div class="text-center py-6"><p class="text-gray-600 dark:text-gray-400 mb-4">No properties listed yet.</p><a href="/sell" class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors text-sm"><svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>Add Your First Property</a></div>';
+            }
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+    
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+</script>
+` }) %>
+

@@ -1,0 +1,414 @@
+<%- include('../layouts/main', { content: `
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6 text-sm font-medium">
+            List Your Property
+        </span>
+        <h1 class="text-5xl md:text-6xl font-display font-bold mb-4">Sell Property</h1>
+        <p class="text-xl text-emerald-100 dark:text-gray-300 max-w-2xl mx-auto">
+            Reach thousands of potential buyers through our premium platform
+        </p>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-16 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-8 mb-6 shadow-sm">
+            <h3 class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-3">Property Submitted!</h3>
+            <p class="text-emerald-600 dark:text-emerald-300 mb-6 text-base leading-relaxed">
+                Your property has been submitted for review. Our team will verify the details and approve it within 24-48 hours.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="/properties" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md">
+                    View Properties
+                </a>
+                <button onclick="resetForm()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold transition-colors">
+                    List Another Property
+                </button>
+            </div>
+        </div>
+        
+        <!-- Empty card below success message (shown when success is visible) -->
+        <div id="emptyCard" class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 min-h-[200px] mb-6"></div>
+        
+        <div id="sellFormContainer" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
+            <form id="sellForm" class="space-y-6">
+                <!-- Property Type Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Property Type <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="land" required class="mr-2">
+                            <span class="text-2xl mr-2">🏞️</span>
+                            <span class="text-sm">Land</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="plot" required class="mr-2">
+                            <span class="text-2xl mr-2">📐</span>
+                            <span class="text-sm">Plot</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="flat" required class="mr-2">
+                            <span class="text-2xl mr-2">🏢</span>
+                            <span class="text-sm">Flat</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="house" required class="mr-2">
+                            <span class="text-2xl mr-2">🏠</span>
+                            <span class="text-sm">House</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="villa" required class="mr-2">
+                            <span class="text-2xl mr-2">🏛️</span>
+                            <span class="text-sm">Villa</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="apartment" required class="mr-2">
+                            <span class="text-2xl mr-2">🏬</span>
+                            <span class="text-sm">Apartment</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="commercial" required class="mr-2">
+                            <span class="text-2xl mr-2">🏪</span>
+                            <span class="text-sm">Commercial</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="farmland" required class="mr-2">
+                            <span class="text-2xl mr-2">🌾</span>
+                            <span class="text-sm">Farm Land</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Property Title <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="title" required placeholder="e.g., Luxury 3BHK Villa in Prime Location"
+                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Description <span class="text-red-500">*</span>
+                    </label>
+                    <textarea name="description" rows="4" required placeholder="Describe your property in detail..."
+                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Locality <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="locality" required placeholder="Area / Locality"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            City <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="city" required placeholder="City"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        State <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" name="state" required placeholder="State"
+                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Price (₹) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="price" required placeholder="Property Price"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Area (sqft) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="area_sqft" required placeholder="Area in square feet"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Bedrooms (For house/flat/villa/apartment)
+                        </label>
+                        <input type="number" name="bedrooms" placeholder="Number of bedrooms"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Bathrooms (For house/flat/villa/apartment)
+                        </label>
+                        <input type="number" name="bathrooms" placeholder="Number of bathrooms"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Floors (For house/flat/villa/apartment)
+                        </label>
+                        <input type="number" name="floors" placeholder="Number of floors"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Facing
+                        </label>
+                        <select name="facing" 
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Select Facing</option>
+                            <option value="north">North</option>
+                            <option value="south">South</option>
+                            <option value="east">East</option>
+                            <option value="west">West</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="googleEarthField" class="hidden">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Google Earth Link <span class="text-red-500">*</span> <span class="text-xs text-gray-500">(Required for Farmland)</span>
+                    </label>
+                    <input type="url" name="google_earth_link" placeholder="https://earth.google.com/..."
+                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                </div>
+                
+                <!-- Amenities -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Amenities
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="swimming_pool" class="mr-2">
+                            <span>Swimming Pool</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="gym" class="mr-2">
+                            <span>Gym</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="garden" class="mr-2">
+                            <span>Garden</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="security" class="mr-2">
+                            <span>Security</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="parking" class="mr-2">
+                            <span>Parking</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="power_backup" class="mr-2">
+                            <span>Power Backup</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="lift" class="mr-2">
+                            <span>Lift</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="club_house" class="mr-2">
+                            <span>Club House</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="children_play_area" class="mr-2">
+                            <span>Children Play Area</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="sports_facility" class="mr-2">
+                            <span>Sports Facility</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="water_supply" class="mr-2">
+                            <span>Water Supply</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="cctv" class="mr-2">
+                            <span>CCTV</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="intercom" class="mr-2">
+                            <span>Intercom</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="fire_safety" class="mr-2">
+                            <span>Fire Safety</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <input type="checkbox" name="amenities" value="rainwater_harvesting" class="mr-2">
+                            <span>Rainwater Harvesting</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="parking_available" class="mr-2">
+                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Parking Available</span>
+                    </label>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Contact Information</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="full_name" required placeholder="Your Name"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Email <span class="text-red-500">*</span>
+                                </label>
+                                <input type="email" name="email" required placeholder="your@email.com"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Phone <span class="text-red-500">*</span>
+                                </label>
+                                <input type="tel" name="phone" required placeholder="+91 98765 43210"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    Submit Property
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Show/hide Google Earth field based on property type
+    document.querySelectorAll('input[name="property_type"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const googleEarthField = document.getElementById('googleEarthField');
+            if (this.value === 'farmland') {
+                googleEarthField.classList.remove('hidden');
+                googleEarthField.querySelector('input').required = true;
+            } else {
+                googleEarthField.classList.add('hidden');
+                googleEarthField.querySelector('input').required = false;
+            }
+        });
+    });
+    
+    function resetForm() {
+        document.getElementById('successMessage').classList.add('hidden');
+        document.getElementById('emptyCard').classList.add('hidden');
+        document.getElementById('sellFormContainer').style.display = 'block';
+        document.getElementById('sellForm').reset();
+        document.getElementById('sellForm').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    document.getElementById('sellForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {};
+        
+        // Get property type
+        data.property_type = formData.get('property_type');
+        
+        // Get basic fields
+        data.title = formData.get('title');
+        data.description = formData.get('description');
+        data.price = parseFloat(formData.get('price'));
+        data.area_sqft = parseFloat(formData.get('area_sqft'));
+        data.locality = formData.get('locality');
+        data.city = formData.get('city');
+        data.state = formData.get('state');
+        
+        // Get optional fields
+        if (formData.get('bedrooms')) data.bedrooms = parseInt(formData.get('bedrooms'));
+        if (formData.get('bathrooms')) data.bathrooms = parseInt(formData.get('bathrooms'));
+        if (formData.get('floors')) data.floors = parseInt(formData.get('floors'));
+        if (formData.get('facing')) data.facing = formData.get('facing');
+        if (formData.get('google_earth_link')) data.google_earth_link = formData.get('google_earth_link');
+        
+        // Get amenities (checkboxes)
+        data.amenities = formData.getAll('amenities');
+        data.parking_available = formData.get('parking_available') === 'on';
+        
+        // Get contact info
+        data.full_name = formData.get('full_name');
+        data.email = formData.get('email');
+        data.phone = formData.get('phone');
+        
+        try {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) {
+                headers['Authorization'] = 'Bearer ' + token;
+            }
+            
+            const response = await fetch('/api/properties', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                // Show success message
+                document.getElementById('sellFormContainer').style.display = 'none';
+                document.getElementById('successMessage').classList.remove('hidden');
+                document.getElementById('emptyCard').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // Redirect to property view after 2 seconds
+                if (result.property && result.property.id) {
+                    setTimeout(() => {
+                        window.location.href = '/properties/' + result.property.id;
+                    }, 2000);
+                }
+            } else {
+                if (typeof window.showError === 'function') {
+                    window.showError(result.error || 'Failed to submit property');
+                } else {
+                    alert(result.error || 'Failed to submit property');
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (typeof window.showError === 'function') {
+                window.showError('An error occurred. Please try again.');
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+</script>
+` }) %>
+
+
