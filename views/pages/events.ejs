@@ -19,10 +19,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Tabs -->
         <div class="flex border-b border-gray-200 dark:border-gray-700 mb-8">
-            <button onclick="switchTab('upcoming')" id="upcomingTab" class="px-6 py-3 font-semibold text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-600 dark:border-emerald-400 transition-colors">
+            <button data-tab="upcoming" id="upcomingTab" class="px-6 py-3 font-semibold text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-600 dark:border-emerald-400 transition-colors">
                 Upcoming Events
             </button>
-            <button onclick="switchTab('past')" id="pastTab" class="px-6 py-3 font-semibold text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+            <button data-tab="past" id="pastTab" class="px-6 py-3 font-semibold text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                 Past Events
             </button>
         </div>
@@ -46,6 +46,14 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         loadEvents('upcoming');
+        
+        // Tab click handlers using event delegation
+        document.querySelectorAll('[data-tab]').forEach(button => {
+            button.addEventListener('click', function() {
+                const tab = this.getAttribute('data-tab');
+                switchTab(tab);
+            });
+        });
     });
 
     function switchTab(tab) {
@@ -104,6 +112,17 @@
                 'inauguration': 'Inauguration'
             };
 
+            // Helper function to escape HTML attributes
+            function escapeAttr(text) {
+                if (!text) return '';
+                return String(text)
+                    .replace(/&/g, '&amp;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
+            }
+
             eventsList.innerHTML = events.map(event => {
                 const eventDate = new Date(event.event_date).toLocaleDateString('en-IN', {
                     year: 'numeric',
@@ -111,44 +130,59 @@
                     day: 'numeric'
                 });
                 const eventTime = event.event_time || '';
-                const eventImage = event.banner_image || (event.images && event.images[0]) || '/images/placeholder.jpg';
+                const eventImage = escapeAttr(event.banner_image || (event.images && event.images[0]) || '/images/placeholder.jpg');
                 const description = event.description ? (event.description.length > 150 ? event.description.substring(0, 150) + '...' : event.description) : '';
+                const eventId = escapeAttr(event.id);
+                const eventTitle = escapeAttr(event.title || 'Event');
+                const eventLocation = escapeAttr((event.location || '') + ', ' + (event.city || ''));
+                const eventTypeLabel = escapeAttr(eventTypeLabels[event.event_type] || event.event_type);
+                const registrationLink = event.registration_link ? escapeAttr(event.registration_link) : null;
 
                 return '<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow">' +
                     '<div class="relative h-48 bg-gray-200 dark:bg-gray-700">' +
-                        '<img src="' + eventImage + '" alt="' + (event.title || 'Event') + '" class="w-full h-full object-cover" onerror="this.src=\'/images/placeholder.jpg\'">' +
+                        '<img src="' + eventImage + '" alt="' + eventTitle + '" class="w-full h-full object-cover" data-placeholder="/images/placeholder.jpg">' +
                         '<span class="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">' +
-                            (eventTypeLabels[event.event_type] || event.event_type) +
+                            eventTypeLabel +
                         '</span>' +
                     '</div>' +
                     '<div class="p-6">' +
-                        '<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">' + (event.title || 'Untitled Event') + '</h3>' +
-                        (description ? '<p class="text-gray-600 dark:text-gray-400 text-sm mb-4">' + description + '</p>' : '') +
+                        '<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">' + escapeAttr(event.title || 'Untitled Event') + '</h3>' +
+                        (description ? '<p class="text-gray-600 dark:text-gray-400 text-sm mb-4">' + escapeAttr(description) + '</p>' : '') +
                         '<div class="space-y-2 mb-4">' +
                             '<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">' +
                                 '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>' +
                                 '</svg>' +
-                                eventDate + (eventTime ? ' at ' + eventTime : '') +
+                                escapeAttr(eventDate) + (eventTime ? ' at ' + escapeAttr(eventTime) : '') +
                             '</div>' +
                             '<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">' +
                                 '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
                                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>' +
                                     '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>' +
                                 '</svg>' +
-                                (event.location || '') + ', ' + (event.city || '') +
+                                eventLocation +
                             '</div>' +
                         '</div>' +
                         '<div class="flex gap-3">' +
-                            (event.registration_link ? 
-                                '<a href="' + event.registration_link + '" target="_blank" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-center font-semibold transition-colors">Register Now</a>' :
-                                '<button onclick="registerForEvent(\'' + event.id + '\')" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">Register Now</button>'
+                            (registrationLink ? 
+                                '<a href="' + registrationLink + '" target="_blank" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-center font-semibold transition-colors">Register Now</a>' :
+                                '<button data-event-id="' + eventId + '" class="register-event-btn flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">Register Now</button>'
                             ) +
-                            '<button onclick="viewEventDetails(\'' + event.id + '\')" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">Details</button>' +
+                            '<button data-event-id="' + eventId + '" class="view-event-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">Details</button>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
             }).join('');
+            
+            // Handle image errors using event delegation
+            document.querySelectorAll('img[data-placeholder]').forEach(img => {
+                img.addEventListener('error', function() {
+                    this.src = this.getAttribute('data-placeholder');
+                });
+            });
+            
+            // Set up event delegation for dynamically created buttons
+            setupEventListeners();
 
         } catch (error) {
             console.error('Error loading events:', error);
@@ -158,6 +192,17 @@
                 window.showError('Failed to load events. Please try again.');
             }
         }
+    }
+
+    // Helper function to escape HTML and quotes
+    function escapeHtml(text) {
+        if (!text) return '';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
     }
 
     function viewEventDetails(eventId) {
@@ -173,36 +218,71 @@
                 });
                 
                 let content = '<div class="space-y-4">' +
-                    '<h2 class="text-2xl font-bold text-gray-900 dark:text-white">' + (event.title || 'Event') + '</h2>' +
+                    '<h2 class="text-2xl font-bold text-gray-900 dark:text-white">' + escapeHtml(event.title || 'Event') + '</h2>' +
                     '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">' +
-                        '<div><strong>Date:</strong> ' + eventDate + (event.event_time ? ' at ' + event.event_time : '') + '</div>' +
-                        '<div><strong>Location:</strong> ' + (event.location || '') + ', ' + (event.city || '') + '</div>' +
+                        '<div><strong>Date:</strong> ' + escapeHtml(eventDate) + (event.event_time ? ' at ' + escapeHtml(event.event_time) : '') + '</div>' +
+                        '<div><strong>Location:</strong> ' + escapeHtml(event.location || '') + ', ' + escapeHtml(event.city || '') + '</div>' +
                     '</div>';
                 
+                // Event Images Gallery
+                if (event.images && Array.isArray(event.images) && event.images.length > 0) {
+                    const validImages = event.images.filter(function(img) { return img && img.trim(); });
+                    if (validImages.length > 0) {
+                        content += '<div>' +
+                            '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Event Images</div>' +
+                            '<div class="grid grid-cols-2 md:grid-cols-3 gap-3">';
+                        
+                        validImages.forEach(function(imgUrl) {
+                            content += '<div class="relative group">' +
+                                '<img src="' + escapeHtml(imgUrl) + '" alt="Event Image" class="w-full h-40 object-cover rounded-lg border border-gray-300 dark:border-gray-600 event-gallery-img" data-placeholder="/images/placeholder.jpg">' +
+                                '<a href="' + escapeHtml(imgUrl) + '" target="_blank" class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity rounded-lg flex items-center justify-center">' +
+                                '<span class="opacity-0 group-hover:opacity-100 text-white text-sm">View Full</span>' +
+                                '</a>' +
+                            '</div>';
+                        });
+                        
+                        content += '</div></div>';
+                    }
+                }
+                
                 if (event.description) {
-                    content += '<p class="text-gray-600 dark:text-gray-400">' + event.description + '</p>';
+                    content += '<p class="text-gray-600 dark:text-gray-400">' + escapeHtml(event.description) + '</p>';
                 }
                 
                 if (event.agenda) {
-                    content += '<div><strong class="text-gray-900 dark:text-white">Agenda:</strong><div class="mt-2 text-gray-600 dark:text-gray-400 whitespace-pre-line">' + event.agenda + '</div></div>';
+                    content += '<div><strong class="text-gray-900 dark:text-white">Agenda:</strong><div class="mt-2 text-gray-600 dark:text-gray-400 whitespace-pre-line">' + escapeHtml(event.agenda) + '</div></div>';
                 }
                 
                 if (event.contact_person || event.contact_email || event.contact_phone) {
                     content += '<div><strong class="text-gray-900 dark:text-white">Contact:</strong><div class="mt-2 text-gray-600 dark:text-gray-400">';
-                    if (event.contact_person) content += event.contact_person + '<br>';
-                    if (event.contact_email) content += event.contact_email + '<br>';
-                    if (event.contact_phone) content += event.contact_phone;
+                    if (event.contact_person) content += escapeHtml(event.contact_person) + '<br>';
+                    if (event.contact_email) content += escapeHtml(event.contact_email) + '<br>';
+                    if (event.contact_phone) content += escapeHtml(event.contact_phone);
                     content += '</div></div>';
                 }
                 
                 if (event.rsvp_info) {
-                    content += '<div><strong class="text-gray-900 dark:text-white">RSVP:</strong><div class="mt-2 text-gray-600 dark:text-gray-400">' + event.rsvp_info + '</div></div>';
+                    content += '<div><strong class="text-gray-900 dark:text-white">RSVP:</strong><div class="mt-2 text-gray-600 dark:text-gray-400">' + escapeHtml(event.rsvp_info) + '</div></div>';
                 }
                 
                 content += '</div>';
                 
                 if (typeof window.showModal === 'function') {
                     window.showModal('Event Details', content);
+                    
+                    // Handle image errors for gallery images in the modal
+                    setTimeout(function() {
+                        document.querySelectorAll('#detailModal .event-gallery-img').forEach(function(img) {
+                            img.addEventListener('error', function() {
+                                const placeholder = this.getAttribute('data-placeholder');
+                                if (placeholder) {
+                                    this.src = placeholder;
+                                } else {
+                                    this.style.display = 'none';
+                                }
+                            });
+                        });
+                    }, 100);
                 }
             })
             .catch(error => {
@@ -213,9 +293,43 @@
             });
     }
 
+    // Set up event listeners using event delegation
+    function setupEventListeners() {
+        // Register button clicks
+        document.addEventListener('click', function(e) {
+            const registerBtn = e.target.closest('.register-event-btn');
+            if (registerBtn) {
+                const eventId = registerBtn.getAttribute('data-event-id');
+                if (eventId) {
+                    registerForEvent(eventId);
+                }
+            }
+            
+            // View details button clicks
+            const viewBtn = e.target.closest('.view-event-btn');
+            if (viewBtn) {
+                const eventId = viewBtn.getAttribute('data-event-id');
+                if (eventId) {
+                    viewEventDetails(eventId);
+                }
+            }
+        });
+        
+        // Registration form submission
+        document.addEventListener('submit', function(e) {
+            if (e.target.id === 'registrationForm') {
+                e.preventDefault();
+                const eventId = e.target.getAttribute('data-event-id');
+                if (eventId) {
+                    submitRegistration(e, eventId);
+                }
+            }
+        });
+    }
+
     function registerForEvent(eventId) {
         if (typeof window.showModal === 'function') {
-            const formHTML = '<form id="registrationForm" onsubmit="submitRegistration(event, \'' + eventId + '\')" class="space-y-4">' +
+            const formHTML = '<form id="registrationForm" data-event-id="' + eventId + '" class="space-y-4">' +
                 '<div>' +
                     '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>' +
                     '<input type="text" id="regName" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">' +

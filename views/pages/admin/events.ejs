@@ -9,7 +9,7 @@
                     <p class="text-gray-600 dark:text-gray-400">Create and manage real estate events</p>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="openEventModal()" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors shadow-sm">
+                    <button id="addEventBtn" class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors shadow-sm">
                         + Add New Event
                     </button>
                     <a href="/admin/dashboard" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
@@ -57,13 +57,13 @@
         <div class="p-6">
             <div class="flex items-center justify-between mb-6">
                 <h2 id="modalTitle" class="text-2xl font-bold text-gray-900 dark:text-white">Add New Event</h2>
-                <button onclick="closeEventModal()" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-            <form id="eventForm" onsubmit="saveEvent(event)">
+            <form id="eventForm">
                 <div class="space-y-4">
                     <!-- Event Title -->
                     <div>
@@ -111,10 +111,43 @@
                         </div>
                     </div>
 
-                    <!-- Map Location -->
+                    <!-- Map Location Picker -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Map Location (Google Maps Embed URL or Coordinates)</label>
-                        <input type="text" id="mapLocation" placeholder="https://maps.google.com/..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Location on Map</label>
+                        <div class="space-y-3">
+                            <div class="flex gap-2">
+                                <input type="text" id="mapLocation" placeholder="Search address or click on map..." class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                <button type="button" id="searchMapBtn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Search</button>
+                            </div>
+                            <div id="mapContainer" class="w-full h-64 rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden" style="display: none;">
+                                <div id="eventMap" class="w-full h-full"></div>
+                            </div>
+                            <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 text-xs text-yellow-800 dark:text-yellow-300">
+                                <strong>Note:</strong> If the map doesn't load, ensure these APIs are enabled in Google Cloud Console:
+                                <ul class="list-disc list-inside mt-1 space-y-1">
+                                    <li>Maps JavaScript API</li>
+                                    <li>Places API</li>
+                                    <li>Geocoding API</li>
+                                </ul>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Latitude</label>
+                                    <input type="number" id="latitude" step="any" placeholder="e.g., 20.5937" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Longitude</label>
+                                    <input type="number" id="longitude" step="any" placeholder="e.g., 78.9629" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
+                            <div class="flex gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                <span>Coordinates:</span>
+                                <span id="mapCoordinates">Not selected</span>
+                            </div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">
+                                Click on the map to set location, search for an address, or enter coordinates manually above
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Description -->
@@ -163,15 +196,23 @@
                         </div>
                     </div>
 
-                    <!-- Banner Image -->
+                    <!-- Event Images -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Banner Image URL</label>
-                        <input type="url" id="bannerImage" placeholder="https://..." class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Event Images (Multiple)</label>
+                        <div class="space-y-3">
+                            <div id="eventImagesContainer" class="space-y-2">
+                                <!-- Images will be added here dynamically -->
+                            </div>
+                            <button type="button" id="addImageBtn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors text-sm">
+                                + Add Image URL
+                            </button>
+                            <div id="imagePreviewContainer" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mt-4"></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="flex justify-end gap-3 mt-6">
-                    <button type="button" onclick="closeEventModal()" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                    <button type="button" id="cancelEventBtn" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
                         Cancel
                     </button>
                     <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">
@@ -183,10 +224,303 @@
     </div>
 </div>
 
+<!-- Google Maps API - Loaded asynchronously for better performance -->
+<script>
+    (function() {
+        const script = document.createElement('script');
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDB_pCpkj2IdboZ44RnAxR-5kzXzJoh2Xk&libraries=places&loading=async';
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+    })();
+</script>
 <script>
     let currentEditingId = null;
     let currentPage = 1;
     let totalPages = 1;
+
+    // Image management functions
+    function escapeHtml(text) {
+        if (!text) return '';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+    
+    function addImageInput(value = '') {
+        const container = document.getElementById('eventImagesContainer');
+        const imageIndex = container.children.length;
+        const imageDiv = document.createElement('div');
+        imageDiv.className = 'flex gap-2 items-center';
+        imageDiv.innerHTML = 
+            '<input type="url" class="event-image-input flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="https://..." value="' + escapeHtml(value) + '">' +
+            '<button type="button" class="remove-image-btn px-3 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-800 dark:text-red-300 rounded-lg transition-colors text-sm">Remove</button>';
+        container.appendChild(imageDiv);
+        
+        // Add event listeners
+        const input = imageDiv.querySelector('.event-image-input');
+        const removeBtn = imageDiv.querySelector('.remove-image-btn');
+        
+        input.addEventListener('input', updateImagePreview);
+        removeBtn.addEventListener('click', function() {
+            imageDiv.remove();
+            updateImagePreview();
+        });
+        
+        updateImagePreview();
+    }
+    
+    function getEventImages() {
+        const inputs = document.querySelectorAll('.event-image-input');
+        const images = [];
+        inputs.forEach(function(input) {
+            const url = input.value.trim();
+            if (url) {
+                images.push(url);
+            }
+        });
+        return images;
+    }
+    
+    function updateImagePreview() {
+        const container = document.getElementById('imagePreviewContainer');
+        const images = getEventImages();
+        
+        if (images.length === 0) {
+            container.innerHTML = '';
+            return;
+        }
+        
+        container.innerHTML = images.map(function(imgUrl, index) {
+            return '<div class="relative group">' +
+                '<img src="' + escapeHtml(imgUrl) + '" alt="Event Image ' + (index + 1) + '" class="event-preview-img w-full h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600" data-placeholder="/images/placeholder.jpg">' +
+                '<div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity rounded-lg flex items-center justify-center">' +
+                '<button type="button" class="remove-preview-image-btn opacity-0 group-hover:opacity-100 px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm transition-opacity" data-image-index="' + index + '">Remove</button>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+        
+        // Add error handlers for preview images
+        container.querySelectorAll('.event-preview-img').forEach(function(img) {
+            img.addEventListener('error', function() {
+                const placeholder = this.getAttribute('data-placeholder');
+                if (placeholder) {
+                    this.src = placeholder;
+                } else {
+                    this.style.display = 'none';
+                }
+            });
+        });
+        
+        // Add remove listeners to preview images
+        container.querySelectorAll('.remove-preview-image-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-image-index'));
+                const inputs = document.querySelectorAll('.event-image-input');
+                if (inputs[index]) {
+                    inputs[index].value = '';
+                    updateImagePreview();
+                }
+            });
+        });
+    }
+    
+    // Add Image button
+    document.getElementById('addImageBtn').addEventListener('click', function() {
+        addImageInput('');
+    });
+    
+    // Map initialization variables
+    let eventMap = null;
+    let eventMarker = null;
+    let geocoder = null;
+    let autocomplete = null;
+
+    // Initialize Google Maps
+    function initMap() {
+        if (typeof google === 'undefined' || !google.maps) {
+            console.warn('Google Maps API not loaded yet, retrying...');
+            // Retry after a short delay if API is still loading
+            setTimeout(function() {
+                if (typeof google !== 'undefined' && google.maps) {
+                    initMap();
+                } else {
+                    console.error('Google Maps API failed to load');
+                    showMapError('Google Maps API failed to load. Please check your API key configuration.');
+                }
+            }, 500);
+            return;
+        }
+
+        try {
+            geocoder = new google.maps.Geocoder();
+            const mapContainer = document.getElementById('mapContainer');
+            const mapDiv = document.getElementById('eventMap');
+            
+            if (!mapDiv) return;
+
+            // Default center (India)
+            const defaultCenter = { lat: 20.5937, lng: 78.9629 };
+            
+            eventMap = new google.maps.Map(mapDiv, {
+                center: defaultCenter,
+                zoom: 10,
+                mapTypeControl: true,
+                streetViewControl: true,
+                fullscreenControl: true
+            });
+            
+            // Handle map errors
+            google.maps.event.addListener(eventMap, 'error', function(e) {
+                console.error('Google Maps error:', e);
+                showMapError('Google Maps API error. Please ensure the Maps JavaScript API and Places API are enabled in your Google Cloud Console.');
+            });
+        } catch (error) {
+            console.error('Error initializing map:', error);
+            showMapError('Failed to initialize Google Maps. Please check your API key and ensure required APIs are enabled.');
+        }
+
+        // Add click listener to map
+        eventMap.addListener('click', function(e) {
+            setMapLocation(e.latLng.lat(), e.latLng.lng());
+        });
+
+        // Initialize Places Autocomplete
+        const mapLocationInput = document.getElementById('mapLocation');
+        if (mapLocationInput) {
+            autocomplete = new google.maps.places.Autocomplete(mapLocationInput);
+            autocomplete.bindTo('bounds', eventMap);
+            autocomplete.addListener('place_changed', function() {
+                const place = autocomplete.getPlace();
+                if (place.geometry) {
+                    eventMap.setCenter(place.geometry.location);
+                    eventMap.setZoom(15);
+                    setMapLocation(place.geometry.location.lat(), place.geometry.location.lng());
+                    document.getElementById('mapLocation').value = place.formatted_address || place.name;
+                }
+            });
+        }
+
+        // Search button
+        const searchBtn = document.getElementById('searchMapBtn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', function() {
+                const address = document.getElementById('mapLocation').value;
+                if (address && geocoder) {
+                    geocoder.geocode({ address: address }, function(results, status) {
+                        if (status === 'OK' && results[0]) {
+                            const location = results[0].geometry.location;
+                            if (eventMap) {
+                                eventMap.setCenter(location);
+                                eventMap.setZoom(15);
+                            }
+                            setMapLocation(location.lat(), location.lng());
+                            document.getElementById('mapLocation').value = results[0].formatted_address;
+                        } else if (status === 'ZERO_RESULTS') {
+                            if (typeof window.showError === 'function') {
+                                window.showError('Location not found. Please try a different address.');
+                            }
+                        } else {
+                            console.error('Geocoding error:', status);
+                            if (typeof window.showError === 'function') {
+                                window.showError('Unable to geocode address. Please check your API key has Geocoding API enabled, or enter coordinates manually.');
+                            }
+                        }
+                    });
+                } else if (address && !geocoder) {
+                    if (typeof window.showError === 'function') {
+                        window.showError('Geocoding API not available. Please enter coordinates manually in the Latitude and Longitude fields.');
+                    }
+                }
+            });
+        }
+        
+        // Update coordinates display when manually entered
+        const latInput = document.getElementById('latitude');
+        const lngInput = document.getElementById('longitude');
+        if (latInput && lngInput) {
+            latInput.addEventListener('input', function() {
+                updateCoordinatesDisplay();
+            });
+            lngInput.addEventListener('input', function() {
+                updateCoordinatesDisplay();
+            });
+        }
+        
+        function updateCoordinatesDisplay() {
+            const lat = latInput.value;
+            const lng = lngInput.value;
+            if (lat && lng) {
+                document.getElementById('mapCoordinates').textContent = parseFloat(lat).toFixed(6) + ', ' + parseFloat(lng).toFixed(6);
+            } else {
+                document.getElementById('mapCoordinates').textContent = 'Not selected';
+            }
+        }
+    }
+
+    function showMapError(message) {
+        const mapContainer = document.getElementById('mapContainer');
+        if (mapContainer) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'w-full h-64 rounded-lg border border-red-300 dark:border-red-600 bg-red-50 dark:bg-red-900/20 flex items-center justify-center p-4';
+            errorDiv.innerHTML = '<div class="text-center"><p class="text-red-800 dark:text-red-300 font-semibold mb-2">Map Error</p><p class="text-red-600 dark:text-red-400 text-sm">' + escapeHtml(message) + '</p><p class="text-red-600 dark:text-red-400 text-xs mt-2">You can still enter coordinates manually in the form fields below.</p></div>';
+            const mapDiv = document.getElementById('eventMap');
+            if (mapDiv) {
+                mapDiv.parentNode.replaceChild(errorDiv, mapDiv);
+            }
+        }
+        if (typeof window.showError === 'function') {
+            window.showError(message);
+        }
+    }
+
+    function setMapLocation(lat, lng) {
+        if (!eventMap) {
+            console.warn('Map not initialized');
+            return;
+        }
+        
+        document.getElementById('latitude').value = lat;
+        document.getElementById('longitude').value = lng;
+        document.getElementById('mapCoordinates').textContent = lat.toFixed(6) + ', ' + lng.toFixed(6);
+
+        // Remove existing marker
+        if (eventMarker) {
+            eventMarker.setMap(null);
+        }
+
+        try {
+            // Add new marker
+            eventMarker = new google.maps.Marker({
+                position: { lat: lat, lng: lng },
+                map: eventMap,
+                draggable: true,
+                animation: google.maps.Animation.DROP
+            });
+        } catch (error) {
+            console.error('Error setting marker:', error);
+        }
+
+        // Update location when marker is dragged
+        eventMarker.addListener('dragend', function(e) {
+            setMapLocation(e.latLng.lat(), e.latLng.lng());
+            // Reverse geocode to update address
+            geocoder.geocode({ location: e.latLng }, function(results, status) {
+                if (status === 'OK' && results[0]) {
+                    document.getElementById('mapLocation').value = results[0].formatted_address;
+                }
+            });
+        });
+
+        // Center map on marker
+        eventMap.setCenter({ lat: lat, lng: lng });
+        if (eventMap.getZoom() < 15) {
+            eventMap.setZoom(15);
+        }
+    }
 
     // Show/hide related project field based on event type
     document.getElementById('eventType').addEventListener('change', function() {
@@ -198,9 +532,63 @@
         }
     });
 
+    // Set up event listeners using event delegation (only once)
+    let adminEventListenersSetup = false;
+    function setupAdminEventListeners() {
+        if (adminEventListenersSetup) return;
+        adminEventListenersSetup = true;
+        
+        // View, Edit and Delete button clicks using event delegation
+        document.addEventListener('click', function(e) {
+            const viewBtn = e.target.closest('.view-event-btn');
+            if (viewBtn) {
+                const eventId = viewBtn.getAttribute('data-event-id');
+                if (eventId) {
+                    viewEventDetails(eventId);
+                }
+            }
+            
+            const editBtn = e.target.closest('.edit-event-btn');
+            if (editBtn) {
+                const eventId = editBtn.getAttribute('data-event-id');
+                if (eventId) {
+                    editEvent(eventId);
+                }
+            }
+            
+            const deleteBtn = e.target.closest('.delete-event-btn');
+            if (deleteBtn) {
+                const eventId = deleteBtn.getAttribute('data-event-id');
+                if (eventId) {
+                    deleteEvent(eventId);
+                }
+            }
+        });
+    }
+
     // Load events on page load
     document.addEventListener('DOMContentLoaded', function() {
         loadEvents();
+        
+        // Add event button
+        document.getElementById('addEventBtn').addEventListener('click', function() {
+            openEventModal();
+        });
+        
+        // Close modal button
+        document.getElementById('closeModalBtn').addEventListener('click', function() {
+            closeEventModal();
+        });
+        
+        // Cancel button
+        document.getElementById('cancelEventBtn').addEventListener('click', function() {
+            closeEventModal();
+        });
+        
+        // Form submission
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            saveEvent(e);
+        });
         
         // Filter listeners
         document.getElementById('statusFilter').addEventListener('change', function() {
@@ -283,12 +671,12 @@
                     '<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">' +
                         '<div class="flex-1">' +
                             '<div class="flex items-center gap-3 mb-2">' +
-                                '<h3 class="text-lg font-semibold text-gray-900 dark:text-white">' + (event.title || 'Untitled Event') + '</h3>' +
+                                '<h3 class="text-lg font-semibold text-gray-900 dark:text-white">' + (event.title || 'Untitled Event').replace(/'/g, '&#39;').replace(/"/g, '&quot;') + '</h3>' +
                                 '<span class="px-2 py-1 text-xs rounded-full ' +
                                     (isPast ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400' : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300') +
                                 '">' + (isPast ? 'Past' : 'Upcoming') + '</span>' +
                                 '<span class="px-2 py-1 text-xs rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">' +
-                                    (eventTypeLabels[event.event_type] || event.event_type) +
+                                    (eventTypeLabels[event.event_type] || event.event_type || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;') +
                                 '</span>' +
                             '</div>' +
                             '<p class="text-sm text-gray-600 dark:text-gray-400 mb-1">' +
@@ -299,12 +687,19 @@
                             '</p>' +
                         '</div>' +
                         '<div class="flex gap-2">' +
-                            '<button onclick="editEvent(\'' + event.id + '\')" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors text-sm">Edit</button>' +
-                            '<button onclick="deleteEvent(\'' + event.id + '\')" class="px-4 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-800 dark:text-red-300 rounded-lg transition-colors text-sm">Delete</button>' +
+                            '<button data-event-id="' + (event.id || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;') + '" class="view-event-btn px-4 py-2 bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 dark:hover:bg-blue-900/50 text-blue-800 dark:text-blue-300 rounded-lg transition-colors text-sm">View</button>' +
+                            '<button data-event-id="' + (event.id || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;') + '" class="edit-event-btn px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors text-sm">Edit</button>' +
+                            '<button data-event-id="' + (event.id || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;') + '" class="delete-event-btn px-4 py-2 bg-red-100 dark:bg-red-900/30 hover:bg-red-200 dark:hover:bg-red-900/50 text-red-800 dark:text-red-300 rounded-lg transition-colors text-sm">Delete</button>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
             }).join('');
+            
+            // Set up event delegation for dynamically created buttons (only once)
+            if (!window.adminEventListenersSetup) {
+                setupAdminEventListeners();
+                window.adminEventListenersSetup = true;
+            }
 
         } catch (error) {
             console.error('Error loading events:', error);
@@ -329,10 +724,37 @@
             modalTitle.textContent = 'Add New Event';
             form.reset();
             document.getElementById('relatedProjectField').classList.add('hidden');
+            document.getElementById('latitude').value = '';
+            document.getElementById('longitude').value = '';
+            document.getElementById('mapCoordinates').textContent = 'Not selected';
+            if (eventMarker) {
+                eventMarker.setMap(null);
+                eventMarker = null;
+            }
+            // Reset images
+            document.getElementById('eventImagesContainer').innerHTML = '';
+            addImageInput('');
+            updateImagePreview();
         }
 
         modal.classList.remove('hidden');
         modal.classList.add('show');
+        
+        // Show map container
+        const mapContainer = document.getElementById('mapContainer');
+        if (mapContainer) {
+            mapContainer.style.display = 'block';
+        }
+        
+        // Initialize map if not already done
+        setTimeout(function() {
+            if (!eventMap && typeof google !== 'undefined' && google.maps) {
+                initMap();
+            } else if (eventMap) {
+                // Refresh map if already initialized
+                google.maps.event.trigger(eventMap, 'resize');
+            }
+        }, 300);
     }
 
     function closeEventModal() {
@@ -363,6 +785,8 @@
             document.getElementById('eventLocation').value = event.location || '';
             document.getElementById('eventCity').value = event.city || '';
             document.getElementById('mapLocation').value = event.map_location || '';
+            document.getElementById('latitude').value = event.latitude || '';
+            document.getElementById('longitude').value = event.longitude || '';
             document.getElementById('eventDescription').value = event.description || '';
             document.getElementById('eventAgenda').value = event.agenda || '';
             document.getElementById('contactPerson').value = event.contact_person || '';
@@ -371,7 +795,48 @@
             document.getElementById('rsvpInfo').value = event.rsvp_info || '';
             document.getElementById('registrationLink').value = event.registration_link || '';
             document.getElementById('maxAttendees').value = event.max_attendees || '';
-            document.getElementById('bannerImage').value = event.banner_image || '';
+            
+            // Load images array
+            const imagesContainer = document.getElementById('eventImagesContainer');
+            imagesContainer.innerHTML = '';
+            if (event.images && Array.isArray(event.images) && event.images.length > 0) {
+                event.images.forEach(function(imgUrl) {
+                    if (imgUrl) {
+                        addImageInput(imgUrl);
+                    }
+                });
+            } else {
+                // Add at least one empty image input
+                addImageInput('');
+            }
+            updateImagePreview();
+
+            // Set map location if coordinates exist
+            if (event.latitude && event.longitude) {
+                document.getElementById('mapCoordinates').textContent = parseFloat(event.latitude).toFixed(6) + ', ' + parseFloat(event.longitude).toFixed(6);
+                setTimeout(function() {
+                    if (eventMap) {
+                        setMapLocation(parseFloat(event.latitude), parseFloat(event.longitude));
+                    } else if (typeof google !== 'undefined' && google.maps) {
+                        initMap();
+                        setTimeout(function() {
+                            setMapLocation(parseFloat(event.latitude), parseFloat(event.longitude));
+                        }, 500);
+                    }
+                }, 300);
+            } else if (event.map_location) {
+                // Try to geocode the map_location if no coordinates
+                setTimeout(function() {
+                    if (eventMap && geocoder) {
+                        geocoder.geocode({ address: event.map_location }, function(results, status) {
+                            if (status === 'OK' && results[0]) {
+                                const location = results[0].geometry.location;
+                                setMapLocation(location.lat(), location.lng());
+                            }
+                        });
+                    }
+                }, 500);
+            }
 
             // Show/hide related project field
             if (event.event_type === 'inauguration') {
@@ -402,6 +867,8 @@
             location: document.getElementById('eventLocation').value,
             city: document.getElementById('eventCity').value,
             map_location: document.getElementById('mapLocation').value || null,
+            latitude: document.getElementById('latitude').value ? parseFloat(document.getElementById('latitude').value) : null,
+            longitude: document.getElementById('longitude').value ? parseFloat(document.getElementById('longitude').value) : null,
             description: document.getElementById('eventDescription').value || null,
             agenda: document.getElementById('eventAgenda').value || null,
             contact_person: document.getElementById('contactPerson').value || null,
@@ -410,7 +877,7 @@
             rsvp_info: document.getElementById('rsvpInfo').value || null,
             registration_link: document.getElementById('registrationLink').value || null,
             max_attendees: document.getElementById('maxAttendees').value ? parseInt(document.getElementById('maxAttendees').value) : null,
-            banner_image: document.getElementById('bannerImage').value || null
+            images: getEventImages()
         };
 
         try {
@@ -442,6 +909,228 @@
             console.error('Error saving event:', error);
             if (typeof window.showError === 'function') {
                 window.showError(error.message || 'Failed to save event. Please try again.');
+            }
+        }
+    }
+
+    async function viewEventDetails(eventId) {
+        const token = localStorage.getItem('token');
+        try {
+            const response = await fetch('/api/events/' + eventId, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            if (!response.ok) throw new Error('Failed to load event details');
+            
+            const data = await response.json();
+            const event = data.event;
+            
+            // Helper function to escape HTML
+            function escapeHtml(text) {
+                if (!text) return '';
+                return String(text)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
+            
+            const eventDate = new Date(event.event_date).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            const eventTime = event.event_time || '';
+            const eventTypeLabels = {
+                'builder_meetup': 'Builder Meetup',
+                'dealer_meetup': 'Dealer Meetup',
+                'inauguration': 'Inauguration'
+            };
+            const isPast = event.is_past || new Date(event.event_date) < new Date();
+            
+            let content = '<div class="space-y-6">' +
+                '<div class="flex items-start justify-between">' +
+                    '<div class="flex-1">' +
+                        '<h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">' + escapeHtml(event.title || 'Event') + '</h2>' +
+                        '<div class="flex items-center gap-2 mb-4">' +
+                            '<span class="px-3 py-1 text-sm rounded-full ' +
+                                (isPast ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400' : 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300') +
+                            '">' + (isPast ? 'Past Event' : 'Upcoming Event') + '</span>' +
+                            '<span class="px-3 py-1 text-sm rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">' +
+                                escapeHtml(eventTypeLabels[event.event_type] || event.event_type) +
+                            '</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            
+            // Event Details Grid
+            content += '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">' +
+                '<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Event Date & Time</div>' +
+                    '<div class="text-gray-900 dark:text-white">' + escapeHtml(eventDate) + (eventTime ? ' at ' + escapeHtml(eventTime) : '') + '</div>' +
+                '</div>' +
+                '<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Location</div>' +
+                    '<div class="text-gray-900 dark:text-white">' + escapeHtml((event.location || '') + ', ' + (event.city || '')) + '</div>' +
+                '</div>';
+            
+            if (event.registration_link) {
+                content += '<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Registration Link</div>' +
+                    '<div class="text-gray-900 dark:text-white break-all">' +
+                        '<a href="' + escapeHtml(event.registration_link) + '" target="_blank" class="text-emerald-600 dark:text-emerald-400 hover:underline">' + escapeHtml(event.registration_link) + '</a>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            if (event.max_attendees) {
+                content += '<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Max Attendees</div>' +
+                    '<div class="text-gray-900 dark:text-white">' + escapeHtml(event.max_attendees) + ' (' + escapeHtml(event.registered_count || 0) + ' registered)' + '</div>' +
+                '</div>';
+            }
+            
+            content += '</div>';
+            
+            // Description
+            if (event.description) {
+                content += '<div>' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description</div>' +
+                    '<div class="text-gray-600 dark:text-gray-400 whitespace-pre-line">' + escapeHtml(event.description) + '</div>' +
+                '</div>';
+            }
+            
+            // Agenda
+            if (event.agenda) {
+                content += '<div>' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Agenda / Highlights</div>' +
+                    '<div class="text-gray-600 dark:text-gray-400 whitespace-pre-line">' + escapeHtml(event.agenda) + '</div>' +
+                '</div>';
+            }
+            
+            // Contact Information
+            if (event.contact_person || event.contact_email || event.contact_phone) {
+                content += '<div class="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Contact Information</div>' +
+                    '<div class="space-y-2 text-gray-600 dark:text-gray-400">';
+                if (event.contact_person) {
+                    content += '<div><strong>Person:</strong> ' + escapeHtml(event.contact_person) + '</div>';
+                }
+                if (event.contact_email) {
+                    content += '<div><strong>Email:</strong> <a href="mailto:' + escapeHtml(event.contact_email) + '" class="text-emerald-600 dark:text-emerald-400 hover:underline">' + escapeHtml(event.contact_email) + '</a></div>';
+                }
+                if (event.contact_phone) {
+                    content += '<div><strong>Phone:</strong> <a href="tel:' + escapeHtml(event.contact_phone) + '" class="text-emerald-600 dark:text-emerald-400 hover:underline">' + escapeHtml(event.contact_phone) + '</a></div>';
+                }
+                content += '</div></div>';
+            }
+            
+            // RSVP Info
+            if (event.rsvp_info) {
+                content += '<div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">RSVP Information</div>' +
+                    '<div class="text-gray-600 dark:text-gray-400 whitespace-pre-line">' + escapeHtml(event.rsvp_info) + '</div>' +
+                '</div>';
+            }
+            
+            // Map Location
+            if (event.latitude && event.longitude) {
+                const lat = parseFloat(event.latitude);
+                const lng = parseFloat(event.longitude);
+                const mapUrl = 'https://www.google.com/maps?q=' + lat + ',' + lng;
+                
+                content += '<div>' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Map Location</div>' +
+                    '<div class="w-full h-64 rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden mb-2" id="viewEventMap' + eventId + '"></div>' +
+                    '<div class="text-xs text-gray-500 dark:text-gray-400 mb-2">Coordinates: ' + lat.toFixed(6) + ', ' + lng.toFixed(6) + '</div>' +
+                    '<a href="' + mapUrl + '" target="_blank" class="text-emerald-600 dark:text-emerald-400 hover:underline text-sm">Open in Google Maps</a>' +
+                '</div>';
+                
+                // Initialize map after modal is shown
+                setTimeout(function() {
+                    const mapDiv = document.getElementById('viewEventMap' + eventId);
+                    if (mapDiv && typeof google !== 'undefined' && google.maps) {
+                        const viewMap = new google.maps.Map(mapDiv, {
+                            center: { lat: lat, lng: lng },
+                            zoom: 15,
+                            mapTypeControl: true,
+                            streetViewControl: true,
+                            fullscreenControl: true
+                        });
+                        
+                        new google.maps.Marker({
+                            position: { lat: lat, lng: lng },
+                            map: viewMap,
+                            title: escapeHtml(event.title || 'Event Location')
+                        });
+                    }
+                }, 300);
+            } else if (event.map_location) {
+                content += '<div>' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Map Location</div>' +
+                    '<div class="text-gray-600 dark:text-gray-400 break-all">' +
+                        '<a href="' + escapeHtml(event.map_location) + '" target="_blank" class="text-emerald-600 dark:text-emerald-400 hover:underline">' + escapeHtml(event.map_location) + '</a>' +
+                    '</div>' +
+                '</div>';
+            }
+            
+            // Event Images Gallery
+            if (event.images && Array.isArray(event.images) && event.images.length > 0) {
+                const validImages = event.images.filter(function(img) { return img && img.trim(); });
+                if (validImages.length > 0) {
+                    content += '<div>' +
+                        '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Event Images</div>' +
+                        '<div class="grid grid-cols-2 md:grid-cols-3 gap-3">';
+                    
+                    validImages.forEach(function(imgUrl) {
+                        content += '<div class="relative group">' +
+                            '<img src="' + escapeHtml(imgUrl) + '" alt="Event Image" class="w-full h-40 object-cover rounded-lg border border-gray-300 dark:border-gray-600 event-gallery-img" data-placeholder="/images/placeholder.jpg">' +
+                            '<a href="' + escapeHtml(imgUrl) + '" target="_blank" class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity rounded-lg flex items-center justify-center">' +
+                            '<span class="opacity-0 group-hover:opacity-100 text-white text-sm">View Full</span>' +
+                            '</a>' +
+                        '</div>';
+                    });
+                    
+                    content += '</div></div>';
+                }
+            }
+            
+            // Related Project (for inauguration)
+            if (event.related_project_id) {
+                content += '<div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">' +
+                    '<div class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Related Project</div>' +
+                    '<div class="text-gray-600 dark:text-gray-400">Project ID: ' + escapeHtml(event.related_project_id) + '</div>' +
+                '</div>';
+            }
+            
+            content += '</div>';
+            
+            if (typeof window.showModal === 'function') {
+                window.showModal('Event Details', content);
+                
+                // Handle image errors for gallery images in the modal
+                setTimeout(function() {
+                    document.querySelectorAll('#detailModal .event-gallery-img').forEach(function(img) {
+                        img.addEventListener('error', function() {
+                            const placeholder = this.getAttribute('data-placeholder');
+                            if (placeholder) {
+                                this.src = placeholder;
+                            } else {
+                                this.style.display = 'none';
+                            }
+                        });
+                    });
+                }, 100);
+            } else {
+                alert('Event: ' + (event.title || 'Untitled Event'));
+            }
+        } catch (error) {
+            console.error('Error loading event details:', error);
+            if (typeof window.showError === 'function') {
+                window.showError('Failed to load event details.');
             }
         }
     }
