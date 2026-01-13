@@ -73,10 +73,135 @@ const buildPropertyQuery = (query, filters) => {
   return query;
 };
 
+// SEO Helper Functions
+const getBaseUrl = () => {
+  return process.env.BASE_URL || 'https://deeprealties.com';
+};
+
+const getDefaultSEO = () => {
+  const baseUrl = getBaseUrl();
+  return {
+    title: 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties',
+    description: 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.',
+    keywords: 'real estate, buy property, sell property, rent property, property investment, real estate agent, property listings, homes for sale, apartments for rent, commercial property',
+    image: `${baseUrl}/images/og-image.jpg`,
+    url: baseUrl,
+    type: 'website',
+    siteName: 'DeepRealties',
+    locale: 'en_US'
+  };
+};
+
+const generateSEO = (pageData = {}) => {
+  const baseUrl = getBaseUrl();
+  const defaultSEO = getDefaultSEO();
+  
+  const seo = {
+    title: pageData.title || defaultSEO.title,
+    description: pageData.description || defaultSEO.description,
+    keywords: pageData.keywords || defaultSEO.keywords,
+    image: pageData.image || defaultSEO.image,
+    url: pageData.url || defaultSEO.url,
+    type: pageData.type || defaultSEO.type,
+    siteName: defaultSEO.siteName,
+    locale: defaultSEO.locale,
+    author: pageData.author || 'DeepRealties',
+    publishedTime: pageData.publishedTime || null,
+    modifiedTime: pageData.modifiedTime || null,
+    canonical: pageData.canonical || null,
+    robots: pageData.robots || 'index, follow',
+    noindex: pageData.noindex || false,
+    nofollow: pageData.nofollow || false
+  };
+  
+  // Ensure image is absolute URL
+  if (seo.image && !seo.image.startsWith('http')) {
+    seo.image = `${baseUrl}${seo.image.startsWith('/') ? '' : '/'}${seo.image}`;
+  }
+  
+  // Ensure URL is absolute
+  if (seo.url && !seo.url.startsWith('http')) {
+    seo.url = `${baseUrl}${seo.url.startsWith('/') ? '' : '/'}${seo.url}`;
+  }
+  
+  return seo;
+};
+
+const generateStructuredData = (seo, pageType = 'WebSite') => {
+  const baseUrl = getBaseUrl();
+  
+  const baseStructuredData = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': `${baseUrl}/#organization`,
+        name: 'DeepRealties',
+        url: baseUrl,
+        logo: {
+          '@type': 'ImageObject',
+          url: `${baseUrl}/images/logo.png`
+        },
+        sameAs: [
+          'https://www.instagram.com/deeprealties'
+        ],
+        contactPoint: {
+          '@type': 'ContactPoint',
+          telephone: '+91-8305551215',
+          contactType: 'Customer Service',
+          areaServed: 'IN',
+          availableLanguage: 'English'
+        }
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${baseUrl}/#website`,
+        url: baseUrl,
+        name: 'DeepRealties',
+        description: seo.description,
+        publisher: {
+          '@id': `${baseUrl}/#organization`
+        },
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${baseUrl}/properties?search={search_term_string}`
+          },
+          'query-input': 'required name=search_term_string'
+        }
+      }
+    ]
+  };
+  
+  // Add page-specific structured data
+  if (pageType === 'RealEstateAgent') {
+    baseStructuredData['@graph'].push({
+      '@type': 'RealEstateAgent',
+      '@id': `${baseUrl}/#agent`,
+      name: 'DeepRealties',
+      description: seo.description,
+      url: baseUrl,
+      image: seo.image,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Indore',
+        addressRegion: 'Madhya Pradesh',
+        addressCountry: 'IN'
+      }
+    });
+  }
+  
+  return baseStructuredData;
+};
+
 module.exports = {
   generateToken,
   formatProperty,
   formatRental,
-  buildPropertyQuery
+  buildPropertyQuery,
+  generateSEO,
+  generateStructuredData,
+  getBaseUrl
 };
 

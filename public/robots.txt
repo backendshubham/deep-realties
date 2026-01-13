@@ -1,0 +1,16 @@
+# robots.txt for DeepRealties
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard
+Disallow: /my-properties
+Disallow: /login
+Disallow: /register
+Disallow: /api/
+
+# Sitemap
+Sitemap: https://deeprealties.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+

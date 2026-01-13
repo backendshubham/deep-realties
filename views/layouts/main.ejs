@@ -3,7 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate' %></title>
+    
+    <!-- Primary Meta Tags -->
+    <title><%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %></title>
+    <meta name="title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %>">
+    <meta name="description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.' %>">
+    <meta name="keywords" content="<%= typeof seo !== 'undefined' && seo.keywords ? seo.keywords : 'real estate, buy property, sell property, rent property, property investment, real estate agent, property listings, homes for sale, apartments for rent, commercial property' %>">
+    <meta name="author" content="<%= typeof seo !== 'undefined' && seo.author ? seo.author : 'DeepRealties' %>">
+    <meta name="robots" content="<%= typeof seo !== 'undefined' && seo.robots ? seo.robots : 'index, follow' %>">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="theme-color" content="#10b981">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="<%= typeof seo !== 'undefined' && seo.canonical ? seo.canonical : (typeof seo !== 'undefined' && seo.url ? seo.url : 'https://deeprealties.com' + (typeof req !== 'undefined' && req.originalUrl ? req.originalUrl : '')) %>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="<%= typeof seo !== 'undefined' && seo.type ? seo.type : 'website' %>">
+    <meta property="og:url" content="<%= typeof seo !== 'undefined' && seo.url ? seo.url : 'https://deeprealties.com' + (typeof req !== 'undefined' && req.originalUrl ? req.originalUrl : '') %>">
+    <meta property="og:title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %>">
+    <meta property="og:description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.' %>">
+    <meta property="og:image" content="<%= typeof seo !== 'undefined' && seo.image ? seo.image : 'https://deeprealties.com/images/og-image.jpg' %>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : 'DeepRealties - Premium Real Estate' %>">
+    <meta property="og:site_name" content="<%= typeof seo !== 'undefined' && seo.siteName ? seo.siteName : 'DeepRealties' %>">
+    <meta property="og:locale" content="<%= typeof seo !== 'undefined' && seo.locale ? seo.locale : 'en_US' %>">
+    <% if (typeof seo !== 'undefined' && seo.publishedTime) { %>
+    <meta property="article:published_time" content="<%= seo.publishedTime %>">
+    <% } %>
+    <% if (typeof seo !== 'undefined' && seo.modifiedTime) { %>
+    <meta property="article:modified_time" content="<%= seo.modifiedTime %>">
+    <% } %>
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<%= typeof seo !== 'undefined' && seo.url ? seo.url : 'https://deeprealties.com' + (typeof req !== 'undefined' && req.originalUrl ? req.originalUrl : '') %>">
+    <meta name="twitter:title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %>">
+    <meta name="twitter:description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.' %>">
+    <meta name="twitter:image" content="<%= typeof seo !== 'undefined' && seo.image ? seo.image : 'https://deeprealties.com/images/og-image.jpg' %>">
+    <meta name="twitter:image:alt" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : 'DeepRealties - Premium Real Estate' %>">
+    <meta name="twitter:creator" content="@deeprealties">
+    <meta name="twitter:site" content="@deeprealties">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="geo.region" content="IN-MP">
+    <meta name="geo.placename" content="Indore">
+    <meta name="geo.position" content="22.7196;75.8577">
+    <meta name="ICBM" content="22.7196, 75.8577">
+    
+    <!-- Mobile Web App Capabilities -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DeepRealties">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    
+    <!-- Structured Data (JSON-LD) -->
+    <% if (typeof structuredData !== 'undefined' && structuredData) { %>
+    <script type="application/ld+json">
+    <%- JSON.stringify(structuredData, null, 2) %>
+    </script>
+    <% } %>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
