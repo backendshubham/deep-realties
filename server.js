@@ -18,6 +18,7 @@ const investmentRoutes = require('./routes/investments');
 const contactRoutes = require('./routes/contact');
 const enquiryRoutes = require('./routes/enquiries');
 const adminRoutes = require('./routes/admin');
+const uploadRoutes = require('./routes/upload');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -76,6 +77,7 @@ app.use('/api/investments', investmentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Frontend Routes (will be added)
 app.get('/', (req, res) => {

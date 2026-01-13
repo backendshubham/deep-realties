@@ -85,9 +85,14 @@ Before you begin, ensure you have the following installed:
    # CORS Configuration
    ALLOWED_ORIGINS=http://localhost:3000
 
-   # File Upload (if needed)
-   UPLOAD_DIR=./public/uploads
-   MAX_FILE_SIZE=10485760
+   # AWS S3 Configuration
+   AWS_ACCESS_KEY_ID=your_aws_access_key_id
+   AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+   AWS_REGION=ap-south-1
+   S3_BUCKET_NAME=deeprealties-storage
+   
+   # Base URL
+   BASE_URL=https://deeprealties.in
    ```
 
 4. **Create PostgreSQL database**
