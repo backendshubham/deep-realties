@@ -77,12 +77,74 @@
             font-family: 'Outfit', system-ui, sans-serif;
         }
         
+        /* Global Typography System - Consistent Fonts */
+        /* Serif Font for Headings */
+        h1, h2, h3, h4, h5, h6,
+        .font-display,
+        .hero-title,
+        .section-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+        
+        /* Sans-serif Font for Body Text, Buttons, Labels */
+        p, span, a, button, div, label, input, textarea, select,
+        .font-body,
+        .hero-subtitle,
+        .card-title,
+        .stat-label,
+        .badge-text,
+        .button-text {
+            font-family: 'Outfit', system-ui, sans-serif;
+        }
+        
         .font-display {
             font-family: 'Playfair Display', Georgia, serif;
         }
         
         .font-accent {
             font-family: 'Cormorant Garamond', Georgia, serif;
+        }
+        
+        /* Typography Utilities */
+        .hero-title {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+        
+        .hero-subtitle {
+            font-weight: 400;
+            letter-spacing: 0.01em;
+            line-height: 1.6;
+        }
+        
+        .section-title {
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        
+        .card-title {
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+        
+        .stat-label {
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        
+        .badge-text {
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        
+        .button-text {
+            font-weight: 600;
+            letter-spacing: 0.01em;
         }
         
         /* Dark mode styles */
@@ -633,7 +695,7 @@
         })();
     </script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
+<body class="bg-gradient-to-b from-emerald-50 via-emerald-50/30 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
     <%- include('../partials/navbar') %>
     
     <main class="flex-grow">
@@ -700,6 +762,43 @@
     <div id="pageLoader" class="page-loader show">
         <div class="loader-spinner"></div>
     </div>
+    
+    <!-- Immediate script to hide loader on back/forward navigation -->
+    <script>
+        // This runs immediately, before any other scripts
+        (function() {
+            // Check if page was restored from cache using pageshow event
+            // We need to set up the listener immediately
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    // Page was restored from cache - hide loader immediately
+                    const loader = document.getElementById('pageLoader');
+                    if (loader) {
+                        loader.classList.remove('show');
+                        loader.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Also check immediately if we can detect back/forward navigation
+            // Using a small delay to ensure DOM is ready
+            setTimeout(function() {
+                const loader = document.getElementById('pageLoader');
+                // If loader is still showing after a very short delay, it might be a restored page
+                // We'll let the pageshow handler take care of it, but also hide it here as backup
+                if (loader && loader.classList.contains('show')) {
+                    // Check if this is likely a restored page by checking if content is already loaded
+                    const hasContent = document.body && document.body.children.length > 5;
+                    if (hasContent) {
+                        // Content seems to be loaded, hide loader
+                        setTimeout(function() {
+                            loader.classList.remove('show');
+                        }, 100);
+                    }
+                }
+            }, 50);
+        })();
+    </script>
     
     <!-- Global Scripts -->
     <script>
@@ -1182,6 +1281,7 @@
         // Show loader on page navigation (for SPA-like behavior)
         let isLoading = false;
         let loaderTimeout;
+        let isPageRestored = false; // Flag to track if page was restored from cache
         const originalFetch = window.fetch;
         window.fetch = function(...args) {
             // Don't show loader for auth checks, small requests, or my-properties list
@@ -1192,8 +1292,16 @@
                 url.includes('/api/auth/verify') ||
                 url.includes('/api/properties/my-properties/list') ||
                 url.includes('/api/enquiries/') ||
+                url.includes('/api/projects') || // Don't show loader for projects API calls
+                url.includes('/api/properties') || // Don't show loader for properties API calls
+                url.includes('/api/rentals') || // Don't show loader for rentals API calls
                 url.length < 50
             )) {
+                return originalFetch.apply(this, args);
+            }
+            
+            // Don't show loader if page was restored from cache (back/forward navigation)
+            if (isPageRestored) {
                 return originalFetch.apply(this, args);
             }
             
@@ -1218,24 +1326,91 @@
         };
         
         // Hide loader when page is fully loaded
-        if (document.readyState === 'complete') {
+        function ensureLoaderHidden() {
             setTimeout(() => {
                 hidePageLoader();
-            }, 500);
-        } else {
-            window.addEventListener('load', function() {
+            }, 300);
+        }
+        
+        // Check if page was restored using Navigation Timing API (if available)
+        try {
+            const navEntries = performance.getEntriesByType('navigation');
+            if (navEntries.length > 0 && navEntries[0].type === 'back_forward') {
+                // Page was loaded via back/forward button
+                isPageRestored = true;
+                const loader = document.getElementById('pageLoader');
+                if (loader) {
+                    loader.classList.remove('show');
+                    loader.style.display = 'none';
+                }
                 setTimeout(() => {
-                    hidePageLoader();
-                }, 500);
+                    isPageRestored = false;
+                    if (loader) {
+                        loader.style.display = '';
+                    }
+                }, 3000);
+            }
+        } catch (e) {
+            // Navigation Timing API not available, rely on pageshow event
+        }
+        
+        // Handle different page load scenarios
+        if (document.readyState === 'complete') {
+            // Only hide if not restored from cache
+            if (!isPageRestored) {
+                ensureLoaderHidden();
+            }
+        } else {
+            // Hide loader when DOM is ready (only if not restored)
+            document.addEventListener('DOMContentLoaded', function() {
+                if (!isPageRestored) {
+                    ensureLoaderHidden();
+                }
             });
             
-            // Also hide on DOMContentLoaded as backup
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(() => {
-                    hidePageLoader();
-                }, 800);
+            // Hide loader when page is fully loaded (only if not restored)
+            window.addEventListener('load', function() {
+                if (!isPageRestored) {
+                    ensureLoaderHidden();
+                }
             });
         }
+        
+        // Handle browser back/forward navigation (pageshow event)
+        // This MUST run immediately, before any other scripts
+        // Use capture phase to ensure it runs first
+        window.addEventListener('pageshow', function(event) {
+            // If page was loaded from cache (back/forward button), hide loader immediately
+            if (event.persisted) {
+                isPageRestored = true; // Set flag to prevent loader from showing
+                // Hide loader immediately and forcefully
+                const loader = document.getElementById('pageLoader');
+                if (loader) {
+                    loader.classList.remove('show');
+                    loader.style.display = 'none'; // Force hide
+                }
+                // Reset flag after a delay to allow normal navigation
+                setTimeout(() => {
+                    isPageRestored = false;
+                    if (loader) {
+                        loader.style.display = ''; // Restore display property
+                    }
+                }, 3000);
+            } else {
+                // Normal page load, hide after a short delay
+                isPageRestored = false;
+                ensureLoaderHidden();
+            }
+        }, true); // Use capture phase for immediate execution
+        
+        // Also hide loader on pagehide to prevent it from showing when navigating away
+        window.addEventListener('pagehide', function() {
+            const loader = document.getElementById('pageLoader');
+            if (loader) {
+                loader.classList.remove('show');
+            }
+            isPageRestored = false; // Reset flag when navigating away
+        });
         
         // Show loader on link clicks (for navigation)
         document.addEventListener('click', function(e) {

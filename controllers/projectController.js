@@ -66,7 +66,8 @@ const createProject = async (req, res, next) => {
       highlights: Array.isArray(req.body.highlights) ? req.body.highlights : [],
       images: Array.isArray(req.body.images) ? req.body.images : [],
       gallery: Array.isArray(req.body.gallery) ? req.body.gallery : [],
-      videos: Array.isArray(req.body.videos) ? req.body.videos : []
+      videos: Array.isArray(req.body.videos) ? req.body.videos : [],
+      is_active: true // Projects created by admin are active by default
     };
 
     const [project] = await db('projects')

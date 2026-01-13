@@ -70,6 +70,10 @@ app.get('/', (req, res) => {
   res.render('pages/home', { title: 'DeepRealties - Premium Real Estate' });
 });
 
+app.get('/buy', (req, res) => {
+  res.render('pages/buy-property', { title: 'Buy Property - DeepRealties' });
+});
+
 app.get('/properties', (req, res) => {
   res.render('pages/properties', { title: 'Properties - DeepRealties' });
 });
@@ -89,8 +93,16 @@ app.get('/sell', (req, res) => {
   res.render('pages/sell', { title: 'Sell Property - DeepRealties' });
 });
 
+app.get('/admin/list-property', (req, res) => {
+  res.render('pages/admin/list-property', { title: 'List Property - Admin - DeepRealties' });
+});
+
 app.get('/projects', (req, res) => {
   res.render('pages/projects', { title: 'Projects - DeepRealties' });
+});
+
+app.get('/projects/:id', (req, res) => {
+  res.render('pages/project-details', { title: 'Project Details - DeepRealties' });
 });
 
 app.get('/invest', (req, res) => {

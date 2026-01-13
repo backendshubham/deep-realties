@@ -1,0 +1,524 @@
+<%- include('../layouts/main', { content: `
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
+        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
+            Find Your Dream Property
+        </span>
+        <h1 class="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 px-2">
+            <span class="text-gray-900 dark:text-white">Buy Property</span>
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
+            Tell us what you're looking for and we'll help you find the perfect property
+        </p>
+    </div>
+</section>
+
+<!-- Form Section -->
+<section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-8 mb-6 shadow-sm">
+            <h3 class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-3">Requirement Submitted!</h3>
+            <p class="text-emerald-600 dark:text-emerald-300 mb-6 text-base leading-relaxed">
+                Thank you for submitting your property requirements. Our team will review your request and get back to you with suitable properties within 24-48 hours.
+            </p>
+            <div class="flex flex-wrap gap-4">
+                <a href="/properties" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md">
+                    Browse Properties
+                </a>
+                <button onclick="resetForm()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold transition-colors">
+                    Submit Another Requirement
+                </button>
+            </div>
+        </div>
+        
+        <div id="buyFormContainer" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 sm:p-8 border border-gray-200 dark:border-gray-700">
+            <form id="buyForm" class="space-y-6">
+                <!-- Property Type Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Property Type <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="plot" required class="mr-2">
+                            <span class="text-2xl mr-2">📐</span>
+                            <span class="text-sm">Plot</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="flat" required class="mr-2">
+                            <span class="text-2xl mr-2">🏢</span>
+                            <span class="text-sm">Flat</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="house" required class="mr-2">
+                            <span class="text-2xl mr-2">🏠</span>
+                            <span class="text-sm">House</span>
+                        </label>
+                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="farmland" required class="mr-2">
+                            <span class="text-2xl mr-2">🌾</span>
+                            <span class="text-sm">Farm Land</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Location -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            City <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="city" required placeholder="Enter city"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            State <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="state" required placeholder="Enter state"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Locality (Optional)
+                        </label>
+                        <input type="text" name="locality" placeholder="Enter locality"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <!-- Budget Range - For Other Types -->
+                <div id="regularBudgetFields" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Minimum Budget (₹) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="min_budget" placeholder="e.g., 5000000" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Maximum Budget (₹) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" name="max_budget" placeholder="e.g., 10000000" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <!-- Property Details - For Plot -->
+                <div id="plotFields" class="hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Length (ft)
+                            </label>
+                            <input type="number" name="plot_length" placeholder="e.g., 50" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Width (ft)
+                            </label>
+                            <input type="number" name="plot_width" placeholder="e.g., 30" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Total Area (sqft)
+                            </label>
+                            <input type="number" name="plot_total_area" placeholder="e.g., 1500" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Minimum Budget per sqft (₹) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="min_budget_per_sqft" placeholder="e.g., 5000" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Maximum Budget per sqft (₹) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="max_budget_per_sqft" placeholder="e.g., 10000" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Property Details - For Farm Land -->
+                <div id="farmlandFields" class="hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Bigha
+                            </label>
+                            <input type="number" name="farmland_bigha" placeholder="e.g., 5" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Acre
+                            </label>
+                            <input type="number" name="farmland_acre" placeholder="e.g., 2" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Minimum Budget per bigha (₹) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="min_budget_per_bigha" placeholder="e.g., 500000" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Maximum Budget per bigha (₹) <span class="text-red-500">*</span>
+                            </label>
+                            <input type="number" name="max_budget_per_bigha" placeholder="e.g., 1000000" min="0" step="0.01"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Property Details - For Other Types (Flat, House) -->
+                <div id="otherPropertyFields" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Bedrooms
+                        </label>
+                        <select name="bedrooms"
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Any</option>
+                            <option value="1">1 BHK</option>
+                            <option value="2">2 BHK</option>
+                            <option value="3">3 BHK</option>
+                            <option value="4">4 BHK</option>
+                            <option value="5">5+ BHK</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Bathrooms
+                        </label>
+                        <select name="bathrooms"
+                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <option value="">Any</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Minimum Area (sqft)
+                        </label>
+                        <input type="number" name="min_area" placeholder="e.g., 1000" min="0"
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                    </div>
+                </div>
+                
+                <!-- Additional Requirements -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Additional Requirements / Preferences
+                    </label>
+                    <textarea name="requirements" rows="4" placeholder="Tell us about any specific requirements, preferred amenities, or other details..."
+                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Contact Information</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" name="full_name" required placeholder="Your Name"
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Email <span class="text-red-500">*</span>
+                                </label>
+                                <input type="email" name="email" required placeholder="your@email.com"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Phone <span class="text-red-500">*</span>
+                                </label>
+                                <input type="tel" name="phone" required placeholder="+91 98765 43210"
+                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                    Submit Requirements
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    function resetForm() {
+        document.getElementById('successMessage').classList.add('hidden');
+        document.getElementById('buyFormContainer').style.display = 'block';
+        document.getElementById('buyForm').reset();
+        if (window.togglePropertyFields) {
+            window.togglePropertyFields(); // Reset field visibility
+        }
+        document.getElementById('buyForm').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Make toggle function globally accessible
+    window.togglePropertyFields = function() {
+        const propertyType = document.querySelector('input[name="property_type"]:checked')?.value;
+        const plotFields = document.getElementById('plotFields');
+        const farmlandFields = document.getElementById('farmlandFields');
+        const otherFields = document.getElementById('otherPropertyFields');
+        const regularBudgetFields = document.getElementById('regularBudgetFields');
+        const minBudgetInput = document.querySelector('input[name="min_budget"]');
+        const maxBudgetInput = document.querySelector('input[name="max_budget"]');
+        const minBudgetPerSqftInput = document.querySelector('input[name="min_budget_per_sqft"]');
+        const maxBudgetPerSqftInput = document.querySelector('input[name="max_budget_per_sqft"]');
+        const minBudgetPerBighaInput = document.querySelector('input[name="min_budget_per_bigha"]');
+        const maxBudgetPerBighaInput = document.querySelector('input[name="max_budget_per_bigha"]');
+        
+        if (!plotFields || !farmlandFields || !otherFields || !regularBudgetFields) {
+            return;
+        }
+        
+        if (propertyType === 'plot') {
+            plotFields.classList.remove('hidden');
+            farmlandFields.classList.add('hidden');
+            otherFields.classList.add('hidden');
+            regularBudgetFields.classList.add('hidden');
+            // Remove required attribute from regular budget fields
+            if (minBudgetInput) minBudgetInput.removeAttribute('required');
+            if (maxBudgetInput) maxBudgetInput.removeAttribute('required');
+            // Add required attribute to per sqft budget fields
+            if (minBudgetPerSqftInput) minBudgetPerSqftInput.setAttribute('required', 'required');
+            if (maxBudgetPerSqftInput) maxBudgetPerSqftInput.setAttribute('required', 'required');
+            // Remove required attribute from per bigha budget fields
+            if (minBudgetPerBighaInput) minBudgetPerBighaInput.removeAttribute('required');
+            if (maxBudgetPerBighaInput) maxBudgetPerBighaInput.removeAttribute('required');
+        } else if (propertyType === 'farmland') {
+            plotFields.classList.add('hidden');
+            farmlandFields.classList.remove('hidden');
+            otherFields.classList.add('hidden');
+            regularBudgetFields.classList.add('hidden');
+            // Remove required attribute from regular budget fields
+            if (minBudgetInput) minBudgetInput.removeAttribute('required');
+            if (maxBudgetInput) maxBudgetInput.removeAttribute('required');
+            // Remove required attribute from per sqft budget fields
+            if (minBudgetPerSqftInput) minBudgetPerSqftInput.removeAttribute('required');
+            if (maxBudgetPerSqftInput) maxBudgetPerSqftInput.removeAttribute('required');
+            // Add required attribute to per bigha budget fields
+            if (minBudgetPerBighaInput) minBudgetPerBighaInput.setAttribute('required', 'required');
+            if (maxBudgetPerBighaInput) maxBudgetPerBighaInput.setAttribute('required', 'required');
+        } else {
+            // Flat or House
+            plotFields.classList.add('hidden');
+            farmlandFields.classList.add('hidden');
+            otherFields.classList.remove('hidden');
+            regularBudgetFields.classList.remove('hidden');
+            // Add required attribute to regular budget fields
+            if (minBudgetInput) minBudgetInput.setAttribute('required', 'required');
+            if (maxBudgetInput) maxBudgetInput.setAttribute('required', 'required');
+            // Remove required attribute from per sqft budget fields
+            if (minBudgetPerSqftInput) minBudgetPerSqftInput.removeAttribute('required');
+            if (maxBudgetPerSqftInput) maxBudgetPerSqftInput.removeAttribute('required');
+            // Remove required attribute from per bigha budget fields
+            if (minBudgetPerBighaInput) minBudgetPerBighaInput.removeAttribute('required');
+            if (maxBudgetPerBighaInput) maxBudgetPerBighaInput.removeAttribute('required');
+        }
+    };
+    
+    // Add event listeners to property type radio buttons
+    document.addEventListener('DOMContentLoaded', function() {
+        // Use event delegation on the form to catch all radio button changes
+        const buyForm = document.getElementById('buyForm');
+        if (buyForm) {
+            buyForm.addEventListener('change', function(e) {
+                if (e.target.name === 'property_type' && e.target.type === 'radio') {
+                    window.togglePropertyFields();
+                }
+            });
+            
+            buyForm.addEventListener('click', function(e) {
+                if (e.target.name === 'property_type' && e.target.type === 'radio') {
+                    setTimeout(window.togglePropertyFields, 10);
+                }
+            });
+        }
+        
+        // Also add direct listeners to radio buttons
+        const propertyTypeRadios = document.querySelectorAll('input[name="property_type"]');
+        propertyTypeRadios.forEach(radio => {
+            radio.addEventListener('change', window.togglePropertyFields);
+        });
+        
+        // Initialize on page load
+        setTimeout(function() {
+            window.togglePropertyFields();
+        }, 100);
+        
+        // Form submission handler (reuse buyForm from above)
+        if (buyForm) {
+            buyForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                
+                // Validate required fields based on property type
+                const propertyType = formData.get('property_type');
+                if (propertyType === 'plot') {
+                    // For plot: require per sqft budget fields
+                    if (!formData.get('min_budget_per_sqft') || !formData.get('max_budget_per_sqft')) {
+                        if (typeof window.showError === 'function') {
+                            window.showError('Please provide both minimum and maximum budget per square foot for plot.');
+                        } else {
+                            alert('Please provide both minimum and maximum budget per square foot for plot.');
+                        }
+                        return;
+                    }
+                } else if (propertyType === 'farmland') {
+                    // For farmland: require per bigha budget fields and at least one of bigha/acre
+                    if (!formData.get('min_budget_per_bigha') || !formData.get('max_budget_per_bigha')) {
+                        if (typeof window.showError === 'function') {
+                            window.showError('Please provide both minimum and maximum budget per bigha for farm land.');
+                        } else {
+                            alert('Please provide both minimum and maximum budget per bigha for farm land.');
+                        }
+                        return;
+                    }
+                    // At least one of bigha or acre must be provided
+                    if (!formData.get('farmland_bigha') && !formData.get('farmland_acre')) {
+                        if (typeof window.showError === 'function') {
+                            window.showError('Please provide either Bigha or Acre for farm land.');
+                        } else {
+                            alert('Please provide either Bigha or Acre for farm land.');
+                        }
+                        return;
+                    }
+                } else {
+                    // For other types (Flat, House): require regular budget fields
+                    if (!formData.get('min_budget') || !formData.get('max_budget')) {
+                        if (typeof window.showError === 'function') {
+                            window.showError('Please provide both minimum and maximum budget.');
+                        } else {
+                            alert('Please provide both minimum and maximum budget.');
+                        }
+                        return;
+                    }
+                }
+        
+        // Build the message from form data
+        let message = 'Property Requirement:' + String.fromCharCode(10) + String.fromCharCode(10);
+        message += 'Property Type: ' + formData.get('property_type') + String.fromCharCode(10);
+        message += 'Location: ' + (formData.get('locality') ? formData.get('locality') + ', ' : '') + formData.get('city') + ', ' + formData.get('state') + String.fromCharCode(10);
+        
+        // For Plot: show budget per sqft, length, width, total area
+        if (formData.get('property_type') === 'plot') {
+            if (formData.get('min_budget_per_sqft') || formData.get('max_budget_per_sqft')) {
+                const minPerSqft = formData.get('min_budget_per_sqft') ? parseFloat(formData.get('min_budget_per_sqft')).toLocaleString() : 'Not specified';
+                const maxPerSqft = formData.get('max_budget_per_sqft') ? parseFloat(formData.get('max_budget_per_sqft')).toLocaleString() : 'Not specified';
+                message += 'Budget Range per sqft: ₹' + minPerSqft + ' - ₹' + maxPerSqft + String.fromCharCode(10);
+            }
+            if (formData.get('plot_length')) {
+                message += 'Length: ' + formData.get('plot_length') + ' ft' + String.fromCharCode(10);
+            }
+            if (formData.get('plot_width')) {
+                message += 'Width: ' + formData.get('plot_width') + ' ft' + String.fromCharCode(10);
+            }
+            if (formData.get('plot_total_area')) {
+                message += 'Total Area: ' + formData.get('plot_total_area') + ' sqft' + String.fromCharCode(10);
+            }
+        } else if (formData.get('property_type') === 'farmland') {
+            // For Farm Land: show budget per bigha, bigha, acre
+            if (formData.get('min_budget_per_bigha') || formData.get('max_budget_per_bigha')) {
+                const minPerBigha = formData.get('min_budget_per_bigha') ? parseFloat(formData.get('min_budget_per_bigha')).toLocaleString() : 'Not specified';
+                const maxPerBigha = formData.get('max_budget_per_bigha') ? parseFloat(formData.get('max_budget_per_bigha')).toLocaleString() : 'Not specified';
+                message += 'Budget Range per bigha: ₹' + minPerBigha + ' - ₹' + maxPerBigha + String.fromCharCode(10);
+            }
+            if (formData.get('farmland_bigha')) {
+                message += 'Bigha: ' + formData.get('farmland_bigha') + String.fromCharCode(10);
+            }
+            if (formData.get('farmland_acre')) {
+                message += 'Acre: ' + formData.get('farmland_acre') + String.fromCharCode(10);
+            }
+        } else {
+            // For other types (Flat, House): show regular budget, bedrooms, bathrooms, min area
+            if (formData.get('min_budget') || formData.get('max_budget')) {
+                const minBudget = formData.get('min_budget') ? parseInt(formData.get('min_budget')).toLocaleString() : 'Not specified';
+                const maxBudget = formData.get('max_budget') ? parseInt(formData.get('max_budget')).toLocaleString() : 'Not specified';
+                message += 'Budget Range: ₹' + minBudget + ' - ₹' + maxBudget + String.fromCharCode(10);
+            }
+            if (formData.get('bedrooms')) {
+                message += 'Bedrooms: ' + formData.get('bedrooms') + ' BHK' + String.fromCharCode(10);
+            }
+            if (formData.get('bathrooms')) {
+                message += 'Bathrooms: ' + formData.get('bathrooms') + String.fromCharCode(10);
+            }
+            if (formData.get('min_area')) {
+                message += 'Minimum Area: ' + formData.get('min_area') + ' sqft' + String.fromCharCode(10);
+            }
+        }
+        
+        if (formData.get('requirements')) {
+            message += String.fromCharCode(10) + 'Additional Requirements:' + String.fromCharCode(10) + formData.get('requirements');
+        }
+        
+        const data = {
+            full_name: formData.get('full_name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            subject: 'Buy Property - ' + formData.get('property_type'),
+            message: message
+        };
+        
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                document.getElementById('buyFormContainer').style.display = 'none';
+                document.getElementById('successMessage').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showError(result.error || 'Failed to submit requirements');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showError('An error occurred. Please try again.');
+        }
+            });
+        }
+    });
+</script>
+` }) %>
+

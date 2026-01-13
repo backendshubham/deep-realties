@@ -1,25 +1,32 @@
 <%- include('../layouts/main', { content: `
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white py-12 sm:py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full mb-4 sm:mb-6 text-xs sm:text-sm font-medium">
+<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
+        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
             Get In Touch
         </span>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-3 sm:mb-4 px-2">Contact Us</h1>
-        <p class="text-base sm:text-lg lg:text-xl text-emerald-100 dark:text-gray-300 max-w-2xl mx-auto px-4">
+        <h1 class="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 px-2">
+            <span class="text-gray-900 dark:text-white">Contact Us</span>
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
         </p>
     </div>
 </section>
 
 <!-- Contact Information & Form Section -->
-<section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900">
+<section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
     <div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             <!-- Contact Information -->
             <div class="lg:col-span-1 space-y-4 sm:space-y-6">
                 <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-md p-4 sm:p-5 lg:p-6 border border-gray-200 dark:border-gray-700">
-                    <h2 class="text-xl sm:text-2xl font-display font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">Contact Information</h2>
+                    <h2 class="section-title text-xl sm:text-2xl text-gray-900 dark:text-white mb-4 sm:mb-6">Contact Information</h2>
                     
                     <div class="space-y-6">
                         <!-- Phone -->
@@ -107,51 +114,33 @@
                                    class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
                                     Email <span class="text-red-500">*</span>
                                 </label>
                                 <input type="email" name="email" required placeholder="your@email.com"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                       class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
                                     Phone (Optional)
                                 </label>
                                 <input type="tel" name="phone" placeholder="+91 98765 43210"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                       class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             </div>
                         </div>
                         
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Subject <span class="text-red-500">*</span>
-                            </label>
-                            <select name="subject" required 
-                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                                <option value="">Select a subject</option>
-                                <option value="Buy Property">Buy Property</option>
-                                <option value="Sell Property">Sell Property</option>
-                                <option value="Rent Property">Rent Property</option>
-                                <option value="Investment Inquiry">Investment Inquiry</option>
-                                <option value="Project Inquiry">Project Inquiry</option>
-                                <option value="General Inquiry">General Inquiry</option>
-                                <option value="Partnership">Partnership</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
                                 Message <span class="text-red-500">*</span>
                             </label>
-                            <textarea name="message" rows="6" required placeholder="How can we help you?"
-                                      class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                            <textarea name="message" rows="5" required placeholder="How can we help you?"
+                                      class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
                         </div>
                         
                         <button type="submit" 
-                                class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                                class="button-text w-full px-4 sm:px-6 py-2.5 sm:py-3 lg:py-4 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                             Send Message
                         </button>
                     </form>

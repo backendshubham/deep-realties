@@ -1,21 +1,442 @@
 <%- include('../../layouts/main', { content: `
 <div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
         <div class="mb-8">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between flex-wrap gap-4">
                 <div>
                     <h1 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-2">Manage Projects</h1>
-                    <p class="text-gray-600 dark:text-gray-400">View and manage company projects</p>
+                    <p class="text-gray-600 dark:text-gray-400">Create and manage company projects</p>
                 </div>
-                <a href="/admin/dashboard" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
-                    ← Back to Dashboard
-                </a>
+                <div class="flex gap-3">
+                    <button onclick="showCreateProjectForm()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors font-semibold flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Upload Project
+                    </button>
+                    <a href="/admin/dashboard" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                        ← Back to Dashboard
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <p class="text-center text-gray-600 dark:text-gray-400">Project management coming soon...</p>
+        
+        <!-- Create/Edit Project Form Modal -->
+        <div id="projectFormModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+            <div class="fixed inset-0 bg-black bg-opacity-50" onclick="hideProjectForm()"></div>
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                    <div class="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 p-6 flex items-center justify-between z-10">
+                        <h2 id="formTitle" class="text-2xl font-bold text-gray-900 dark:text-white">Upload New Project</h2>
+                        <button onclick="hideProjectForm()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <form id="projectForm" class="p-6 space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Project Name <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="projectName" name="name" required
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Status <span class="text-red-500">*</span>
+                                </label>
+                                <select id="projectStatus" name="status" required
+                                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                                    <option value="upcoming">Upcoming</option>
+                                    <option value="ongoing">Ongoing</option>
+                                    <option value="completed">Completed</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Description <span class="text-red-500">*</span>
+                            </label>
+                            <textarea id="projectDescription" name="description" rows="4" required
+                                      class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Location <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="projectLocation" name="location" required placeholder="Area/Locality"
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    City <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="projectCity" name="city" required
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    State <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="projectState" name="state" required
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Min Price (₹)
+                                </label>
+                                <input type="number" id="priceMin" name="price_range_min" step="0.01"
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Max Price (₹)
+                                </label>
+                                <input type="number" id="priceMax" name="price_range_max" step="0.01"
+                                       class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Project Images (URLs, one per line)
+                            </label>
+                            <textarea id="projectImages" name="images" rows="3" placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
+                                      class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Highlights (one per line)
+                            </label>
+                            <textarea id="projectHighlights" name="highlights" rows="4" placeholder="Premium location&#10;Modern amenities&#10;24/7 Security"
+                                      class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Amenities (comma separated)
+                            </label>
+                            <input type="text" id="projectAmenities" name="amenities" placeholder="Swimming Pool, Gym, Garden, Parking"
+                                   class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white">
+                        </div>
+                        
+                        <div class="flex gap-4 justify-end pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <button type="button" onclick="hideProjectForm()" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors font-semibold">
+                                Save Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Projects List -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <div id="projectsList" class="p-6">
+                <div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading projects...</p></div>
+            </div>
         </div>
     </div>
 </div>
-` }) %>
 
+<script>
+    let currentEditingProjectId = null;
+    
+    async function loadProjects() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        const container = document.getElementById('projectsList');
+        container.innerHTML = '<div class="inline-loader"><div class="inline-loader-spinner"></div><p class="inline-loader-text">Loading projects...</p></div>';
+        
+        try {
+            const response = await fetch('/api/admin/projects', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            if (response.status === 403) {
+                showError('Admin access required');
+                setTimeout(() => window.location.href = '/dashboard', 2000);
+                return;
+            }
+            
+            if (!response.ok) {
+                throw new Error('Failed to load projects');
+            }
+            
+            const data = await response.json();
+            const projects = data.projects || [];
+            
+            if (projects.length === 0) {
+                container.innerHTML = '<div class="text-center py-12"><p class="text-gray-600 dark:text-gray-400 mb-4">No projects found</p><button onclick="showCreateProjectForm()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Upload Your First Project</button></div>';
+                // Hide page loader
+                if (typeof window.hidePageLoader === 'function') {
+                    window.hidePageLoader();
+                }
+                return;
+            }
+            
+            const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+            
+            // Build projects HTML safely
+            const projectsHTML = projects.map(function(project) {
+                const projectImage = (project.images && project.images[0]) ? project.images[0] : placeholderImage;
+                const statusClass = project.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                                   project.status === 'ongoing' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 
+                                   'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+                const createdAt = project.created_at ? new Date(project.created_at).toLocaleDateString() : '';
+                const projectId = String(project.id || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const projectName = (project.name || 'Untitled Project').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const projectLocation = (project.location || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const projectCity = (project.city || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                const projectStatus = (project.status || 'upcoming').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                
+                return '<div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-600">' +
+                    '<img src="' + projectImage + '" alt="' + projectName + '" class="w-full h-48 object-cover">' +
+                    '<div class="p-4">' +
+                        '<div class="flex items-start justify-between mb-2">' +
+                            '<h3 class="text-lg font-semibold text-gray-900 dark:text-white">' + projectName + '</h3>' +
+                            '<span class="px-2 py-1 text-xs font-semibold rounded ' + statusClass + '">' + projectStatus + '</span>' +
+                        '</div>' +
+                        '<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">' + projectLocation + ', ' + projectCity + '</p>' +
+                        '<p class="text-xs text-gray-500 dark:text-gray-500 mb-4">Created: ' + createdAt + '</p>' +
+                        '<div class="flex gap-2">' +
+                            '<button data-project-id="' + projectId + '" class="edit-project-btn flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded text-sm transition-colors">Edit</button>' +
+                            '<button data-project-id="' + projectId + '" class="delete-project-btn flex-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded text-sm transition-colors">Delete</button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+            
+            container.innerHTML = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">' + projectsHTML + '</div>';
+            
+            // Attach event listeners to buttons
+            container.querySelectorAll('.edit-project-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-project-id');
+                    editProject(projectId);
+                });
+            });
+            
+            container.querySelectorAll('.delete-project-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-project-id');
+                    deleteProject(projectId);
+                });
+            });
+            
+            // Hide page loader after content loads
+            if (typeof window.hidePageLoader === 'function') {
+                window.hidePageLoader();
+            }
+            
+        } catch (error) {
+            console.error('Error loading projects:', error);
+            container.innerHTML = '<div class="text-center py-8"><p class="text-red-600 dark:text-red-400 mb-2">Error loading projects</p><p class="text-sm text-gray-600 dark:text-gray-400">' + (error.message || 'Please try again later') + '</p></div>';
+            
+            // Hide page loader even on error
+            if (typeof window.hidePageLoader === 'function') {
+                window.hidePageLoader();
+            }
+        }
+    }
+    
+    // Make functions globally accessible
+    window.showCreateProjectForm = function() {
+        currentEditingProjectId = null;
+        document.getElementById('formTitle').textContent = 'Upload New Project';
+        document.getElementById('projectForm').reset();
+        document.getElementById('projectFormModal').classList.remove('hidden');
+    };
+    
+    window.hideProjectForm = function() {
+        document.getElementById('projectFormModal').classList.add('hidden');
+        currentEditingProjectId = null;
+        document.getElementById('projectForm').reset();
+    };
+    
+    window.editProject = async function(projectId) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/projects/' + projectId, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to load project');
+            }
+            
+            const data = await response.json();
+            const project = data.project;
+            
+            currentEditingProjectId = projectId;
+            document.getElementById('formTitle').textContent = 'Edit Project';
+            document.getElementById('projectName').value = project.name || '';
+            document.getElementById('projectDescription').value = project.description || '';
+            document.getElementById('projectLocation').value = project.location || '';
+            document.getElementById('projectCity').value = project.city || '';
+            document.getElementById('projectState').value = project.state || '';
+            document.getElementById('projectStatus').value = project.status || 'upcoming';
+            document.getElementById('priceMin').value = project.price_range_min || '';
+            document.getElementById('priceMax').value = project.price_range_max || '';
+            const newlineChar = String.fromCharCode(10);
+            document.getElementById('projectImages').value = (project.images || []).join(newlineChar);
+            document.getElementById('projectHighlights').value = (project.highlights || []).join(newlineChar);
+            document.getElementById('projectAmenities').value = (project.amenities || []).join(', ');
+            
+            document.getElementById('projectFormModal').classList.remove('hidden');
+        } catch (error) {
+            console.error('Error loading project:', error);
+            showError('Failed to load project details');
+        }
+    };
+    
+    window.deleteProject = async function(projectId) {
+        if (!confirm('Are you sure you want to delete this project?')) {
+            return;
+        }
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/projects/' + projectId, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to delete project');
+            }
+            
+            showSuccess('Project deleted successfully');
+            loadProjects();
+        } catch (error) {
+            console.error('Error deleting project:', error);
+            showError('Failed to delete project');
+        }
+    };
+    
+    document.getElementById('projectForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        const formData = new FormData(e.target);
+        const data = {
+            name: formData.get('name'),
+            description: formData.get('description'),
+            location: formData.get('location'),
+            city: formData.get('city'),
+            state: formData.get('state'),
+            status: formData.get('status'),
+            price_range_min: formData.get('price_range_min') ? parseFloat(formData.get('price_range_min')) : null,
+            price_range_max: formData.get('price_range_max') ? parseFloat(formData.get('price_range_max')) : null,
+            images: formData.get('images') ? formData.get('images').split(String.fromCharCode(10)).filter(url => url.trim()) : [],
+            highlights: formData.get('highlights') ? formData.get('highlights').split(String.fromCharCode(10)).filter(h => h.trim()) : [],
+            amenities: formData.get('amenities') ? formData.get('amenities').split(',').map(a => a.trim()).filter(a => a) : []
+        };
+        
+        try {
+            const url = currentEditingProjectId ? '/api/projects/' + currentEditingProjectId : '/api/projects';
+            const method = currentEditingProjectId ? 'PUT' : 'POST';
+            
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(result.error || 'Failed to save project');
+            }
+            
+            showSuccess(currentEditingProjectId ? 'Project updated successfully' : 'Project created successfully');
+            hideProjectForm();
+            loadProjects();
+        } catch (error) {
+            console.error('Error saving project:', error);
+            showError(error.message || 'Failed to save project');
+        }
+    });
+    
+        // Verify admin access
+    document.addEventListener('DOMContentLoaded', async function() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        try {
+            const userRes = await fetch('/api/auth/me', {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            if (userRes.ok) {
+                const userData = await userRes.json();
+                if (!userData.user || userData.user.role !== 'admin') {
+                    showError('Admin access required');
+                    setTimeout(() => window.location.href = '/dashboard', 2000);
+                    // Hide loader
+                    if (typeof window.hidePageLoader === 'function') {
+                        window.hidePageLoader();
+                    }
+                    return;
+                }
+            } else {
+                window.location.href = '/login';
+                return;
+            }
+        } catch (error) {
+            console.error('Error verifying admin access:', error);
+            window.location.href = '/login';
+            return;
+        }
+        
+        loadProjects();
+    });
+    
+    // Handle browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            // Page was loaded from cache, reload data and hide loader
+            if (typeof window.hidePageLoader === 'function') {
+                window.hidePageLoader();
+            }
+            loadProjects();
+        }
+    });
+</script>
+` }) %>

@@ -64,10 +64,10 @@ const buildPropertyQuery = (query, filters) => {
   } else {
     query.where('status', 'approved');
   }
+  // Only filter by is_active if explicitly provided
+  // This allows approved properties to show even if is_active is not set
   if (filters.is_active !== undefined) {
     query.where('is_active', filters.is_active);
-  } else {
-    query.where('is_active', true);
   }
   
   return query;

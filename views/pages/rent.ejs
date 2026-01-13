@@ -1,41 +1,718 @@
 <%- include('../layouts/main', { content: `
-<div class="min-h-screen py-8">
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-400/20 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
+        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-300/20 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-700/80 dark:bg-emerald-900/50 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm text-white border border-emerald-600/50">
+            RENTAL PROPERTIES
+        </span>
+        <h1 class="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 px-2 text-white">
+            Rent Property
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-white/90 dark:text-gray-300 max-w-2xl mx-auto px-4">
+            Find your perfect rental home or list your property for rent
+        </p>
+    </div>
+</section>
+
+<!-- Navigation/Action Bar -->
+<section class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-display font-bold mb-8">Properties for Rent</h1>
+        <div class="flex items-center space-x-4 sm:space-x-6 lg:space-x-8 overflow-x-auto">
+            <button 
+                id="findTab" 
+                onclick="switchTab('find')" 
+                class="button-text flex-shrink-0 flex items-center space-x-1 sm:space-x-2 py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-emerald-600 dark:border-emerald-400 text-emerald-600 dark:text-emerald-400 transition-colors whitespace-nowrap"
+            >
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <span class="text-xs sm:text-sm lg:text-base">Find Property to Rent</span>
+            </button>
+            <button 
+                id="listTab" 
+                onclick="switchTab('list')" 
+                class="flex-shrink-0 flex items-center space-x-1 sm:space-x-2 py-3 sm:py-4 px-2 sm:px-3 border-b-2 border-transparent text-emerald-600 dark:text-emerald-400 font-semibold hover:border-emerald-300 dark:hover:border-emerald-600 transition-colors whitespace-nowrap"
+            >
+                <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                <span class="text-xs sm:text-sm lg:text-base">+ List Property for Rent</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Find Property Section -->
+<div id="findSection" class="min-h-screen py-6 sm:py-8 bg-white dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Search/Filter Section -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 mb-6 sm:mb-8">
+            <form id="searchForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+                <!-- City -->
+                <div class="relative">
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="searchCity" 
+                        name="city" 
+                        placeholder="City" 
+                        class="w-full pl-10 pr-3 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                </div>
+                
+                <!-- Property Type -->
+                <div class="relative">
+                    <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </div>
+                    <select 
+                        id="searchPropertyType" 
+                        name="property_type" 
+                        class="w-full pl-10 pr-8 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                    >
+                        <option value="">All Property Types</option>
+                        <option value="plot">Plot</option>
+                        <option value="flat">Flat</option>
+                        <option value="house">House</option>
+                        <option value="farmland">Farm Land</option>
+                    </select>
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Furnishing -->
+                <div class="relative">
+                    <select 
+                        id="searchFurnishing" 
+                        name="furnishing" 
+                        class="w-full pl-3 pr-8 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                    >
+                        <option value="">Furnishing</option>
+                        <option value="furnished">Furnished</option>
+                        <option value="semi-furnished">Semi-Furnished</option>
+                        <option value="unfurnished">Unfurnished</option>
+                    </select>
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Tenant Type -->
+                <div class="relative">
+                    <select 
+                        id="searchTenantType" 
+                        name="tenant_type" 
+                        class="w-full pl-3 pr-8 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                    >
+                        <option value="">Tenant Type</option>
+                        <option value="family">Family</option>
+                        <option value="bachelors">Bachelors</option>
+                        <option value="company">Company</option>
+                        <option value="any">Any</option>
+                    </select>
+                    <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+                
+                <!-- Max Rent -->
+                <div>
+                    <input 
+                        type="number" 
+                        id="searchMaxRent" 
+                        name="max_rent" 
+                        placeholder="Max Rent" 
+                        class="w-full px-3 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                </div>
+                
+                <!-- Bedrooms -->
+                <div>
+                    <input 
+                        type="number" 
+                        id="searchBedrooms" 
+                        name="bedrooms" 
+                        placeholder="Bedrooms" 
+                        class="w-full px-3 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                </div>
+            </form>
+            
+            <!-- Search Button -->
+            <div class="mt-4 sm:mt-6 flex justify-end">
+                <button 
+                    onclick="searchRentals()" 
+                    class="inline-flex items-center justify-center px-6 sm:px-8 py-2.5 sm:py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Search
+                </button>
+            </div>
+        </div>
         
-        <div id="rentalsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rentals Grid -->
+        <div id="rentalsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <!-- Rentals will be loaded here -->
+        </div>
+        
+        <!-- Loading State -->
+        <div id="loadingState" class="hidden text-center py-12">
+            <div class="inline-loader-spinner mx-auto mb-4"></div>
+            <p class="text-gray-600 dark:text-gray-400">Loading properties...</p>
+        </div>
+        
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-12">
+            <p class="text-gray-600 dark:text-gray-400 text-lg">No rental properties found</p>
+        </div>
+    </div>
+</div>
+
+<!-- List Property Section -->
+<div id="listSection" class="hidden min-h-screen py-6 sm:py-8 bg-white dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-4 sm:p-6 lg:p-8 mb-4 sm:mb-6 shadow-sm">
+            <h3 class="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-2 sm:mb-3">Property Listed!</h3>
+            <p class="text-sm sm:text-base text-emerald-600 dark:text-emerald-300 mb-4 sm:mb-6 leading-relaxed">
+                Your rental property has been submitted for review. Our team will verify the details and approve it within 24-48 hours.
+            </p>
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
+                <button onclick="switchTab('find')" class="px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md text-center">
+                    Browse Rentals
+                </button>
+                <button onclick="resetRentalForm()" class="px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold transition-colors">
+                    List Another Property
+                </button>
+            </div>
+        </div>
+        
+        <div id="rentalFormContainer" class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl sm:text-3xl font-display font-bold text-gray-900 dark:text-white mb-4 sm:mb-6">List Your Property for Rent</h2>
+            
+            <form id="rentalForm" class="space-y-4 sm:space-y-6">
+                <!-- Property Type -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 sm:mb-3">
+                        Property Type <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
+                        <label class="flex items-center p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="plot" required class="mr-1.5 sm:mr-2">
+                            <span class="text-xl sm:text-2xl mr-1.5 sm:mr-2">📐</span>
+                            <span class="text-xs sm:text-sm">Plot</span>
+                        </label>
+                        <label class="flex items-center p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="flat" required class="mr-1.5 sm:mr-2">
+                            <span class="text-xl sm:text-2xl mr-1.5 sm:mr-2">🏢</span>
+                            <span class="text-xs sm:text-sm">Flat</span>
+                        </label>
+                        <label class="flex items-center p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="house" required class="mr-1.5 sm:mr-2">
+                            <span class="text-xl sm:text-2xl mr-1.5 sm:mr-2">🏠</span>
+                            <span class="text-xs sm:text-sm">House</span>
+                        </label>
+                        <label class="flex items-center p-3 sm:p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
+                            <input type="radio" name="property_type" value="farmland" required class="mr-1.5 sm:mr-2">
+                            <span class="text-xl sm:text-2xl mr-1.5 sm:mr-2">🌾</span>
+                            <span class="text-xs sm:text-sm">Farm Land</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Title -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                        Property Title <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="title" 
+                        required 
+                        placeholder="e.g., 2BHK Flat for Rent in Prime Location"
+                        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                </div>
+                
+                <!-- Description -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                        Description <span class="text-red-500">*</span>
+                    </label>
+                    <textarea 
+                        name="description" 
+                        rows="4" 
+                        required 
+                        placeholder="Describe your property in detail..."
+                        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    ></textarea>
+                </div>
+                
+                <!-- Location -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Locality <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="locality" 
+                            required 
+                            placeholder="Area / Locality"
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            City <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            name="city" 
+                            required 
+                            placeholder="City"
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                        State <span class="text-red-500">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        name="state" 
+                        required 
+                        placeholder="State"
+                        class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                    >
+                </div>
+                
+                <!-- Rent Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Monthly Rent (₹) <span class="text-red-500">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            name="monthly_rent" 
+                            required 
+                            placeholder="Monthly Rent"
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Security Deposit (₹)
+                        </label>
+                        <input 
+                            type="number" 
+                            name="security_deposit" 
+                            placeholder="Security Deposit"
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Property Details -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Plot Fields (shown when Plot is selected) -->
+                    <div id="plotFields" class="hidden grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Length (ft) <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                name="plot_length" 
+                                placeholder="e.g., 50"
+                                min="0" step="0.01"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Width (ft) <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                name="plot_width" 
+                                placeholder="e.g., 30"
+                                min="0" step="0.01"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Total Area (sqft) <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="number" 
+                                name="plot_total_area" 
+                                placeholder="e.g., 1500"
+                                min="0" step="0.01"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Other Property Fields (shown for Flat, House, Farm Land) -->
+                    <div id="otherPropertyFields" class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Bedrooms
+                            </label>
+                            <input 
+                                type="number" 
+                                name="bedrooms" 
+                                placeholder="Number of bedrooms"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Bathrooms
+                            </label>
+                            <input 
+                                type="number" 
+                                name="bathrooms" 
+                                placeholder="Number of bathrooms"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                    </div>
+                    <div id="areaFieldContainer">
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Area (sqft)
+                        </label>
+                        <input 
+                            type="number" 
+                            name="area_sqft" 
+                            placeholder="Area in square feet"
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                </div>
+                
+                <!-- Furnishing & Tenant Type -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Furnishing
+                        </label>
+                        <select 
+                            name="furnishing" 
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                            <option value="">Select Furnishing</option>
+                            <option value="furnished">Furnished</option>
+                            <option value="semi-furnished">Semi-Furnished</option>
+                            <option value="unfurnished">Unfurnished</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                            Preferred Tenant Type
+                        </label>
+                        <select 
+                            name="tenant_type" 
+                            class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                            <option value="">Select Tenant Type</option>
+                            <option value="family">Family</option>
+                            <option value="bachelors">Bachelors</option>
+                            <option value="company">Company</option>
+                            <option value="any">Any</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Contact Information -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Your Contact Information</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                Full Name <span class="text-red-500">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                name="full_name" 
+                                required 
+                                placeholder="Your Name"
+                                class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                    Email <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    required 
+                                    placeholder="your@email.com"
+                                    class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5 sm:mb-2">
+                                    Phone <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    name="phone" 
+                                    required 
+                                    placeholder="+91 98765 43210"
+                                    class="w-full px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button 
+                    type="submit" 
+                    class="w-full px-4 sm:px-6 py-3 sm:py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 text-sm sm:text-base"
+                >
+                    Submit Property for Rent
+                </button>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
-    async function loadRentals() {
-        const response = await fetch('/api/rentals');
-        const data = await response.json();
+    let currentTab = 'find';
+    
+    function switchTab(tab) {
+        currentTab = tab;
+        const findSection = document.getElementById('findSection');
+        const listSection = document.getElementById('listSection');
+        const findTab = document.getElementById('findTab');
+        const listTab = document.getElementById('listTab');
         
-        const grid = document.getElementById('rentalsGrid');
-        if (data.rentals && data.rentals.length > 0) {
-            grid.innerHTML = data.rentals.map(function(rental) {
-                const rentalImage = (rental.images && rental.images[0]) ? rental.images[0] : '/images/placeholder.jpg';
-                return '<div class="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden">' +
-                    '<img src="' + rentalImage + '" alt="' + rental.title + '" class="w-full h-48 object-cover">' +
-                    '<div class="p-4">' +
-                        '<h3 class="text-xl font-semibold mb-2">' + rental.title + '</h3>' +
-                        '<p class="text-gray-600 dark:text-gray-400 mb-2">' + rental.locality + ', ' + rental.city + '</p>' +
-                        '<p class="text-2xl font-bold text-emerald-600">₹' + rental.monthly_rent.toLocaleString() + '/month</p>' +
-                        '<a href="/rentals/' + rental.id + '" class="block mt-4 text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg">' +
-                            'View Details' +
-                        '</a>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
+        if (tab === 'find') {
+            findSection.classList.remove('hidden');
+            listSection.classList.add('hidden');
+            findTab.classList.add('border-emerald-600', 'dark:border-emerald-400');
+            findTab.classList.remove('border-transparent');
+            listTab.classList.remove('border-emerald-600', 'dark:border-emerald-400');
+            listTab.classList.add('border-transparent');
+            loadRentals();
         } else {
-            grid.innerHTML = '<p class="col-span-full text-center">No rentals available</p>';
+            findSection.classList.add('hidden');
+            listSection.classList.remove('hidden');
+            listTab.classList.add('border-emerald-600', 'dark:border-emerald-400');
+            listTab.classList.remove('border-transparent');
+            findTab.classList.remove('border-emerald-600', 'dark:border-emerald-400');
+            findTab.classList.add('border-transparent');
         }
     }
     
-    document.addEventListener('DOMContentLoaded', loadRentals);
+    async function loadRentals(filters = {}) {
+        const grid = document.getElementById('rentalsGrid');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        
+        grid.classList.add('hidden');
+        loadingState.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        
+        try {
+            const params = new URLSearchParams();
+            Object.keys(filters).forEach(key => {
+                if (filters[key]) {
+                    params.append(key, filters[key]);
+                }
+            });
+            
+            const response = await fetch('/api/rentals?' + params.toString());
+            const data = await response.json();
+            
+            loadingState.classList.add('hidden');
+            
+            if (data.rentals && data.rentals.length > 0) {
+                // Simple placeholder image as data URI (SVG) - using double quotes to avoid syntax errors
+                const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+                
+                grid.classList.remove('hidden');
+                grid.innerHTML = data.rentals.map(function(rental) {
+                    const rentalImage = (rental.images && rental.images[0]) ? rental.images[0] : placeholderImage;
+                    return '<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">' +
+                        '<img src="' + rentalImage + '" alt="' + rental.title + '" class="w-full h-48 object-cover bg-gray-200 dark:bg-gray-700" onerror="this.src=&quot;' + placeholderImage + '&quot;">' +
+                        '<div class="p-4">' +
+                            '<h3 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white">' + rental.title + '</h3>' +
+                            '<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">' + rental.locality + ', ' + rental.city + '</p>' +
+                            '<p class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-3">₹' + rental.monthly_rent.toLocaleString() + '/month</p>' +
+                            '<a href="/rentals/' + rental.id + '" class="block text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors text-sm sm:text-base">' +
+                                'View Details' +
+                            '</a>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+            } else {
+                emptyState.classList.remove('hidden');
+            }
+        } catch (error) {
+            console.error('Error loading rentals:', error);
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            if (typeof window.showError === 'function') {
+                window.showError('Failed to load rental properties. Please try again.');
+            }
+        }
+    }
+    
+    function searchRentals() {
+        const filters = {
+            city: document.getElementById('searchCity').value,
+            property_type: document.getElementById('searchPropertyType').value,
+            furnishing: document.getElementById('searchFurnishing').value,
+            tenant_type: document.getElementById('searchTenantType').value,
+            max_rent: document.getElementById('searchMaxRent').value,
+            bedrooms: document.getElementById('searchBedrooms').value
+        };
+        
+        loadRentals(filters);
+    }
+    
+    function toggleRentalPropertyFields() {
+        const propertyType = document.querySelector('#rentalForm input[name="property_type"]:checked')?.value;
+        const plotFields = document.getElementById('plotFields');
+        const otherFields = document.getElementById('otherPropertyFields');
+        const areaFieldContainer = document.getElementById('areaFieldContainer');
+        
+        if (propertyType === 'plot') {
+            if (plotFields) plotFields.classList.remove('hidden');
+            if (otherFields) otherFields.classList.add('hidden');
+            // Hide area_sqft field for plot (will use plot_total_area instead)
+            if (areaFieldContainer) areaFieldContainer.classList.add('hidden');
+        } else {
+            if (plotFields) plotFields.classList.add('hidden');
+            if (otherFields) otherFields.classList.remove('hidden');
+            // Show area_sqft field for other types
+            if (areaFieldContainer) areaFieldContainer.classList.remove('hidden');
+        }
+    }
+    
+    // Add event listeners to property type radio buttons in rental form
+    document.addEventListener('DOMContentLoaded', function() {
+        const rentalPropertyTypeRadios = document.querySelectorAll('#rentalForm input[name="property_type"]');
+        rentalPropertyTypeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleRentalPropertyFields);
+        });
+        // Initialize on page load
+        toggleRentalPropertyFields();
+    });
+    
+    function resetRentalForm() {
+        document.getElementById('successMessage').classList.add('hidden');
+        document.getElementById('rentalFormContainer').style.display = 'block';
+        document.getElementById('rentalForm').reset();
+        toggleRentalPropertyFields(); // Reset field visibility
+        document.getElementById('rentalFormContainer').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    document.getElementById('rentalForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        
+        // Convert numeric fields
+        if (data.monthly_rent) data.monthly_rent = parseFloat(data.monthly_rent);
+        if (data.security_deposit) data.security_deposit = parseFloat(data.security_deposit);
+        
+        // Handle area: for plot use plot_total_area or calculate from length*width, for others use area_sqft
+        if (data.property_type === 'plot') {
+            const plotTotalArea = formData.get('plot_total_area');
+            if (plotTotalArea && plotTotalArea.trim() !== '') {
+                data.area_sqft = parseFloat(plotTotalArea);
+            } else {
+                // Calculate from length * width if total area not provided
+                const length = parseFloat(formData.get('plot_length')) || 0;
+                const width = parseFloat(formData.get('plot_width')) || 0;
+                if (length > 0 && width > 0) {
+                    data.area_sqft = length * width;
+                } else {
+                    // Fallback to area_sqft if provided
+                    const areaSqft = formData.get('area_sqft');
+                    if (areaSqft && areaSqft.trim() !== '') {
+                        data.area_sqft = parseFloat(areaSqft);
+                    }
+                }
+            }
+        } else {
+            if (data.bedrooms) data.bedrooms = parseInt(data.bedrooms);
+            if (data.bathrooms) data.bathrooms = parseInt(data.bathrooms);
+            if (data.area_sqft) data.area_sqft = parseFloat(data.area_sqft);
+        }
+        
+        try {
+            const token = localStorage.getItem('token');
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) {
+                headers['Authorization'] = 'Bearer ' + token;
+            }
+            
+            const response = await fetch('/api/rentals', {
+                method: 'POST',
+                headers,
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                document.getElementById('rentalFormContainer').style.display = 'none';
+                document.getElementById('successMessage').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                if (typeof window.showError === 'function') {
+                    window.showError(result.error || 'Failed to submit rental property');
+                } else {
+                    alert(result.error || 'Failed to submit rental property');
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            if (typeof window.showError === 'function') {
+                window.showError('An error occurred. Please try again.');
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        }
+    });
+    
+    // Load rentals on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadRentals();
+    });
 </script>
 ` }) %>
-

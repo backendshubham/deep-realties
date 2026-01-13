@@ -1,262 +1,665 @@
 <%- include('../layouts/main', { content: `
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-600 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 text-white py-12 sm:py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span class="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-white/10 backdrop-blur-sm rounded-full mb-4 sm:mb-6 text-xs sm:text-sm font-medium">
+<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <!-- Decorative Background Elements -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
+        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+        <span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
             Find Your Dream Property
         </span>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-3 sm:mb-4 px-2">Buy Property</h1>
-        <p class="text-base sm:text-lg lg:text-xl text-emerald-100 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            Tell us what you're looking for and we'll find the perfect property for you
+        <h1 class="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 px-2">
+            <span class="text-gray-900 dark:text-white">Buy Property</span>
+        </h1>
+        <p class="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
+            Browse our approved listings and find the perfect property for you
         </p>
     </div>
 </section>
 
-<!-- Property Requirement Form Section -->
-<section class="py-8 sm:py-12 lg:py-16 bg-gray-50 dark:bg-gray-900">
-    <div class="max-w-4xl mx-auto px-3 sm:px-4 lg:px-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
-            <div class="text-center mb-6 sm:mb-8">
-                <h2 class="text-2xl sm:text-3xl font-display font-bold text-gray-900 dark:text-white mb-2">
-                    Property Requirement Form
-                </h2>
-                <p class="text-sm sm:text-base text-gray-600 dark:text-gray-400">
-                    Fill in your requirements and our team will find matching properties for you
-                </p>
+<!-- Properties Listing Section -->
+<section class="py-6 sm:py-8 lg:py-12 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Mobile Filter Button -->
+        <div class="lg:hidden mb-4">
+            <button 
+                onclick="openFiltersModal()"
+                class="button-text w-full inline-flex items-center justify-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors shadow-md"
+            >
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                </svg>
+                Apply Filters
+            </button>
             </div>
             
-            <!-- Success Message (Hidden by default) -->
-            <div id="successMessage" class="hidden bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 px-6 py-4 rounded-lg mb-6">
-                <h3 class="text-xl font-semibold mb-2">Requirement Submitted!</h3>
-                <p class="mb-4">Thank you for sharing your property requirements. Our expert team will analyze your needs and get back to you with the best matching properties within 24 hours.</p>
-                <div class="flex gap-4">
-                    <a href="/properties" class="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-colors">
-                        Browse Properties
-                    </a>
-                    <button onclick="resetForm()" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold transition-colors">
-                        Submit Another
-                    </button>
-                </div>
+        <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
+            <!-- Left Sidebar - Filters (Hidden on mobile, visible on desktop) -->
+            <aside class="hidden lg:block lg:w-80 xl:w-96 flex-shrink-0">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-4 sm:p-6 sticky top-6">
+                    <div class="flex items-center mb-6">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        <h2 class="section-title text-xl text-gray-900 dark:text-white">Filters</h2>
             </div>
             
-            <form id="requirementForm" class="space-y-6">
-                <!-- Property Type -->
+                    <form id="searchForm" class="space-y-4">
+                        <!-- City -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                        Property Type <span class="text-red-500">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="land" required class="mr-2">
-                            <span class="text-2xl mr-2">🏞️</span>
-                            <span class="text-sm">Land</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="plot" required class="mr-2">
-                            <span class="text-2xl mr-2">📐</span>
-                            <span class="text-sm">Plot</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="flat" required class="mr-2">
-                            <span class="text-2xl mr-2">🏢</span>
-                            <span class="text-sm">Flat</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="house" required class="mr-2">
-                            <span class="text-2xl mr-2">🏠</span>
-                            <span class="text-sm">House</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="villa" required class="mr-2">
-                            <span class="text-2xl mr-2">🏛️</span>
-                            <span class="text-sm">Villa</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="commercial" required class="mr-2">
-                            <span class="text-2xl mr-2">🏬</span>
-                            <span class="text-sm">Commercial</span>
-                        </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="farmland" required class="mr-2">
-                            <span class="text-2xl mr-2">🌾</span>
-                            <span class="text-sm">Farm Land</span>
-                        </label>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City</label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="searchCity" 
+                                    name="city" 
+                                    placeholder="Enter city" 
+                                    class="w-full pl-10 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                >
                     </div>
                 </div>
                 
-                <!-- Budget Range -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- State -->
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Minimum Budget (₹) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" name="min_budget" required 
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">State</label>
+                            <input 
+                                type="text" 
+                                id="searchState" 
+                                name="state" 
+                                placeholder="Enter state" 
+                                class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                </div>
+                
+                        <!-- Property Type -->
+                    <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Property Type</label>
+                            <div class="relative">
+                                <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                    </svg>
+                                </div>
+                                <select 
+                                    id="searchPropertyType" 
+                                    name="property_type" 
+                                    class="w-full pl-10 pr-8 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                                >
+                                    <option value="">All Types</option>
+                                    <option value="plot">Plot</option>
+                                    <option value="flat">Flat</option>
+                                    <option value="house">House</option>
+                                    <option value="farmland">Farm Land</option>
+                                </select>
+                                <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Maximum Budget (₹) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" name="max_budget" required 
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
                 </div>
                 
-                <!-- Location -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Preferred Location (Area/Locality) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="preferred_location" required placeholder="Area / Locality"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            City <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="city" required placeholder="City"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                </div>
-                
+                        <!-- Price Range -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        State (Optional)
-                    </label>
-                    <input type="text" name="state" placeholder="State"
-                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price Range</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                    <input 
+                                        type="number" 
+                                        id="searchMinPrice" 
+                                        name="min_price" 
+                                        placeholder="Min" 
+                                        class="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                    >
                 </div>
-                
-                <!-- Area Range -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Min Area (sqft) (Optional)
-                        </label>
-                        <input type="number" name="min_area" placeholder="Min Area"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                <div class="relative">
+                                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                    <input 
+                                        type="number" 
+                                        id="searchMaxPrice" 
+                                        name="max_price" 
+                                        placeholder="Max" 
+                                        class="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                    >
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Max Area (sqft) (Optional)
-                        </label>
-                        <input type="number" name="max_area" placeholder="Max Area"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                </div>
-                
-                <!-- Bedrooms & Bathrooms -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Bedrooms (Optional)
-                        </label>
-                        <input type="number" name="bedrooms" placeholder="Number of bedrooms"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Bathrooms (Optional)
-                        </label>
-                        <input type="number" name="bathrooms" placeholder="Number of bathrooms"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                     </div>
                 </div>
                 
-                <!-- Additional Requirements -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Additional Requirements (Optional)
-                    </label>
-                    <textarea name="additional_requirements" rows="4" placeholder="Describe your property in detail..."
-                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
+                        <!-- Beds & Baths -->
+                    <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Beds & Baths</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <select 
+                                    id="searchBedrooms" 
+                                    name="bedrooms" 
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                                >
+                                    <option value="">Any</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5+</option>
+                                </select>
+                                <select 
+                                    id="searchBathrooms" 
+                                    name="bathrooms" 
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                                >
+                                    <option value="">Any</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5+</option>
+                                </select>
+                    </div>
                 </div>
                 
-                <!-- Contact Information -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Contact Information</h3>
-                    
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Full Name <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="full_name" required placeholder="Your Name"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                        <!-- Search Button -->
+                        <button 
+                            type="button"
+                            onclick="searchProperties()" 
+                            class="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl text-sm"
+                        >
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            Search Properties
+                        </button>
+                        
+                        <!-- Clear Filters Button -->
+                        <button 
+                            type="button"
+                            onclick="clearFilters()" 
+                            class="w-full px-6 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                        >
+                            Clear Filters
+                        </button>
+                    </form>
+                </div>
+            </aside>
+            
+            <!-- Right Content - Properties Listings -->
+            <div class="flex-1 min-w-0">
+                <!-- Results Count -->
+                <div class="mb-6 flex items-center justify-between">
+                    <p id="resultsCount" class="text-emerald-600 dark:text-emerald-400 font-medium">
+                        <span id="resultsNumber">0</span> properties found
+                    </p>
+                </div>
+                
+                <!-- Properties Grid -->
+                <div id="propertiesGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                    <!-- Properties will be loaded here -->
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden text-center py-12">
+                    <div class="inline-loader-spinner mx-auto mb-4"></div>
+                    <p class="text-gray-600 dark:text-gray-400">Loading properties...</p>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Email <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" name="email" required placeholder="your@email.com"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                <!-- Empty State -->
+                <div id="emptyState" class="hidden text-center py-12">
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 max-w-md mx-auto">
+                        <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No Properties Found</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">No properties found. Try adjusting your filters.</p>
+                        <button 
+                            onclick="clearFilters()" 
+                            class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors text-sm"
+                        >
+                            Clear Filters
+                        </button>
+                    </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Phone <span class="text-red-500">*</span>
-                                </label>
-                                <input type="tel" name="phone" required placeholder="+91 98765 43210"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                
+                <!-- Pagination -->
+                <div id="pagination" class="hidden mt-8 flex justify-center items-center space-x-2">
+                    <!-- Pagination will be loaded here -->
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Submit Button -->
-                <button type="submit" 
-                        class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                    Submit Requirement
-                </button>
-            </form>
         </div>
     </div>
 </section>
 
 <script>
-    function resetForm() {
-        document.getElementById('successMessage').classList.add('hidden');
-        document.getElementById('requirementForm').reset();
-        document.getElementById('requirementForm').scrollIntoView({ behavior: 'smooth' });
-    }
+    let currentPage = 1;
+    const limit = 12;
     
-    document.getElementById('requirementForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData);
+    async function loadProperties(filters = {}, page = 1) {
+        const grid = document.getElementById('propertiesGrid');
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const pagination = document.getElementById('pagination');
+        
+        grid.classList.add('hidden');
+        loadingState.classList.remove('hidden');
+        emptyState.classList.add('hidden');
+        pagination.classList.add('hidden');
         
         try {
-            const response = await fetch('/api/enquiries', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...data,
-                    enquiry_type: 'buy',
-                    property_type: data.property_type,
-                    min_budget: parseFloat(data.min_budget),
-                    max_budget: parseFloat(data.max_budget),
-                    min_area: data.min_area ? parseFloat(data.min_area) : null,
-                    max_area: data.max_area ? parseFloat(data.max_area) : null,
-                    bedrooms: data.bedrooms ? parseInt(data.bedrooms) : null,
-                    bathrooms: data.bathrooms ? parseInt(data.bathrooms) : null
-                })
+            const params = new URLSearchParams();
+            // Only show approved properties
+            params.append('status', 'approved');
+            Object.keys(filters).forEach(key => {
+                if (filters[key]) {
+                    params.append(key, filters[key]);
+                }
             });
+            params.append('page', page);
+            params.append('limit', limit);
             
-            const result = await response.json();
+            const apiUrl = '/api/properties?' + params.toString();
+            console.log('Fetching properties from:', apiUrl);
+            const response = await fetch(apiUrl);
+            const data = await response.json();
             
-            if (response.ok) {
-                document.getElementById('requirementForm').style.display = 'none';
-                document.getElementById('successMessage').classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            console.log('Properties API response:', data);
+            console.log('Properties count:', data.properties ? data.properties.length : 0);
+            
+            loadingState.classList.add('hidden');
+            
+            // Update results count
+            const totalCount = data.pagination ? data.pagination.total : (data.properties ? data.properties.length : 0);
+            document.getElementById('resultsNumber').textContent = totalCount;
+            
+            if (data.properties && data.properties.length > 0) {
+                grid.classList.remove('hidden');
+                // Simple placeholder image as data URI (SVG) - using double quotes to avoid syntax errors
+                const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+                
+                grid.innerHTML = data.properties.map(function(property) {
+                    const propertyImage = (property.images && property.images[0]) ? property.images[0] : placeholderImage;
+                    const propertyType = property.bedrooms ? property.bedrooms + 'BHK' : (property.property_type || '').charAt(0).toUpperCase() + (property.property_type || '').slice(1);
+                    let location = (property.locality || '') + ', ' + (property.city || '');
+                    location = location.trim();
+                    if (location.startsWith(',')) {
+                        location = location.substring(1).trim();
+                    }
+                    if (location.endsWith(',')) {
+                        location = location.substring(0, location.length - 1).trim();
+                    }
+                    
+                    const escapedTitle = (property.title || '').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+                    return '<div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">' +
+                        '<img src="' + propertyImage + '" alt="' + escapedTitle + '" class="w-full h-48 object-cover bg-gray-200 dark:bg-gray-700" onerror="this.src=&quot;' + placeholderImage + '&quot;">' +
+                        '<div class="p-4">' +
+                            '<div class="flex items-center justify-between mb-2">' +
+                                '<span class="text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-1 rounded">' + propertyType + '</span>' +
+                                '<span class="text-xs text-gray-500 dark:text-gray-400">' + (property.area_sqft ? property.area_sqft + ' sqft' : '') + '</span>' +
+                            '</div>' +
+                            '<h3 class="text-lg sm:text-xl font-semibold mb-2 text-gray-900 dark:text-white line-clamp-2">' + property.title + '</h3>' +
+                            '<p class="text-sm text-gray-600 dark:text-gray-400 mb-3">' + location + '</p>' +
+                            '<p class="text-xl sm:text-2xl font-bold text-emerald-600 dark:text-emerald-400 mb-3">₹' + property.price.toLocaleString() + '</p>' +
+                            '<a href="/properties/' + property.id + '" class="block text-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors text-sm sm:text-base">' +
+                                'View Details' +
+                            '</a>' +
+                        '</div>' +
+                    '</div>';
+                }).join('');
+                
+                // Add pagination if needed
+                if (data.pagination && data.pagination.pages > 1) {
+                    pagination.classList.remove('hidden');
+                    let paginationHTML = '<div class="flex items-center space-x-2">';
+                    
+                    if (data.pagination.page > 1) {
+                        paginationHTML += '<button onclick="loadProperties(getFilters(), ' + (data.pagination.page - 1) + ')" class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Previous</button>';
+                    }
+                    
+                    for (let i = 1; i <= data.pagination.pages; i++) {
+                        if (i === 1 || i === data.pagination.pages || (i >= data.pagination.page - 1 && i <= data.pagination.page + 1)) {
+                            paginationHTML += '<button onclick="loadProperties(getFilters(), ' + i + ')" class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg ' + (i === data.pagination.page ? 'bg-emerald-600 text-white border-emerald-600' : 'hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300') + '">' + i + '</button>';
+                        } else if (i === data.pagination.page - 2 || i === data.pagination.page + 2) {
+                            paginationHTML += '<span class="px-3 py-2 text-sm text-gray-500">...</span>';
+                        }
+                    }
+                    
+                    if (data.pagination.page < data.pagination.pages) {
+                        paginationHTML += '<button onclick="loadProperties(getFilters(), ' + (data.pagination.page + 1) + ')" class="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">Next</button>';
+                    }
+                    
+                    paginationHTML += '</div>';
+                    pagination.innerHTML = paginationHTML;
+                }
             } else {
-                showError(result.error || 'Failed to submit requirement');
+                document.getElementById('resultsNumber').textContent = '0';
+                emptyState.classList.remove('hidden');
             }
         } catch (error) {
-            console.error('Error:', error);
-            showError('An error occurred. Please try again.');
+            console.error('Error loading properties:', error);
+            loadingState.classList.add('hidden');
+            emptyState.classList.remove('hidden');
+            if (typeof window.showError === 'function') {
+                window.showError('Failed to load properties. Please try again.');
+            }
         }
+    }
+    
+    function getFilters() {
+        // Check if mobile or desktop filters exist
+        const isMobile = window.innerWidth < 1024;
+        
+        if (isMobile) {
+            return {
+                city: document.getElementById('mobileSearchCity')?.value || '',
+                state: document.getElementById('mobileSearchState')?.value || '',
+                property_type: document.getElementById('mobileSearchPropertyType')?.value || '',
+                min_price: document.getElementById('mobileSearchMinPrice')?.value || '',
+                max_price: document.getElementById('mobileSearchMaxPrice')?.value || '',
+                bedrooms: document.getElementById('mobileSearchBedrooms')?.value || '',
+                bathrooms: document.getElementById('mobileSearchBathrooms')?.value || ''
+            };
+        } else {
+            return {
+                city: document.getElementById('searchCity')?.value || '',
+                state: document.getElementById('searchState')?.value || '',
+                property_type: document.getElementById('searchPropertyType')?.value || '',
+                min_price: document.getElementById('searchMinPrice')?.value || '',
+                max_price: document.getElementById('searchMaxPrice')?.value || '',
+                bedrooms: document.getElementById('searchBedrooms')?.value || '',
+                bathrooms: document.getElementById('searchBathrooms')?.value || ''
+            };
+        }
+    }
+    
+    function syncFilters() {
+        // Sync mobile filters with desktop filters
+        const mobileCity = document.getElementById('mobileSearchCity');
+        const desktopCity = document.getElementById('searchCity');
+        if (mobileCity && desktopCity) {
+            mobileCity.value = desktopCity.value;
+            desktopCity.value = mobileCity.value;
+        }
+        
+        const mobileState = document.getElementById('mobileSearchState');
+        const desktopState = document.getElementById('searchState');
+        if (mobileState && desktopState) {
+            mobileState.value = desktopState.value;
+            desktopState.value = mobileState.value;
+        }
+        
+        const mobilePropertyType = document.getElementById('mobileSearchPropertyType');
+        const desktopPropertyType = document.getElementById('searchPropertyType');
+        if (mobilePropertyType && desktopPropertyType) {
+            mobilePropertyType.value = desktopPropertyType.value;
+            desktopPropertyType.value = mobilePropertyType.value;
+        }
+        
+        const mobileMinPrice = document.getElementById('mobileSearchMinPrice');
+        const desktopMinPrice = document.getElementById('searchMinPrice');
+        if (mobileMinPrice && desktopMinPrice) {
+            mobileMinPrice.value = desktopMinPrice.value;
+            desktopMinPrice.value = mobileMinPrice.value;
+        }
+        
+        const mobileMaxPrice = document.getElementById('mobileSearchMaxPrice');
+        const desktopMaxPrice = document.getElementById('searchMaxPrice');
+        if (mobileMaxPrice && desktopMaxPrice) {
+            mobileMaxPrice.value = desktopMaxPrice.value;
+            desktopMaxPrice.value = mobileMaxPrice.value;
+        }
+        
+        const mobileBedrooms = document.getElementById('mobileSearchBedrooms');
+        const desktopBedrooms = document.getElementById('searchBedrooms');
+        if (mobileBedrooms && desktopBedrooms) {
+            mobileBedrooms.value = desktopBedrooms.value;
+            desktopBedrooms.value = mobileBedrooms.value;
+        }
+        
+        const mobileBathrooms = document.getElementById('mobileSearchBathrooms');
+        const desktopBathrooms = document.getElementById('searchBathrooms');
+        if (mobileBathrooms && desktopBathrooms) {
+            mobileBathrooms.value = desktopBathrooms.value;
+            desktopBathrooms.value = mobileBathrooms.value;
+        }
+    }
+    
+    function clearFilters() {
+        document.getElementById('searchCity').value = '';
+        document.getElementById('searchState').value = '';
+        document.getElementById('searchPropertyType').value = '';
+        document.getElementById('searchMinPrice').value = '';
+        document.getElementById('searchMaxPrice').value = '';
+        document.getElementById('searchBedrooms').value = '';
+        document.getElementById('searchBathrooms').value = '';
+        currentPage = 1;
+        loadProperties({}, 1);
+    }
+    
+    function clearMobileFilters() {
+        document.getElementById('mobileSearchCity').value = '';
+        document.getElementById('mobileSearchState').value = '';
+        document.getElementById('mobileSearchPropertyType').value = '';
+        document.getElementById('mobileSearchMinPrice').value = '';
+        document.getElementById('mobileSearchMaxPrice').value = '';
+        document.getElementById('mobileSearchBedrooms').value = '';
+        document.getElementById('mobileSearchBathrooms').value = '';
+        syncFilters();
+        currentPage = 1;
+        loadProperties({}, 1);
+        closeFiltersModal();
+    }
+    
+    function searchProperties() {
+        syncFilters();
+        currentPage = 1;
+        loadProperties(getFilters(), 1);
+    }
+    
+    // Load properties on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProperties();
     });
+    
+    // Mobile Filters Modal Functions
+    function openFiltersModal() {
+        syncFilters(); // Sync desktop filters to mobile when opening
+        document.getElementById('filtersModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeFiltersModal() {
+        document.getElementById('filtersModal').classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+    
+    function applyFilters() {
+        syncFilters(); // Sync mobile filters to desktop before applying
+        searchProperties();
+        closeFiltersModal();
+    }
 </script>
+
+<!-- Mobile Filters Modal -->
+<div id="filtersModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onclick="closeFiltersModal()"></div>
+    
+    <!-- Modal Content -->
+    <div class="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-0">
+        <div class="relative transform overflow-hidden rounded-t-2xl sm:rounded-2xl bg-white dark:bg-gray-800 shadow-xl transition-all w-full sm:max-w-lg sm:my-8 max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+                <div class="flex items-center">
+                    <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
+                    <h2 class="text-xl font-display font-bold text-gray-900 dark:text-white">Filters</h2>
+                </div>
+                <button 
+                    onclick="closeFiltersModal()"
+                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                >
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body - Filters Form (Same as desktop) -->
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6">
+                <form id="mobileSearchForm" class="space-y-4">
+                    <!-- City -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">City</label>
+                        <div class="relative">
+                            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="mobileSearchCity" 
+                                name="city" 
+                                placeholder="Enter city" 
+                                class="w-full pl-10 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- State -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">State</label>
+                        <input 
+                            type="text" 
+                            id="mobileSearchState" 
+                            name="state" 
+                            placeholder="Enter state" 
+                            class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                        >
+                    </div>
+                    
+                    <!-- Property Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Property Type</label>
+                        <div class="relative">
+                            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                            </div>
+                            <select 
+                                id="mobileSearchPropertyType" 
+                                name="property_type" 
+                                class="w-full pl-10 pr-8 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                            >
+                                <option value="">All Types</option>
+                                <option value="land">Land</option>
+                                <option value="plot">Plot</option>
+                                <option value="flat">Flat</option>
+                                <option value="house">House</option>
+                                <option value="villa">Villa</option>
+                                <option value="apartment">Apartment</option>
+                                <option value="commercial">Commercial</option>
+                                <option value="farmland">Farm Land</option>
+                            </select>
+                            <div class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Range -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price Range</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                <input 
+                                    type="number" 
+                                    id="mobileSearchMinPrice" 
+                                    name="min_price" 
+                                    placeholder="Min" 
+                                    class="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                >
+                            </div>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">₹</span>
+                                <input 
+                                    type="number" 
+                                    id="mobileSearchMaxPrice" 
+                                    name="max_price" 
+                                    placeholder="Max" 
+                                    class="w-full pl-8 pr-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Beds & Baths -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Beds & Baths</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <select 
+                                id="mobileSearchBedrooms" 
+                                name="bedrooms" 
+                                class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                            >
+                                <option value="">Any</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                            </select>
+                            <select 
+                                id="mobileSearchBathrooms" 
+                                name="bathrooms" 
+                                class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 appearance-none"
+                            >
+                                <option value="">Any</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5+</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-4 sm:p-6 border-t border-gray-200 dark:border-gray-700 space-y-3">
+                <button 
+                    type="button"
+                    onclick="applyFilters()" 
+                    class="w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-700 hover:to-emerald-600 text-white rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl text-sm"
+                >
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    Apply Filters
+                </button>
+                <button 
+                    type="button"
+                    onclick="clearMobileFilters()" 
+                    class="w-full px-6 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                >
+                    Clear Filters
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 ` }) %>

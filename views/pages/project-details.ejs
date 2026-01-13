@@ -1,0 +1,172 @@
+<%- include('../layouts/main', { content: `
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="projectHero" class="text-center">
+            <p class="text-gray-600 dark:text-gray-400">Loading project details...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Project Details Section -->
+<section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="projectDetails" class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sm:p-8">
+            <p class="text-center text-gray-600 dark:text-gray-400">Loading project details...</p>
+        </div>
+    </div>
+</section>
+
+<script>
+    async function loadProjectDetails() {
+        // Get projectId from URL path
+        const pathParts = window.location.pathname.split('/');
+        const projectId = pathParts[pathParts.length - 1];
+        
+        const container = document.getElementById('projectDetails');
+        const heroContainer = document.getElementById('projectHero');
+        
+        try {
+            const response = await fetch('/api/projects/' + projectId);
+            
+            if (!response.ok) {
+                if (response.status === 404) {
+                    container.innerHTML = '<div class="text-center py-12"><h2 class="section-title text-2xl text-gray-900 dark:text-white mb-4">Project Not Found</h2><p class="text-gray-600 dark:text-gray-400 mb-6">The project you are looking for does not exist.</p><a href="/projects" class="button-text inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Back to Projects</a></div>';
+                    heroContainer.innerHTML = '<h1 class="section-title text-4xl text-gray-900 dark:text-white">Project Not Found</h1>';
+                    if (typeof window.hidePageLoader === 'function') {
+                        window.hidePageLoader();
+                    }
+                    return;
+                }
+                throw new Error('Failed to load project');
+            }
+            
+            const data = await response.json();
+            
+            // Simple placeholder image as data URI (SVG)
+            const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+            
+            if (data.project) {
+                const p = data.project;
+                const mainImage = (p.images && p.images[0]) ? p.images[0] : placeholderImage;
+                const imageGallery = (p.images || []).slice(1, 5).map(function(img) {
+                    return '<img src="' + img + '" alt="' + (p.name || 'Project') + '" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity" onclick="changeMainImage(this.src)">';
+                }).join('');
+                
+                const statusClass = p.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                                   p.status === 'ongoing' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' : 
+                                   'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300';
+                
+                const priceRange = p.price_range_min && p.price_range_max ? 
+                    '₹' + p.price_range_min.toLocaleString() + ' - ₹' + p.price_range_max.toLocaleString() : 
+                    (p.price_range_min ? '₹' + p.price_range_min.toLocaleString() + '+' : 
+                     (p.price_range_max ? 'Up to ₹' + p.price_range_max.toLocaleString() : 'Price on request'));
+                
+                const highlightsHTML = (p.highlights || []).length > 0 ? 
+                    '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Highlights</h3><ul class="space-y-2">' +
+                    p.highlights.map(function(highlight) {
+                        return '<li class="flex items-start"><svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="text-sm sm:text-base text-gray-700 dark:text-gray-300">' + highlight + '</span></li>';
+                    }).join('') +
+                    '</ul></div>' : '';
+                
+                const amenitiesHTML = (p.amenities || []).length > 0 ?
+                    '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Amenities</h3><div class="flex flex-wrap gap-2">' +
+                    p.amenities.map(function(amenity) {
+                        return '<span class="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-lg">' + amenity + '</span>';
+                    }).join('') +
+                    '</div></div>' : '';
+                
+                // Update hero
+                heroContainer.innerHTML = '<span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">' + 
+                    (p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1) : 'Project') + 
+                    '</span>' +
+                    '<h1 class="section-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-3 sm:mb-4 px-2 text-gray-900 dark:text-white">' + 
+                    (p.name || 'Project') + 
+                    '</h1>' +
+                    '<p class="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">' + 
+                    (p.location || '') + ', ' + (p.city || '') + ', ' + (p.state || '') + 
+                    '</p>';
+                
+                // Update details
+                container.innerHTML = 
+                    '<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">' +
+                        '<div>' +
+                            '<img id="mainProjectImage" src="' + mainImage + '" alt="' + (p.name || 'Project') + '" class="w-full h-48 sm:h-64 lg:h-80 xl:h-96 object-cover rounded-lg mb-4">' +
+                            (imageGallery ? '<div class="grid grid-cols-4 gap-2">' + imageGallery + '</div>' : '') +
+                        '</div>' +
+                        '<div>' +
+                            '<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2">' +
+                                '<h2 class="section-title text-xl sm:text-2xl lg:text-3xl text-gray-900 dark:text-white">' + (p.name || 'Project') + '</h2>' +
+                                '<span class="px-2 sm:px-3 py-1 text-xs sm:text-sm font-semibold rounded ' + statusClass + ' self-start sm:self-auto">' + 
+                                    (p.status ? p.status.charAt(0).toUpperCase() + p.status.slice(1) : 'Upcoming') + 
+                                '</span>' +
+                            '</div>' +
+                            '<p class="text-lg sm:text-xl lg:text-2xl text-emerald-600 dark:text-emerald-400 font-bold mb-4 sm:mb-6">' + priceRange + '</p>' +
+                            
+                            (p.total_units || p.available_units ? '<div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6">' +
+                                (p.total_units ? '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"><p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Total Units</p><p class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">' + p.total_units + '</p></div>' : '') +
+                                (p.available_units ? '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"><p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Available Units</p><p class="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">' + p.available_units + '</p></div>' : '') +
+                            '</div>' : '') +
+                            
+                            '<div class="mb-4 sm:mb-6">' +
+                                '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2"><strong class="text-gray-900 dark:text-white">Location:</strong> ' + 
+                                    (p.location || '') + ', ' + (p.city || '') + ', ' + (p.state || '') + 
+                                '</p>' +
+                                (p.completion_date ? '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-2"><strong class="text-gray-900 dark:text-white">Completion Date:</strong> ' + new Date(p.completion_date).toLocaleDateString() + '</p>' : '') +
+                                (p.possession_date ? '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300"><strong class="text-gray-900 dark:text-white">Possession Date:</strong> ' + new Date(p.possession_date).toLocaleDateString() + '</p>' : '') +
+                            '</div>' +
+                            
+                            (p.description ? '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2">Description</h3><p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">' + p.description + '</p></div>' : '') +
+                            
+                            highlightsHTML +
+                            amenitiesHTML +
+                            
+                            '<div class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700">' +
+                                '<a href="/contact" class="button-text block w-full text-center px-4 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">' +
+                                    'Enquire About This Project' +
+                                '</a>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                
+                // Hide loader
+                if (typeof window.hidePageLoader === 'function') {
+                    window.hidePageLoader();
+                }
+            } else {
+                container.innerHTML = '<div class="text-center py-12"><h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Project Not Found</h2><p class="text-gray-600 dark:text-gray-400 mb-6">The project you are looking for does not exist.</p><a href="/projects" class="inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">Back to Projects</a></div>';
+                heroContainer.innerHTML = '<h1 class="text-4xl font-display font-bold text-gray-900 dark:text-white">Project Not Found</h1>';
+                if (typeof window.hidePageLoader === 'function') {
+                    window.hidePageLoader();
+                }
+            }
+        } catch (error) {
+            console.error('Error loading project:', error);
+            container.innerHTML = '<div class="text-center py-12"><h2 class="section-title text-2xl text-red-600 dark:text-red-400 mb-4">Error Loading Project</h2><p class="text-gray-600 dark:text-gray-400 mb-6">' + (error.message || 'An error occurred while loading the project details.') + '</p><a href="/projects" class="button-text inline-block px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">Back to Projects</a></div>';
+            heroContainer.innerHTML = '<h1 class="section-title text-4xl text-gray-900 dark:text-white">Error</h1>';
+            if (typeof window.hidePageLoader === 'function') {
+                window.hidePageLoader();
+            }
+        }
+    }
+    
+    function changeMainImage(newSrc) {
+        document.getElementById('mainProjectImage').src = newSrc;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        loadProjectDetails();
+    });
+    
+    // Handle browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            if (typeof window.hidePageLoader === 'function') {
+                window.hidePageLoader();
+            }
+            loadProjectDetails();
+        }
+    });
+</script>
+` }) %>
+

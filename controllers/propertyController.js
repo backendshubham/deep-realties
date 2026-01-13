@@ -81,8 +81,35 @@ const getProperty = async (req, res, next) => {
 
 const createProperty = async (req, res, next) => {
   try {
+    // Validate and parse numeric fields
+    const price = parseFloat(req.body.price);
+    const areaSqft = parseFloat(req.body.area_sqft);
+    
+    // Check for valid numeric values
+    if (isNaN(price) || price <= 0) {
+      return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number.' });
+    }
+    if (isNaN(areaSqft) || areaSqft <= 0) {
+      return res.status(400).json({ error: 'Invalid area. Please enter a valid positive number.' });
+    }
+    
+    // Check for numeric field overflow
+    // price: decimal(15, 2) - max value: 999999999999999.99
+    const MAX_PRICE = 999999999999999.99;
+    if (price > MAX_PRICE) {
+      return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
+    }
+    
+    // area_sqft: decimal(10, 2) - max value: 99999999.99
+    const MAX_AREA = 99999999.99;
+    if (areaSqft > MAX_AREA) {
+      return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
+    }
+    
     const propertyData = {
       ...req.body,
+      price: price,
+      area_sqft: areaSqft,
       seller_id: req.user?.id || null,
       amenities: Array.isArray(req.body.amenities) ? req.body.amenities : [],
       images: Array.isArray(req.body.images) ? req.body.images : []
@@ -93,14 +120,46 @@ const createProperty = async (req, res, next) => {
       propertyData.parking = propertyData.parking_available;
       delete propertyData.parking_available;
     }
+    
+    // Validate optional integer fields
+    if (req.body.bedrooms !== undefined && req.body.bedrooms !== null && req.body.bedrooms !== '') {
+      const bedrooms = parseInt(req.body.bedrooms);
+      if (!isNaN(bedrooms) && bedrooms >= 0) {
+        propertyData.bedrooms = bedrooms;
+      }
+    }
+    if (req.body.bathrooms !== undefined && req.body.bathrooms !== null && req.body.bathrooms !== '') {
+      const bathrooms = parseInt(req.body.bathrooms);
+      if (!isNaN(bathrooms) && bathrooms >= 0) {
+        propertyData.bathrooms = bathrooms;
+      }
+    }
+    if (req.body.floors !== undefined && req.body.floors !== null && req.body.floors !== '') {
+      const floors = parseInt(req.body.floors);
+      if (!isNaN(floors) && floors >= 0) {
+        propertyData.floors = floors;
+      }
+    }
+
+    // Auto-approve properties created by admin
+    if (req.user && req.user.role === 'admin') {
+      propertyData.status = 'approved';
+      propertyData.is_active = true;
+    } else {
+      // Regular users: default to pending
+      propertyData.status = propertyData.status || 'pending';
+    }
 
     const [property] = await db('properties')
       .insert(propertyData)
       .returning('*');
 
     res.status(201).json({
-      message: 'Property created successfully',
-      property: formatProperty(property)
+      message: req.user && req.user.role === 'admin' 
+        ? 'Property listed successfully and approved automatically' 
+        : 'Property created successfully',
+      property: formatProperty(property),
+      autoApproved: req.user && req.user.role === 'admin'
     });
   } catch (error) {
     next(error);
