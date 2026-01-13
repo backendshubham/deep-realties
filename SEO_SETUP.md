@@ -19,10 +19,10 @@ The website has been fully optimized for search engines with:
 Add the following to your `.env` file:
 
 ```env
-BASE_URL=https://deeprealties.com
+BASE_URL=https://deeprealties.in
 ```
 
-If not set, it defaults to `https://deeprealties.com`. Update this to match your actual domain.
+If not set, it defaults to `https://deeprealties.in`. Update this to match your actual domain.
 
 ## SEO Features Implemented
 

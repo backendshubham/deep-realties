@@ -10,7 +10,7 @@ exports.seed = async function(knex) {
   await knex('users').insert([
     {
       id: '00000000-0000-0000-0000-000000000001',
-      email: 'admin@deeprealties.com',
+      email: 'admin@deeprealties.in',
       password_hash: hashedPassword,
       full_name: 'Admin User',
       role: 'admin',

@@ -9,7 +9,7 @@ Disallow: /register
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://deeprealties.com/sitemap.xml
+Sitemap: https://deeprealties.in/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

@@ -75,7 +75,7 @@ const buildPropertyQuery = (query, filters) => {
 
 // SEO Helper Functions
 const getBaseUrl = () => {
-  return process.env.BASE_URL || 'https://deeprealties.com';
+  return process.env.BASE_URL || 'https://deeprealties.in';
 };
 
 const getDefaultSEO = () => {

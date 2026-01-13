@@ -106,7 +106,7 @@ Before you begin, ensure you have the following installed:
    ```
 
    **Default Admin Credentials:**
-   - Email: `admin@deeprealties.com`
+   - Email: `admin@deeprealties.in`
    - Password: `Admin@123` (change after first login)
 
 7. **Start the development server**
