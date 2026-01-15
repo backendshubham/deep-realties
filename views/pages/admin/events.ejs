@@ -224,11 +224,12 @@
     </div>
 </div>
 
-<!-- Google Maps API - Loaded asynchronously for better performance -->
+<!-- Google Maps API - Loaded asynchronously with initMap callback for reliable initialization -->
 <script>
     (function() {
         const script = document.createElement('script');
-        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDB_pCpkj2IdboZ44RnAxR-5kzXzJoh2Xk&libraries=places&loading=async';
+        // Use callback=initMap so Google Maps calls our initializer once it's fully loaded
+        script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyDB_pCpkj2IdboZ44RnAxR-5kzXzJoh2Xk&libraries=places&callback=initMap&loading=async';
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);
@@ -460,6 +461,9 @@
             }
         }
     }
+
+    // Expose initMap globally so Google Maps callback can access it
+    window.initMap = initMap;
 
     function showMapError(message) {
         const mapContainer = document.getElementById('mapContainer');

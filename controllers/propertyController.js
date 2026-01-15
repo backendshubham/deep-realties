@@ -81,39 +81,115 @@ const getProperty = async (req, res, next) => {
 
 const createProperty = async (req, res, next) => {
   try {
-    // Validate and parse numeric fields
-    const price = parseFloat(req.body.price);
-    const areaSqft = parseFloat(req.body.area_sqft);
+    const propertyType = req.body.property_type;
     
-    // Check for valid numeric values
-    if (isNaN(price) || price <= 0) {
-      return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number.' });
-    }
-    if (isNaN(areaSqft) || areaSqft <= 0) {
-      return res.status(400).json({ error: 'Invalid area. Please enter a valid positive number.' });
+    // Validate and parse numeric fields based on property type
+    let price, areaSqft;
+    
+    // Price validation: required for all except farmland
+    if (propertyType === 'farmland') {
+      // Price is optional for farmland (uses price_per_bigha)
+      // But database requires a price, so calculate from price_per_bigha * farmland_bigha if available
+      if (req.body.price !== undefined && req.body.price !== null && req.body.price !== '') {
+        price = parseFloat(req.body.price);
+        if (isNaN(price) || price < 0) {
+          return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number if provided.' });
+        }
+        const MAX_PRICE = 999999999999999.99;
+        if (price > MAX_PRICE) {
+          return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
+        }
+      } else {
+        // Calculate price from price_per_bigha * farmland_bigha if both are provided
+        const pricePerBigha = req.body.price_per_bigha ? parseFloat(req.body.price_per_bigha) : null;
+        const farmlandBigha = req.body.farmland_bigha ? parseFloat(req.body.farmland_bigha) : null;
+        if (pricePerBigha && farmlandBigha && !isNaN(pricePerBigha) && !isNaN(farmlandBigha) && pricePerBigha > 0 && farmlandBigha > 0) {
+          price = pricePerBigha * farmlandBigha;
+        } else {
+          // Default to 0 if price cannot be calculated (database requires NOT NULL)
+          price = 0;
+        }
+      }
+    } else {
+      // Price is required for all other property types
+      price = parseFloat(req.body.price);
+      if (isNaN(price) || price <= 0) {
+        return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number.' });
+      }
+      const MAX_PRICE = 999999999999999.99;
+      if (price > MAX_PRICE) {
+        return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
+      }
     }
     
-    // Check for numeric field overflow
-    // price: decimal(15, 2) - max value: 999999999999999.99
-    const MAX_PRICE = 999999999999999.99;
-    if (price > MAX_PRICE) {
-      return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
-    }
-    
-    // area_sqft: decimal(10, 2) - max value: 99999999.99
-    const MAX_AREA = 99999999.99;
-    if (areaSqft > MAX_AREA) {
-      return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
+    // Area validation: required for all except plot and farmland
+    if (propertyType === 'plot' || propertyType === 'farmland') {
+      // Area is optional for plot (uses plot_total_area) and farmland (uses bigha/acre)
+      if (req.body.area_sqft !== undefined && req.body.area_sqft !== null && req.body.area_sqft !== '') {
+        areaSqft = parseFloat(req.body.area_sqft);
+        if (isNaN(areaSqft) || areaSqft < 0) {
+          return res.status(400).json({ error: 'Invalid area. Please enter a valid positive number if provided.' });
+        }
+        const MAX_AREA = 99999999.99;
+        if (areaSqft > MAX_AREA) {
+          return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
+        }
+      }
+    } else {
+      // Area is required for all other property types
+      areaSqft = parseFloat(req.body.area_sqft);
+      if (isNaN(areaSqft) || areaSqft <= 0) {
+        return res.status(400).json({ error: 'Invalid area. Please enter a valid positive number.' });
+      }
+      const MAX_AREA = 99999999.99;
+      if (areaSqft > MAX_AREA) {
+        return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
+      }
     }
     
     const propertyData = {
       ...req.body,
-      price: price,
-      area_sqft: areaSqft,
       seller_id: req.user?.id || null,
       amenities: Array.isArray(req.body.amenities) ? req.body.amenities : [],
       images: Array.isArray(req.body.images) ? req.body.images : []
     };
+    
+    // Always set price and area_sqft (database requires NOT NULL)
+    // Price is already calculated/validated above
+    propertyData.price = price !== undefined && !isNaN(price) ? price : 0;
+    
+    // For area_sqft, set default if not provided for plot/farmland
+    if (areaSqft !== undefined && !isNaN(areaSqft)) {
+      propertyData.area_sqft = areaSqft;
+    } else if (propertyType === 'plot' || propertyType === 'farmland') {
+      // Set default area_sqft for plot/farmland if not provided (database requires NOT NULL)
+      propertyData.area_sqft = 0;
+    }
+    
+    // Remove undefined/null/empty farmland and plot fields if not applicable
+    if (propertyType !== 'farmland') {
+      delete propertyData.farmland_bigha;
+      delete propertyData.farmland_acre;
+      delete propertyData.price_per_bigha;
+    } else {
+      // For farmland, only include if they have values
+      if (!propertyData.farmland_bigha || propertyData.farmland_bigha === '') delete propertyData.farmland_bigha;
+      if (!propertyData.farmland_acre || propertyData.farmland_acre === '') delete propertyData.farmland_acre;
+      if (!propertyData.price_per_bigha || propertyData.price_per_bigha === '') delete propertyData.price_per_bigha;
+    }
+    
+    if (propertyType !== 'plot') {
+      delete propertyData.plot_total_area;
+      delete propertyData.plot_length;
+      delete propertyData.plot_width;
+      delete propertyData.number_of_plots;
+    } else {
+      // For plot, only include if they have values
+      if (!propertyData.plot_total_area || propertyData.plot_total_area === '') delete propertyData.plot_total_area;
+      if (!propertyData.plot_length || propertyData.plot_length === '') delete propertyData.plot_length;
+      if (!propertyData.plot_width || propertyData.plot_width === '') delete propertyData.plot_width;
+      if (!propertyData.number_of_plots || propertyData.number_of_plots === '') delete propertyData.number_of_plots;
+    }
 
     // Map parking_available to parking (database column name)
     if (propertyData.parking_available !== undefined) {
@@ -149,6 +225,13 @@ const createProperty = async (req, res, next) => {
       // Regular users: default to pending
       propertyData.status = propertyData.status || 'pending';
     }
+
+    // Remove undefined, null, and empty string values to avoid database errors
+    Object.keys(propertyData).forEach(key => {
+      if (propertyData[key] === undefined || propertyData[key] === null || propertyData[key] === '') {
+        delete propertyData[key];
+      }
+    });
 
     const [property] = await db('properties')
       .insert(propertyData)
