@@ -112,12 +112,25 @@ const toggleUserStatus = async (req, res, next) => {
 
 const listAllProperties = async (req, res, next) => {
   try {
-    const { status, page = 1, limit = 50 } = req.query;
+    const { status, page = 1, limit = 50, search } = req.query;
 
     // Build base query function for reuse
     const buildBaseQuery = () => {
       let baseQuery = db('properties');
       if (status) baseQuery = baseQuery.where('status', status);
+      
+      // Add search functionality
+      if (search) {
+        const searchTerm = `%${search}%`;
+        baseQuery = baseQuery.where(function() {
+          this.where('title', 'ilike', searchTerm)
+            .orWhere('locality', 'ilike', searchTerm)
+            .orWhere('city', 'ilike', searchTerm)
+            .orWhere('state', 'ilike', searchTerm)
+            .orWhere(db.raw("CAST(id AS TEXT)"), 'ilike', searchTerm); // Search by property ID (full or partial)
+        });
+      }
+      
       return baseQuery;
     };
 
