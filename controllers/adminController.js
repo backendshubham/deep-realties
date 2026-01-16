@@ -294,6 +294,14 @@ const getPropertyById = async (req, res, next) => {
       return res.status(404).json({ error: 'Property not found' });
     }
 
+    // Fetch images from property_images table
+    const propertyImages = await db('property_images')
+      .where({ property_id: id })
+      .orderBy('display_order', 'asc')
+      .select('image_url');
+
+    property.images = propertyImages.map(img => img.image_url);
+
     res.json({ property });
   } catch (error) {
     next(error);

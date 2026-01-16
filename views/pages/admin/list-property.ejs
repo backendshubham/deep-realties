@@ -332,15 +332,24 @@
                 </div>
                 
                 <!-- Contact Information -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                <div id="contactInfoSection" class="border-t border-gray-200 dark:border-gray-700 pt-6">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Contact Information</h3>
                     
-                    <div class="space-y-4">
+                    <div id="loggedInUserInfo" class="hidden mb-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
+                        <p class="text-sm text-emerald-700 dark:text-emerald-300 font-medium">
+                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            Using your account information (you can edit if needed)
+                        </p>
+                    </div>
+                    
+                    <div id="contactFields" class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Full Name <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="full_name" required placeholder="Your Name"
+                            <input type="text" id="full_name" name="full_name" required placeholder="Your Name"
                                    class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                         </div>
                         
@@ -349,15 +358,72 @@
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Email <span class="text-red-500">*</span>
                                 </label>
-                                <input type="email" name="email" required placeholder="your@email.com"
+                                <input type="email" id="email" name="email" required placeholder="your@email.com"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                     Phone <span class="text-red-500">*</span>
                                 </label>
-                                <input type="tel" name="phone" required placeholder="+91 98765 43210"
+                                <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"
                                        class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Property Images Upload Section -->
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Property Images</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Upload 1-5 high-quality images. <span class="text-red-500">*</span> At least 1 image is required.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <!-- Drag and Drop Upload Area -->
+                        <div id="dropZone" class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center transition-all hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 cursor-pointer">
+                            <input type="file" 
+                                   id="propertyImages" 
+                                   name="property_images" 
+                                   accept="image/*" 
+                                   multiple 
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                            
+                            <div id="dropZoneContent" class="pointer-events-none">
+                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                                <p class="text-base font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                    <span class="text-emerald-600 dark:text-emerald-400">Click to upload</span> or drag and drop
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    PNG, JPG, WebP up to 5MB each (Max 5 images)
+                                </p>
+                            </div>
+                            
+                            <div id="dropZoneActive" class="hidden pointer-events-none">
+                                <svg class="mx-auto h-12 w-12 text-emerald-500 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="text-base font-medium text-emerald-600 dark:text-emerald-400">
+                                    Drop images here
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Preview Container -->
+                        <div id="imagePreviewContainer" class="hidden">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Selected Images <span id="selectedImageCount" class="text-emerald-600 dark:text-emerald-400">0</span>/5
+                                </p>
+                                <button type="button" id="clearAllImages" class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium hidden">
+                                    Clear All
+                                </button>
+                            </div>
+                            <div id="imageGrid" class="flex flex-wrap gap-3">
                             </div>
                         </div>
                     </div>
@@ -584,7 +650,57 @@
                 this.dataset.wasFocused = 'false';
             });
         }
+        
+        // Load user info on page load
+        loadUserInfo();
     });
+    
+    // Load user information if logged in and pre-fill contact fields
+    async function loadUserInfo() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return; // User not logged in, show empty contact fields
+        }
+        
+        try {
+            const response = await fetch('/api/auth/me', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.user) {
+                    const user = data.user;
+                    
+                    // Show info message
+                    const loggedInUserInfo = document.getElementById('loggedInUserInfo');
+                    if (loggedInUserInfo) {
+                        loggedInUserInfo.classList.remove('hidden');
+                    }
+                    
+                    // Pre-fill contact fields with user data
+                    const fullNameInput = document.getElementById('full_name');
+                    const emailInput = document.getElementById('email');
+                    const phoneInput = document.getElementById('phone');
+                    
+                    if (fullNameInput && user.full_name) {
+                        fullNameInput.value = user.full_name;
+                    }
+                    if (emailInput && user.email) {
+                        emailInput.value = user.email;
+                    }
+                    if (phoneInput && user.phone) {
+                        phoneInput.value = user.phone;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error loading user info:', error);
+            // If error, fields remain empty for user to fill
+        }
+    }
     
     function resetForm() {
         document.getElementById('successMessage').classList.add('hidden');
@@ -592,11 +708,199 @@
         document.getElementById('sellFormContainer').style.display = 'block';
         document.getElementById('sellForm').reset();
         togglePropertyFields(); // Reset field visibility
+        // Reset image previews
+        selectedFiles = [];
+        if (typeof updateImagePreviews === 'function') {
+            updateImagePreviews();
+        }
+        if (typeof updateFileInput === 'function') {
+            updateFileInput();
+        }
         document.getElementById('sellForm').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Image upload with drag and drop functionality
+    const imageInput = document.getElementById('propertyImages');
+    const dropZone = document.getElementById('dropZone');
+    const dropZoneContent = document.getElementById('dropZoneContent');
+    const dropZoneActive = document.getElementById('dropZoneActive');
+    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+    const imageGrid = document.getElementById('imageGrid');
+    const selectedImageCount = document.getElementById('selectedImageCount');
+    const clearAllBtn = document.getElementById('clearAllImages');
+    let selectedFiles = [];
+    
+    function updateImagePreviews() {
+        if (selectedFiles.length === 0) {
+            imagePreviewContainer.classList.add('hidden');
+            clearAllBtn.classList.add('hidden');
+            return;
+        }
+        
+        imagePreviewContainer.classList.remove('hidden');
+        imageGrid.innerHTML = '';
+        selectedImageCount.textContent = selectedFiles.length;
+        
+        if (selectedFiles.length > 0) {
+            clearAllBtn.classList.remove('hidden');
+        }
+        
+        selectedFiles.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const previewCard = document.createElement('div');
+                previewCard.className = 'relative';
+                previewCard.dataset.index = index;
+                
+                previewCard.innerHTML = 
+                    '<div class="relative w-24 h-24 rounded-lg overflow-visible border-2 border-gray-200 dark:border-gray-700">' +
+                        '<img src="' + e.target.result + '" alt="Preview ' + (index + 1) + '" class="w-full h-full object-cover rounded-lg">' +
+                        '<button type="button" class="remove-image-btn absolute -top-1 -right-1 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg border-2 border-white dark:border-gray-800 transition-all transform hover:scale-110 z-20 cursor-pointer" data-index="' + index + '" aria-label="Remove image" title="Remove image">' +
+                            '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">' +
+                                '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>' +
+                            '</svg>' +
+                        '</button>' +
+                        '<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs font-bold px-1 py-0.5 text-center rounded-b-lg">' +
+                            (index + 1) +
+                        '</div>' +
+                    '</div>';
+                
+                imageGrid.appendChild(previewCard);
+                
+                // Add remove button event listener
+                const removeBtn = previewCard.querySelector('.remove-image-btn');
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const idx = parseInt(this.dataset.index);
+                    removeImage(idx);
+                });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        updateImagePreviews();
+        updateFileInput();
+    }
+    
+    function updateFileInput() {
+        if (!imageInput) return;
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            try {
+                dataTransfer.items.add(file);
+            } catch (e) {
+                console.error('Error adding file to DataTransfer:', e);
+            }
+        });
+        imageInput.files = dataTransfer.files;
+        
+        // Trigger change event to ensure form validation recognizes the files
+        const changeEvent = new Event('change', { bubbles: true });
+        imageInput.dispatchEvent(changeEvent);
+    }
+    
+    function validateAndAddFiles(files) {
+        const fileArray = Array.from(files);
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const validFiles = [];
+        const errors = [];
+        
+        // Check total count
+        if (selectedFiles.length + fileArray.length > 5) {
+            const errorMsg = 'Maximum 5 images allowed. You can only add ' + (5 - selectedFiles.length) + ' more image(s).';
+            if (typeof window.showError === 'function') {
+                window.showError(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+            return;
+        }
+        
+        fileArray.forEach(file => {
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                errors.push(file.name + ' is not an image file.');
+                return;
+            }
+            
+            // Check file size
+            if (file.size > maxSize) {
+                errors.push(file.name + ' exceeds 5MB size limit.');
+                return;
+            }
+            
+            validFiles.push(file);
+        });
+        
+        if (errors.length > 0) {
+            const errorMsg = errors.join(' ');
+            if (typeof window.showError === 'function') {
+                window.showError(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+        }
+        
+        if (validFiles.length > 0) {
+            selectedFiles = selectedFiles.concat(validFiles);
+            updateImagePreviews();
+            updateFileInput();
+        }
+    }
+    
+    if (imageInput && dropZone) {
+        // File input change
+        imageInput.addEventListener('change', function(e) {
+            validateAndAddFiles(e.target.files);
+            this.value = ''; // Reset input to allow selecting same file again
+        });
+        
+        // Drag and drop
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZoneContent.classList.add('hidden');
+            dropZoneActive.classList.remove('hidden');
+            dropZone.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
+        });
+        
+        dropZone.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZoneContent.classList.remove('hidden');
+            dropZoneActive.classList.add('hidden');
+            dropZone.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
+        });
+        
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropZoneContent.classList.remove('hidden');
+            dropZoneActive.classList.add('hidden');
+            dropZone.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                validateAndAddFiles(files);
+            }
+        });
+        
+        // Clear all button
+        if (clearAllBtn) {
+            clearAllBtn.addEventListener('click', function() {
+                selectedFiles = [];
+                updateImagePreviews();
+                updateFileInput();
+            });
+        }
     }
     
     document.getElementById('sellForm').addEventListener('submit', async (e) => {
         e.preventDefault();
+        e.stopPropagation();
         const formData = new FormData(e.target);
         const data = {};
         
@@ -764,10 +1068,70 @@
         data.amenities = formData.getAll('amenities');
         data.parking_available = formData.get('parking_available') === 'on';
         
-        // Get contact info
-        data.full_name = formData.get('full_name');
-        data.email = formData.get('email');
-        data.phone = formData.get('phone');
+        // Get contact info - use logged-in user's info if available, otherwise use form data
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const userResponse = await fetch('/api/auth/me', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (userResponse.ok) {
+                    const userData = await userResponse.json();
+                    if (userData.user) {
+                        // Use logged-in user's information
+                        data.full_name = userData.user.full_name || formData.get('full_name');
+                        data.email = userData.user.email || formData.get('email');
+                        data.phone = userData.user.phone || formData.get('phone');
+                    } else {
+                        // Fallback to form data
+                        data.full_name = formData.get('full_name');
+                        data.email = formData.get('email');
+                        data.phone = formData.get('phone');
+                    }
+                } else {
+                    // Fallback to form data
+                    data.full_name = formData.get('full_name');
+                    data.email = formData.get('email');
+                    data.phone = formData.get('phone');
+                }
+            } catch (error) {
+                // Fallback to form data
+                data.full_name = formData.get('full_name');
+                data.email = formData.get('email');
+                data.phone = formData.get('phone');
+            }
+        } else {
+            // User not logged in, use form data
+            data.full_name = formData.get('full_name');
+            data.email = formData.get('email');
+            data.phone = formData.get('phone');
+        }
+        
+        // Handle image uploads - validate before proceeding
+        if (!selectedFiles || selectedFiles.length === 0) {
+            const errorMsg = 'Please upload at least 1 image of the property.';
+            if (typeof window.showError === 'function') {
+                window.showError(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+            return;
+        }
+        
+        if (selectedFiles.length > 5) {
+            const errorMsg = 'Maximum 5 images allowed.';
+            if (typeof window.showError === 'function') {
+                window.showError(errorMsg);
+            } else {
+                alert(errorMsg);
+            }
+            return;
+        }
+        
+        // Ensure file input is updated before form submission
+        if (typeof updateFileInput === 'function') {
+            updateFileInput();
+        }
         
         try {
             const token = localStorage.getItem('token');
@@ -776,6 +1140,29 @@
                 return;
             }
             
+            // First, upload images
+            const imageFormData = new FormData();
+            for (let i = 0; i < selectedFiles.length; i++) {
+                imageFormData.append('images', selectedFiles[i]);
+            }
+            
+            const uploadResponse = await fetch('/api/upload/property-images', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                },
+                body: imageFormData
+            });
+            
+            if (!uploadResponse.ok) {
+                const uploadError = await uploadResponse.json();
+                throw new Error(uploadError.error || 'Failed to upload images');
+            }
+            
+            const uploadResult = await uploadResponse.json();
+            data.images = uploadResult.images || [];
+            
+            // Then create property with image URLs
             const response = await fetch('/api/properties', {
                 method: 'POST',
                 headers: {

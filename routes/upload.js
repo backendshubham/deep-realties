@@ -56,7 +56,23 @@ router.post('/property-images', authenticateToken, uploadMultiple('images', 10),
       return res.status(400).json({ error: 'No images uploaded' });
     }
 
-    const imageUrls = req.files.map(file => file.location);
+    // Check if files were uploaded to S3 (have location property) or are in memory
+    const imageUrls = req.files.map(file => {
+      if (file.location) {
+        // File uploaded to S3
+        return file.location;
+      } else if (file.buffer) {
+        // File is in memory (AWS not configured) - return error
+        throw new Error('AWS S3 is not configured. Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in your .env file.');
+      }
+      return null;
+    }).filter(url => url !== null);
+
+    if (imageUrls.length === 0) {
+      return res.status(500).json({ 
+        error: 'AWS S3 is not configured. Please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY in your .env file.' 
+      });
+    }
 
     res.json({
       message: `${imageUrls.length} image(s) uploaded successfully`,

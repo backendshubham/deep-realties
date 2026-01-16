@@ -82,11 +82,12 @@ app.use('/api/upload', uploadRoutes);
 // Frontend Routes (will be added)
 app.get('/', (req, res) => {
   const seo = generateSEO({
-    title: 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties',
-    description: 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.',
-    keywords: 'real estate, buy property, sell property, rent property, property investment, real estate agent, property listings, homes for sale, apartments for rent, commercial property, Indore real estate',
+    title: 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties in Indore',
+    description: 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties in Indore, Madhya Pradesh. Trusted real estate platform with verified listings, expert guidance, and best market prices.',
+    keywords: 'real estate Indore, buy property Indore, sell property Indore, rent property Indore, property investment, real estate agent Indore, property listings, homes for sale Indore, apartments for rent Indore, commercial property Indore, real estate MP, property dealer Indore',
     url: getBaseUrl() + req.originalUrl,
-    canonical: getBaseUrl() + req.originalUrl
+    canonical: getBaseUrl() + req.originalUrl,
+    image: 'https://storage.googleapis.com/supersourcing-doc-dev/8d866c52-57fe-4a85-9f41-f64c074bd6ee.jpeg'
   });
   const structuredData = generateStructuredData(seo, 'RealEstateAgent');
   res.render('pages/home', { 
@@ -99,9 +100,9 @@ app.get('/', (req, res) => {
 
 app.get('/buy', (req, res) => {
   const seo = generateSEO({
-    title: 'Buy Property - Find Your Dream Home | DeepRealties',
-    description: 'Browse verified properties for sale. Find houses, apartments, villas, and commercial spaces. Expert guidance, best prices, and complete legal support.',
-    keywords: 'buy property, houses for sale, apartments for sale, villas for sale, property for sale, real estate buying, home buying, property purchase',
+    title: 'Buy Property in Indore - Find Your Dream Home | DeepRealties',
+    description: 'Browse verified properties for sale in Indore, Madhya Pradesh. Find houses, apartments, villas, plots, and commercial spaces. Expert guidance, best prices, verified listings, and complete legal support. Start your property search today.',
+    keywords: 'buy property Indore, houses for sale Indore, apartments for sale Indore, villas for sale Indore, property for sale Indore, real estate buying Indore, home buying Indore, property purchase Indore, buy house Indore, buy flat Indore, property dealer Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -116,9 +117,9 @@ app.get('/buy', (req, res) => {
 
 app.get('/properties', (req, res) => {
   const seo = generateSEO({
-    title: 'Properties for Sale - Browse All Listings | DeepRealties',
-    description: 'Browse our complete collection of verified properties for sale. Filter by location, price, type, and more. Find your perfect property today.',
-    keywords: 'properties for sale, property listings, real estate listings, homes for sale, property search, buy property online',
+    title: 'Properties for Sale in Indore - Browse All Listings | DeepRealties',
+    description: 'Browse our complete collection of verified properties for sale in Indore, MP. Filter by location, price, type, and more. Find houses, apartments, villas, plots, and commercial properties. Search and compare properties easily.',
+    keywords: 'properties for sale Indore, property listings Indore, real estate listings Indore, homes for sale Indore, property search Indore, buy property online Indore, property listings MP, real estate Indore, property search Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -151,9 +152,9 @@ app.get('/properties/:id', (req, res) => {
 
 app.get('/rent', (req, res) => {
   const seo = generateSEO({
-    title: 'Rent Properties - Find Your Perfect Rental | DeepRealties',
-    description: 'Find the perfect rental property. Browse apartments, houses, and commercial spaces for rent. Flexible options and professional property management.',
-    keywords: 'rent property, rental properties, apartments for rent, houses for rent, property rental, lease property',
+    title: 'Rent Properties in Indore - Find Your Perfect Rental | DeepRealties',
+    description: 'Find the perfect rental property in Indore, Madhya Pradesh. Browse apartments, houses, villas, and commercial spaces for rent. Flexible lease options, verified listings, and professional property management. Start your rental search today.',
+    keywords: 'rent property Indore, rental properties Indore, apartments for rent Indore, houses for rent Indore, property rental Indore, lease property Indore, rent house Indore, rent flat Indore, rental property Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -168,9 +169,9 @@ app.get('/rent', (req, res) => {
 
 app.get('/sell', (req, res) => {
   const seo = generateSEO({
-    title: 'Sell Property - Get Best Value for Your Property | DeepRealties',
-    description: 'Sell your property fast and get the best price. We use smart marketing and accurate pricing to attract the right buyers. Complete legal support included.',
-    keywords: 'sell property, list property, property sale, sell house, sell apartment, property valuation, real estate selling',
+    title: 'Sell Property in Indore - Get Best Value for Your Property | DeepRealties',
+    description: 'Sell your property fast in Indore and get the best market price. We use smart marketing, accurate property valuation, and wide reach to attract the right buyers. Complete legal support, documentation help, and hassle-free selling process included.',
+    keywords: 'sell property Indore, list property Indore, property sale Indore, sell house Indore, sell apartment Indore, property valuation Indore, real estate selling Indore, property dealer Indore, sell land Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -199,9 +200,9 @@ app.get('/admin/list-property', (req, res) => {
 
 app.get('/projects', (req, res) => {
   const seo = generateSEO({
-    title: 'Real Estate Projects - Explore Our Developments | DeepRealties',
-    description: 'Explore our premium real estate projects and developments. Modern amenities, prime locations, and excellent investment opportunities.',
-    keywords: 'real estate projects, property developments, new projects, residential projects, commercial projects, real estate investment',
+    title: 'Real Estate Projects in Indore - Explore Our Developments | DeepRealties',
+    description: 'Explore our premium real estate projects and developments in Indore, Madhya Pradesh. Modern amenities, prime locations, excellent investment opportunities, and RERA approved projects. Find your perfect home or investment property.',
+    keywords: 'real estate projects Indore, property developments Indore, new projects Indore, residential projects Indore, commercial projects Indore, real estate investment Indore, RERA approved projects Indore, new construction Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -233,9 +234,9 @@ app.get('/projects/:id', (req, res) => {
 
 app.get('/invest', (req, res) => {
   const seo = generateSEO({
-    title: 'Real Estate Investment - Grow Your Wealth | DeepRealties',
-    description: 'Invest in real estate - the safest way to build long-term wealth. Your money grows steadily and delivers high returns over the years.',
-    keywords: 'real estate investment, property investment, investment opportunities, real estate ROI, property investment returns',
+    title: 'Real Estate Investment in Indore - Grow Your Wealth | DeepRealties',
+    description: 'Invest in real estate in Indore - the safest way to build long-term wealth. Your money grows steadily and delivers high returns over the years. Expert guidance, verified investment opportunities, and complete support for property investors.',
+    keywords: 'real estate investment Indore, property investment Indore, investment opportunities Indore, real estate ROI Indore, property investment returns Indore, real estate investment MP, property investment advice Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -250,9 +251,9 @@ app.get('/invest', (req, res) => {
 
 app.get('/events', (req, res) => {
   const seo = generateSEO({
-    title: 'Real Estate Events - Property Exhibitions & Seminars | DeepRealties',
-    description: 'Stay updated with our latest real estate events, property exhibitions, and investment seminars. Join us to learn about property investment opportunities.',
-    keywords: 'real estate events, property exhibitions, real estate seminars, property investment events, real estate workshops',
+    title: 'Real Estate Events in Indore - Property Exhibitions & Seminars | DeepRealties',
+    description: 'Stay updated with our latest real estate events, property exhibitions, and investment seminars in Indore. Join us to learn about property investment opportunities, market trends, and get expert advice from industry professionals.',
+    keywords: 'real estate events Indore, property exhibitions Indore, real estate seminars Indore, property investment events Indore, real estate workshops Indore, property events MP',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -267,9 +268,9 @@ app.get('/events', (req, res) => {
 
 app.get('/about', (req, res) => {
   const seo = generateSEO({
-    title: 'About Us - Trusted Real Estate Experts | DeepRealties',
-    description: 'Learn about DeepRealties - your trusted real estate partner. 5+ years of experience, 50+ happy families, and 100+ verified properties. Expert guidance for all your property needs.',
-    keywords: 'about deeprealties, real estate company, property experts, real estate agents, property consultants',
+    title: 'About Us - Trusted Real Estate Experts in Indore | DeepRealties',
+    description: 'Learn about DeepRealties - your trusted real estate partner in Indore, Madhya Pradesh. Experienced team, verified properties, and expert guidance for buying, selling, and renting properties. Your trusted partner for all real estate needs.',
+    keywords: 'about deeprealties, real estate company Indore, property experts Indore, real estate agents Indore, property consultants Indore, real estate company MP, property dealer Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -284,9 +285,9 @@ app.get('/about', (req, res) => {
 
 app.get('/contact', (req, res) => {
   const seo = generateSEO({
-    title: 'Contact Us - Get in Touch | DeepRealties',
-    description: 'Contact DeepRealties for all your real estate needs. Our expert team is ready to help you buy, sell, or rent properties. Get in touch today!',
-    keywords: 'contact deeprealties, real estate contact, property consultation, real estate inquiry',
+    title: 'Contact Us - Get in Touch | DeepRealties Indore',
+    description: 'Contact DeepRealties in Indore for all your real estate needs. Our expert team is ready to help you buy, sell, or rent properties. Call us at +91-8305551215 or visit our office. Get in touch today for free consultation!',
+    keywords: 'contact deeprealties, real estate contact Indore, property consultation Indore, real estate inquiry Indore, deeprealties contact number, property dealer contact Indore',
     url: getBaseUrl() + req.originalUrl,
     canonical: getBaseUrl() + req.originalUrl
   });
@@ -371,6 +372,23 @@ app.get('/admin/dashboard', (req, res) => {
   res.render('pages/admin/dashboard', { 
     title: seo.title,
     seo: seo,
+    req: req
+  });
+});
+
+app.get('/admin/properties/:id', (req, res) => {
+  const seo = generateSEO({
+    title: 'Admin - Property Details | DeepRealties',
+    description: 'View and manage property details',
+    keywords: 'admin, property management',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl
+  });
+  const structuredData = generateStructuredData(seo);
+  res.render('pages/admin/property-details', { 
+    title: seo.title,
+    seo: seo,
+    structuredData: structuredData,
     req: req
   });
 });
