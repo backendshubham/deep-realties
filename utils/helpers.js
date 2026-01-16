@@ -81,10 +81,10 @@ const getBaseUrl = () => {
 const getDefaultSEO = () => {
   const baseUrl = getBaseUrl();
   return {
-    title: 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties',
-    description: 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.',
-    keywords: 'real estate, buy property, sell property, rent property, property investment, real estate agent, property listings, homes for sale, apartments for rent, commercial property',
-    image: `${baseUrl}/images/og-image.jpg`,
+    title: 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties in Indore',
+    description: 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties in Indore, Madhya Pradesh. Trusted real estate platform with verified listings, expert guidance, and best market prices.',
+    keywords: 'real estate Indore, buy property Indore, sell property Indore, rent property Indore, property investment, real estate agent Indore, property listings, homes for sale Indore, apartments for rent Indore, commercial property Indore, real estate MP, property dealer Indore',
+    image: 'https://storage.googleapis.com/supersourcing-doc-dev/8d866c52-57fe-4a85-9f41-f64c074bd6ee.jpeg',
     url: baseUrl,
     type: 'website',
     siteName: 'DeepRealties',
@@ -140,17 +140,76 @@ const generateStructuredData = (seo, pageType = 'WebSite') => {
         url: baseUrl,
         logo: {
           '@type': 'ImageObject',
-          url: `${baseUrl}/images/logo.png`
+          url: `${baseUrl}/images/logo.png`,
+          width: 512,
+          height: 512
         },
+        image: seo.image || `${baseUrl}/images/logo.png`,
+        description: 'DeepRealties - Premium Real Estate Services in Indore, Madhya Pradesh. Buy, sell, and rent properties with expert guidance.',
         sameAs: [
           'https://www.instagram.com/deeprealties'
         ],
-        contactPoint: {
-          '@type': 'ContactPoint',
-          telephone: '+91-8305551215',
-          contactType: 'Customer Service',
-          areaServed: 'IN',
-          availableLanguage: 'English'
+        contactPoint: [
+          {
+            '@type': 'ContactPoint',
+            telephone: '+91-8305551215',
+            contactType: 'Customer Service',
+            areaServed: 'IN',
+            availableLanguage: ['English', 'Hindi']
+          },
+          {
+            '@type': 'ContactPoint',
+            email: 'deeprealties@gmail.com',
+            contactType: 'Customer Service',
+            areaServed: 'IN',
+            availableLanguage: ['English', 'Hindi']
+          }
+        ],
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Indore',
+          addressRegion: 'Madhya Pradesh',
+          postalCode: '452001',
+          addressCountry: 'IN'
+        },
+        foundingDate: '2019',
+        numberOfEmployees: {
+          '@type': 'QuantitativeValue',
+          value: '10-50'
+        }
+      },
+      {
+        '@type': 'LocalBusiness',
+        '@id': `${baseUrl}/#localbusiness`,
+        name: 'DeepRealties',
+        image: seo.image || `${baseUrl}/images/logo.png`,
+        '@id': `${baseUrl}/#organization`,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Indore',
+          addressRegion: 'Madhya Pradesh',
+          postalCode: '452001',
+          addressCountry: 'IN'
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: '22.7196',
+          longitude: '75.8577'
+        },
+        telephone: '+91-8305551215',
+        priceRange: '$$',
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday'
+          ],
+          opens: '09:00',
+          closes: '18:00'
         }
       },
       {
@@ -169,7 +228,8 @@ const generateStructuredData = (seo, pageType = 'WebSite') => {
             urlTemplate: `${baseUrl}/properties?search={search_term_string}`
           },
           'query-input': 'required name=search_term_string'
-        }
+        },
+        inLanguage: 'en-US'
       }
     ]
   };
@@ -182,12 +242,19 @@ const generateStructuredData = (seo, pageType = 'WebSite') => {
       name: 'DeepRealties',
       description: seo.description,
       url: baseUrl,
-      image: seo.image,
+      image: seo.image || `${baseUrl}/images/logo.png`,
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Indore',
         addressRegion: 'Madhya Pradesh',
+        postalCode: '452001',
         addressCountry: 'IN'
+      },
+      telephone: '+91-8305551215',
+      email: 'deeprealties@gmail.com',
+      areaServed: {
+        '@type': 'City',
+        name: 'Indore'
       }
     });
   }

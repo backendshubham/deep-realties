@@ -42,8 +42,33 @@ const listProperties = async (req, res, next) => {
 
     const total = await buildPropertyQuery(db('properties'), filters).count('* as count').first();
 
+    // Fetch images for all properties
+    const propertyIds = properties.map(p => p.id);
+    const allImages = propertyIds.length > 0 
+      ? await db('property_images')
+          .whereIn('property_id', propertyIds)
+          .orderBy('display_order', 'asc')
+          .select('property_id', 'image_url')
+      : [];
+
+    // Group images by property_id
+    const imagesByProperty = {};
+    allImages.forEach(img => {
+      if (!imagesByProperty[img.property_id]) {
+        imagesByProperty[img.property_id] = [];
+      }
+      imagesByProperty[img.property_id].push(img.image_url);
+    });
+
+    // Add images to each property
+    const propertiesWithImages = properties.map(property => {
+      const formatted = formatProperty(property);
+      formatted.images = imagesByProperty[property.id] || [];
+      return formatted;
+    });
+
     res.json({
-      properties: properties.map(formatProperty),
+      properties: propertiesWithImages,
       pagination: {
         page: parseInt(page),
         limit: parseInt(limit),
@@ -68,12 +93,21 @@ const getProperty = async (req, res, next) => {
       return res.status(404).json({ error: 'Property not found' });
     }
 
+    // Fetch images from property_images table
+    const propertyImages = await db('property_images')
+      .where({ property_id: id })
+      .orderBy('display_order', 'asc')
+      .select('image_url');
+
     // Increment views
     await db('properties')
       .where({ id })
       .increment('views', 1);
 
-    res.json({ property: formatProperty(property) });
+    const formattedProperty = formatProperty(property);
+    formattedProperty.images = propertyImages.map(img => img.image_url);
+
+    res.json({ property: formattedProperty });
   } catch (error) {
     next(error);
   }
@@ -237,11 +271,35 @@ const createProperty = async (req, res, next) => {
       .insert(propertyData)
       .returning('*');
 
+    // Save images to property_images table
+    if (propertyData.images && Array.isArray(propertyData.images) && propertyData.images.length > 0) {
+      const imageRecords = propertyData.images.map((imageUrl, index) => ({
+        property_id: property.id,
+        image_url: imageUrl,
+        display_order: index
+      }));
+      
+      await db('property_images').insert(imageRecords);
+    }
+
+    // Fetch property with images
+    const propertyWithImages = await db('properties')
+      .where({ id: property.id })
+      .first();
+    
+    const propertyImages = await db('property_images')
+      .where({ property_id: property.id })
+      .orderBy('display_order', 'asc')
+      .select('image_url');
+    
+    const formattedProperty = formatProperty(propertyWithImages);
+    formattedProperty.images = propertyImages.map(img => img.image_url);
+
     res.status(201).json({
       message: req.user && req.user.role === 'admin' 
         ? 'Property listed successfully and approved automatically' 
         : 'Property created successfully',
-      property: formatProperty(property),
+      property: formattedProperty,
       autoApproved: req.user && req.user.role === 'admin'
     });
   } catch (error) {

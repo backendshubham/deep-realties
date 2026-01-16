@@ -216,28 +216,9 @@
         }
     }
     
-    async function viewProperty(id) {
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch('/api/admin/properties/' + id, {
-                headers: { 'Authorization': 'Bearer ' + token }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                const p = data.property;
-                const statusClass = p.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : p.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
-                
-                const content = '<div class="space-y-4"><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Title</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.title || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Property Type</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.property_type || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Price</label><p class="text-lg font-semibold text-gray-900 dark:text-white mt-1">₹' + (p.price ? p.price.toLocaleString() : '0') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Area</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.area_sqft || 'N/A') + ' sqft</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Location</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.locality || '') + ', ' + (p.city || '') + ', ' + (p.state || '') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Status</label><p class="mt-1"><span class="px-3 py-1 text-sm font-semibold rounded-full ' + statusClass + '">' + (p.status || 'pending') + '</span></p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Bedrooms</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.bedrooms || 'N/A') + '</p></div><div><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Bathrooms</label><p class="text-lg text-gray-900 dark:text-white mt-1">' + (p.bathrooms || 'N/A') + '</p></div></div><div class="mt-4"><label class="text-sm font-medium text-gray-500 dark:text-gray-400">Description</label><p class="text-gray-700 dark:text-gray-300 mt-1 whitespace-pre-wrap">' + (p.description || 'No description') + '</p></div></div>';
-                
-                showModal('Property Details', content);
-            } else {
-                showError('Failed to load property details');
-            }
-        } catch (error) {
-            console.error('Error viewing property:', error);
-            showError('Error loading property details');
-        }
+    function viewProperty(id) {
+        // Navigate to the full property details page
+        window.location.href = '/admin/properties/' + id;
     }
     
     async function deleteProperty(id) {

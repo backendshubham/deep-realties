@@ -1,0 +1,568 @@
+<%- include('../../layouts/main', { content: `
+<style>
+    .property-image-carousel {
+        position: relative;
+    }
+    
+    .carousel-container {
+        position: relative;
+    }
+    
+    .carousel-wrapper {
+        display: flex;
+        width: 100%;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .carousel-slide {
+        min-width: 100%;
+        flex-shrink: 0;
+        display: block;
+    }
+    
+    .carousel-btn {
+        z-index: 10;
+        opacity: 0.9;
+    }
+    
+    .carousel-btn:hover {
+        opacity: 1;
+    }
+    
+    .carousel-indicator {
+        cursor: pointer;
+    }
+    
+    .thumbnail-item {
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    
+    .thumbnail-item:hover {
+        opacity: 0.8;
+    }
+    
+    .thumbnail-item.active img {
+        border-color: #10b981 !important;
+    }
+</style>
+
+<div class="min-h-screen py-6 sm:py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="/admin/properties" class="inline-flex items-center text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+                Back to Properties
+            </a>
+        </div>
+
+        <div id="propertyDetails" class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 sm:p-6 lg:p-8 border border-gray-200 dark:border-gray-700">
+            <p class="text-center text-gray-600 dark:text-gray-400 text-sm sm:text-base">Loading property details...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    console.log('Admin property details script loaded');
+    
+    // Test if script is executing
+    window.testScriptExecution = function() {
+        console.log('Script execution test - SUCCESS');
+        return true;
+    };
+    testScriptExecution();
+    
+    async function loadPropertyDetails() {
+        console.log('loadPropertyDetails called');
+        console.log('Current URL:', window.location.href);
+        console.log('Pathname:', window.location.pathname);
+        
+        // Get propertyId from URL path
+        const pathParts = window.location.pathname.split('/').filter(part => part.length > 0);
+        console.log('Path parts:', pathParts);
+        const propertyId = pathParts[pathParts.length - 1];
+        console.log('Property ID:', propertyId);
+        
+        const container = document.getElementById('propertyDetails');
+        if (!container) {
+            console.error('Container not found!');
+            return;
+        }
+        const token = localStorage.getItem('token');
+        console.log('Token exists:', !!token);
+        
+        if (!propertyId || propertyId === 'properties') {
+            container.innerHTML = '<p class="text-center text-red-600">Invalid property ID</p>';
+            return;
+        }
+        
+        if (!token) {
+            window.location.href = '/login';
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + propertyId, {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                let errorMessage = 'Property not found';
+                try {
+                    const errorData = JSON.parse(errorText);
+                    errorMessage = errorData.error || errorMessage;
+                } catch (e) {
+                    errorMessage = errorText || errorMessage;
+                }
+                container.innerHTML = '<p class="text-center text-red-600">' + errorMessage + '</p>';
+                return;
+            }
+            
+            const data = await response.json();
+            
+            if (!data || !data.property) {
+                container.innerHTML = '<p class="text-center text-red-600">Invalid property data received</p>';
+                return;
+            }
+            
+            // Simple placeholder image as data URI (SVG)
+            const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+            
+            // Escape HTML to prevent syntax errors with quotes and special characters
+            function escapeHtml(text) {
+                if (!text) return '';
+                return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            
+            if (data.property) {
+                const p = data.property;
+                const images = (p.images && p.images.length > 0) ? p.images : [placeholderImage];
+                const bedroomsHtml = p.bedrooms ? '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg"><p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Bedrooms</p><p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">' + p.bedrooms + '</p></div>' : '';
+                const bathroomsHtml = p.bathrooms ? '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg"><p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Bathrooms</p><p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">' + p.bathrooms + '</p></div>' : '';
+                const description = p.description || 'No description available';
+                
+                // Status badge
+                const statusClass = p.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
+                                   p.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 
+                                   'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300';
+                
+                // Generate image carousel HTML
+                let carouselHtml = '';
+                if (images.length > 0) {
+                    const imageItems = images.map((img, index) => {
+                        const imgSrc = escapeHtml(img);
+                        const imgAlt = escapeHtml(p.title) + ' - Image ' + (index + 1);
+                        return '<div class="carousel-slide' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
+                            '<img src="' + imgSrc + '" alt="' + imgAlt + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">' +
+                            '</div>';
+                    }).join('');
+                    
+                    const thumbnailItems = images.map((img, index) => {
+                        const imgSrc = escapeHtml(img);
+                        return '<div class="thumbnail-item' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
+                            '<img src="' + imgSrc + '" alt="Thumbnail ' + (index + 1) + '" class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer border-2' + (index === 0 ? ' border-emerald-500' : ' border-transparent') + ' hover:border-emerald-400 transition-all">' +
+                            '</div>';
+                    }).join('');
+                    
+                    carouselHtml = '<div class="property-image-carousel relative">' +
+                        '<div class="carousel-container relative rounded-lg mb-4 overflow-hidden" style="width: 100%;">' +
+                            '<div class="carousel-wrapper">' +
+                                imageItems +
+                            '</div>' +
+                            (images.length > 1 ? '<button class="carousel-btn carousel-prev absolute left-2 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-2 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none" aria-label="Previous image">' +
+                                '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>' +
+                            '</button>' +
+                            '<button class="carousel-btn carousel-next absolute right-2 top-1/2 transform -translate-y-1/2 bg-white dark:bg-gray-800 text-gray-800 dark:text-white p-2 rounded-full shadow-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors focus:outline-none" aria-label="Next image">' +
+                                '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>' +
+                            '</button>' : '') +
+                            (images.length > 1 ? '<div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">' +
+                                images.map((img, index) => {
+                                    return '<button class="carousel-indicator w-2 h-2 rounded-full' + (index === 0 ? ' bg-white' : ' bg-white/50') + ' transition-all" data-slide="' + index + '" aria-label="Go to slide ' + (index + 1) + '"></button>';
+                                }).join('') +
+                            '</div>' : '') +
+                        '</div>' +
+                        (images.length > 1 ? '<div class="thumbnail-container grid grid-cols-4 sm:grid-cols-5 gap-2">' +
+                            thumbnailItems +
+                        '</div>' : '') +
+                    '</div>';
+                } else {
+                    carouselHtml = '<img src="' + placeholderImage + '" alt="' + p.title + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">';
+                }
+                
+                // Admin action buttons - using data attributes to avoid quote issues
+                const escapedId = escapeHtml(p.id);
+                const approveBtn = p.status !== 'approved' ? 
+                    '<button data-action="approve" data-property-id="' + escapedId + '" class="admin-action-btn px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm sm:text-base">Approve</button>' : '';
+                
+                const rejectBtn = p.status !== 'rejected' ? 
+                    '<button data-action="reject" data-property-id="' + escapedId + '" class="admin-action-btn px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm sm:text-base">Reject</button>' : '';
+                
+                const deleteBtn = '<button data-action="delete" data-property-id="' + escapedId + '" class="admin-action-btn px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm sm:text-base">Delete</button>';
+                
+                const statusSelect = '<select id="statusSelect" data-property-id="' + escapedId + '" class="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg border border-gray-300 dark:border-gray-600 text-sm sm:text-base">' +
+                    '<option value="pending"' + (p.status === 'pending' ? ' selected' : '') + '>Pending</option>' +
+                    '<option value="approved"' + (p.status === 'approved' ? ' selected' : '') + '>Approved</option>' +
+                    '<option value="rejected"' + (p.status === 'rejected' ? ' selected' : '') + '>Rejected</option>' +
+                '</select>';
+                
+                container.innerHTML = 
+                    '<div class="space-y-6">' +
+                        '<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">' +
+                            '<div>' +
+                                '<h1 class="section-title text-2xl sm:text-3xl mb-2 text-gray-900 dark:text-white">' + escapeHtml(p.title || 'Untitled Property') + '</h1>' +
+                                '<p class="text-sm text-gray-500 dark:text-gray-400">Property ID: ' + escapeHtml(p.id.substring(0, 8)) + '...</p>' +
+                            '</div>' +
+                            '<div class="flex items-center gap-2">' +
+                                '<span class="px-3 py-1 text-sm font-semibold rounded-full ' + statusClass + '">' + (p.status || 'pending') + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">' +
+                            '<div>' +
+                                carouselHtml +
+                            '</div>' +
+                            '<div>' +
+                                '<p class="text-lg sm:text-xl text-emerald-600 dark:text-emerald-400 font-bold mb-4 sm:mb-6">' +
+                                    '₹' + (p.price ? p.price.toLocaleString() : '0') +
+                                '</p>' +
+                                '<div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6">' +
+                                    '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg">' +
+                                        '<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Area</p>' +
+                                        '<p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">' + (p.area_sqft || 'N/A') + ' sqft</p>' +
+                                    '</div>' +
+                                    '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg">' +
+                                        '<p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Type</p>' +
+                                        '<p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white capitalize">' + (p.property_type || 'N/A') + '</p>' +
+                                    '</div>' +
+                                    bedroomsHtml +
+                                    bathroomsHtml +
+                                '</div>' +
+                                '<div class="mb-6 space-y-3">' +
+                                    '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300">' +
+                                        '<strong class="text-gray-900 dark:text-white">Location:</strong> ' + (p.locality || '') + ', ' + (p.city || '') + ', ' + (p.state || '') +
+                                    '</p>' +
+                                    (p.google_earth_link ? '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300">' +
+                                        '<strong class="text-gray-900 dark:text-white">Google Earth Link:</strong> ' +
+                                        '<a href="' + p.google_earth_link + '" target="_blank" class="text-emerald-600 dark:text-emerald-400 hover:underline">View on Google Earth</a>' +
+                                    '</p>' : '') +
+                                '</div>' +
+                                '<div class="mb-6">' +
+                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h3>' +
+                                    '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">' + escapeHtml(description) + '</p>' +
+                                '</div>' +
+                                '<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">' +
+                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Admin Actions</h3>' +
+                                    '<div class="flex flex-wrap gap-3">' +
+                                        '<div class="flex-1 min-w-[150px]">' +
+                                            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>' +
+                                            statusSelect +
+                                        '</div>' +
+                                        '<div class="flex gap-2 items-end">' +
+                                            approveBtn +
+                                            rejectBtn +
+                                            deleteBtn +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                                '<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">' +
+                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Property Information</h3>' +
+                                    '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">' +
+                                        '<div><span class="text-gray-600 dark:text-gray-400">Created:</span> <span class="text-gray-900 dark:text-white">' + (p.created_at ? new Date(p.created_at).toLocaleDateString() : 'N/A') + '</span></div>' +
+                                        '<div><span class="text-gray-600 dark:text-gray-400">Updated:</span> <span class="text-gray-900 dark:text-white">' + (p.updated_at ? new Date(p.updated_at).toLocaleDateString() : 'N/A') + '</span></div>' +
+                                        '<div><span class="text-gray-600 dark:text-gray-400">Views:</span> <span class="text-gray-900 dark:text-white">' + (p.views || 0) + '</span></div>' +
+                                        '<div><span class="text-gray-600 dark:text-gray-400">Active:</span> <span class="text-gray-900 dark:text-white">' + (p.is_active ? 'Yes' : 'No') + '</span></div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>';
+                
+                // Initialize carousel if images exist
+                if (images.length > 1) {
+                    setTimeout(initializeCarousel, 100);
+                }
+                
+                // Attach event listeners to admin action buttons after HTML is inserted
+                setTimeout(function() {
+                    // Approve/Reject/Delete buttons
+                    const actionButtons = container.querySelectorAll('.admin-action-btn');
+                    actionButtons.forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            const action = this.getAttribute('data-action');
+                            const propertyId = this.getAttribute('data-property-id');
+                            if (action === 'approve') {
+                                approveProperty(propertyId);
+                            } else if (action === 'reject') {
+                                rejectProperty(propertyId);
+                            } else if (action === 'delete') {
+                                deleteProperty(propertyId);
+                            }
+                        });
+                    });
+                    
+                    // Status select
+                    const statusSelect = container.querySelector('#statusSelect');
+                    if (statusSelect) {
+                        statusSelect.addEventListener('change', function() {
+                            const propertyId = this.getAttribute('data-property-id');
+                            updateStatus(propertyId);
+                        });
+                    }
+                }, 200);
+            } else {
+                container.innerHTML = '<p class="text-center text-red-600">Property not found</p>';
+            }
+        } catch (error) {
+            console.error('Error loading property details:', error);
+            container.innerHTML = '<div class="text-center text-red-600">' +
+                '<p class="mb-2">Error loading property details</p>' +
+                '<p class="text-sm text-gray-500">' + (error.message || 'Unknown error') + '</p>' +
+                '</div>';
+        }
+    }
+    
+    async function approveProperty(id) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Please login to continue');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id + '/approve', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                showSuccess('Property approved successfully');
+                setTimeout(() => {
+                    loadPropertyDetails();
+                }, 1000);
+            } else {
+                showError(result.error || 'Failed to approve property');
+            }
+        } catch (error) {
+            console.error('Error approving property:', error);
+            showError('Error approving property');
+        }
+    }
+    
+    async function rejectProperty(id) {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Please login to continue');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id + '/reject', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                showSuccess('Property rejected successfully');
+                setTimeout(() => {
+                    loadPropertyDetails();
+                }, 1000);
+            } else {
+                showError(result.error || 'Failed to reject property');
+            }
+        } catch (error) {
+            console.error('Error rejecting property:', error);
+            showError('Error rejecting property');
+        }
+    }
+    
+    async function updateStatus(id) {
+        const token = localStorage.getItem('token');
+        const statusSelect = document.getElementById('statusSelect');
+        const status = statusSelect.value;
+        
+        if (!token) {
+            showError('Please login to continue');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id + '/status', {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: status })
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                showSuccess('Status updated successfully');
+                setTimeout(() => {
+                    loadPropertyDetails();
+                }, 1000);
+            } else {
+                showError(result.error || 'Failed to update status');
+                // Revert select
+                loadPropertyDetails();
+            }
+        } catch (error) {
+            console.error('Error updating status:', error);
+            showError('Error updating status');
+            loadPropertyDetails();
+        }
+    }
+    
+    async function deleteProperty(id) {
+        if (!confirm('Are you sure you want to delete this property? This action cannot be undone.')) {
+            return;
+        }
+        
+        const token = localStorage.getItem('token');
+        if (!token) {
+            showError('Please login to continue');
+            return;
+        }
+        
+        try {
+            const response = await fetch('/api/admin/properties/' + id, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                showSuccess('Property deleted successfully');
+                setTimeout(() => {
+                    window.location.href = '/admin/properties';
+                }, 1000);
+            } else {
+                showError(result.error || 'Failed to delete property');
+            }
+        } catch (error) {
+            console.error('Error deleting property:', error);
+            showError('Error deleting property');
+        }
+    }
+    
+    let currentSlide = 0;
+    let totalSlides = 0;
+    
+    function initializeCarousel() {
+        const carousel = document.querySelector('.property-image-carousel');
+        if (!carousel) return;
+        
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const thumbnails = carousel.querySelectorAll('.thumbnail-item');
+        const indicators = carousel.querySelectorAll('.carousel-indicator');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+        const wrapper = carousel.querySelector('.carousel-wrapper');
+        
+        totalSlides = slides.length;
+        currentSlide = 0;
+        
+        // Initialize carousel position
+        if (wrapper) {
+            wrapper.style.transform = 'translateX(0%)';
+        }
+        
+        function updateCarousel() {
+            // Update main image - move wrapper to show current slide
+            if (wrapper) {
+                wrapper.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+            }
+            
+            // Update thumbnails
+            thumbnails.forEach((thumb, index) => {
+                if (index === currentSlide) {
+                    thumb.classList.add('active');
+                    thumb.querySelector('img').classList.add('border-emerald-500');
+                    thumb.querySelector('img').classList.remove('border-transparent');
+                } else {
+                    thumb.classList.remove('active');
+                    thumb.querySelector('img').classList.remove('border-emerald-500');
+                    thumb.querySelector('img').classList.add('border-transparent');
+                }
+            });
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlide) {
+                    indicator.classList.add('bg-white');
+                    indicator.classList.remove('bg-white/50');
+                } else {
+                    indicator.classList.remove('bg-white');
+                    indicator.classList.add('bg-white/50');
+                }
+            });
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }
+        
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+        
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
+        }
+        
+        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+        
+        thumbnails.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => goToSlide(index));
+        });
+        
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => goToSlide(index));
+        });
+        
+        // Initialize carousel to show first slide
+        updateCarousel();
+    }
+    
+    // Load property details when page is ready
+    (function() {
+        console.log('Script executing, readyState:', document.readyState);
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOM loaded, fetching property details...');
+                loadPropertyDetails();
+            });
+        } else {
+            console.log('DOM already loaded, fetching property details...');
+            // Use setTimeout to ensure DOM is fully ready
+            setTimeout(function() {
+                loadPropertyDetails();
+            }, 100);
+        }
+    })();
+</script>
+` }) %>
+
