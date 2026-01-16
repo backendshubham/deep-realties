@@ -147,6 +147,28 @@
                 const bathroomsHtml = p.bathrooms ? '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg"><p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">Bathrooms</p><p class="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">' + p.bathrooms + '</p></div>' : '';
                 const description = p.description || 'No description available';
                 
+                // Calculate price display based on property type
+                let priceDisplay = '₹' + (p.price ? p.price.toLocaleString() : '0');
+                const propertyType = p.property_type ? p.property_type.toLowerCase() : '';
+                
+                if (propertyType === 'plot' && p.price) {
+                    // For plots: show price per sqft (price is already per sqft)
+                    priceDisplay = '₹' + (p.price ? p.price.toLocaleString() : '0') + ' / per sq feet';
+                } else if (propertyType === 'farmland') {
+                    // For farmland: show price per bigha if available
+                    if (p.price_per_bigha) {
+                        priceDisplay = '₹' + p.price_per_bigha.toLocaleString() + ' / per bigha';
+                    } else if (p.farmland_bigha && p.farmland_bigha > 0 && p.price) {
+                        // Calculate from total price and bigha
+                        const pricePerBigha = Math.round(p.price / p.farmland_bigha);
+                        priceDisplay = '₹' + pricePerBigha.toLocaleString() + ' / per bigha';
+                    } else {
+                        // Fallback to total price if bigha info not available
+                        priceDisplay = '₹' + (p.price ? p.price.toLocaleString() : '0');
+                    }
+                }
+                // For flat and house: show total price (default)
+                
                 // Status badge
                 const statusClass = p.status === 'approved' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
                                    p.status === 'pending' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' : 
@@ -214,9 +236,13 @@
                 container.innerHTML = 
                     '<div class="space-y-6">' +
                         '<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-gray-200 dark:border-gray-700">' +
-                            '<div>' +
+                            '<div class="flex-1">' +
+                                '<div class="mb-3">' +
+                                    '<span class="inline-block px-3 py-1 text-xs font-semibold bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-full">' +
+                                        'Property ID: ' + escapeHtml(p.id.substring(0, 8).toUpperCase()) +
+                                    '</span>' +
+                                '</div>' +
                                 '<h1 class="section-title text-2xl sm:text-3xl mb-2 text-gray-900 dark:text-white">' + escapeHtml(p.title || 'Untitled Property') + '</h1>' +
-                                '<p class="text-sm text-gray-500 dark:text-gray-400">Property ID: ' + escapeHtml(p.id.substring(0, 8)) + '...</p>' +
                             '</div>' +
                             '<div class="flex items-center gap-2">' +
                                 '<span class="px-3 py-1 text-sm font-semibold rounded-full ' + statusClass + '">' + (p.status || 'pending') + '</span>' +
@@ -227,8 +253,9 @@
                                 carouselHtml +
                             '</div>' +
                             '<div>' +
+                                (propertyType === 'plot' ? '<p class="text-sm text-gray-600 dark:text-gray-400 mb-1">per sq feet</p>' : '') +
                                 '<p class="text-lg sm:text-xl text-emerald-600 dark:text-emerald-400 font-bold mb-4 sm:mb-6">' +
-                                    '₹' + (p.price ? p.price.toLocaleString() : '0') +
+                                    priceDisplay +
                                 '</p>' +
                                 '<div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6">' +
                                     '<div class="p-3 sm:p-4 bg-gray-50 dark:bg-gray-600 rounded-lg">' +
