@@ -332,6 +332,22 @@ app.get('/register', (req, res) => {
   });
 });
 
+app.get('/verify-email', (req, res) => {
+  const seo = generateSEO({
+    title: 'Verify Email - DeepRealties',
+    description: 'Verify your email address to activate your DeepRealties account.',
+    keywords: 'verify email, email otp, account verification',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, follow'
+  });
+  res.render('pages/verify-email', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
 app.get('/dashboard', (req, res) => {
   const seo = generateSEO({
     title: 'Dashboard - Manage Your Account | DeepRealties',

@@ -147,13 +147,13 @@ const createProperty = async (req, res, next) => {
     } else {
       // Price is required for all other property types
       price = parseFloat(req.body.price);
-      if (isNaN(price) || price <= 0) {
-        return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number.' });
-      }
-      const MAX_PRICE = 999999999999999.99;
-      if (price > MAX_PRICE) {
-        return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
-      }
+    if (isNaN(price) || price <= 0) {
+      return res.status(400).json({ error: 'Invalid price. Please enter a valid positive number.' });
+    }
+    const MAX_PRICE = 999999999999999.99;
+    if (price > MAX_PRICE) {
+      return res.status(400).json({ error: `Price exceeds maximum allowed value (₹${MAX_PRICE.toLocaleString()}).` });
+    }
     }
     
     // Area validation: required for all except plot and farmland
@@ -175,9 +175,9 @@ const createProperty = async (req, res, next) => {
       if (isNaN(areaSqft) || areaSqft <= 0) {
         return res.status(400).json({ error: 'Invalid area. Please enter a valid positive number.' });
       }
-      const MAX_AREA = 99999999.99;
-      if (areaSqft > MAX_AREA) {
-        return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
+    const MAX_AREA = 99999999.99;
+    if (areaSqft > MAX_AREA) {
+      return res.status(400).json({ error: `Area exceeds maximum allowed value (${MAX_AREA.toLocaleString()} sqft).` });
       }
     }
     

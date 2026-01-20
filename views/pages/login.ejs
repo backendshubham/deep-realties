@@ -187,7 +187,14 @@
                     }
                 }, 500);
             } else {
-                showError(result.error || 'Invalid email or password. Please try again.');
+                if (result && result.code === 'EMAIL_NOT_VERIFIED') {
+                    showError(result.error || 'Please verify your email.');
+                    setTimeout(() => {
+                        window.location.href = '/verify-email?email=' + encodeURIComponent(data.email || '');
+                    }, 500);
+                } else {
+                    showError(result.error || 'Invalid email or password. Please try again.');
+                }
                 setLoading(false);
             }
         } catch (error) {

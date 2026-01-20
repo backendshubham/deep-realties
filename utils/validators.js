@@ -26,6 +26,17 @@ const validateLogin = [
   handleValidationErrors
 ];
 
+const validateVerifyEmail = [
+  body('email').isEmail().normalizeEmail(),
+  body('otp').isLength({ min: 6, max: 6 }).isNumeric(),
+  handleValidationErrors
+];
+
+const validateResendEmailOtp = [
+  body('email').isEmail().normalizeEmail(),
+  handleValidationErrors
+];
+
 // Property validators
 const validateProperty = [
   body('title').trim().notEmpty(),
@@ -95,6 +106,8 @@ const validateContact = [
 module.exports = {
   validateRegister,
   validateLogin,
+  validateVerifyEmail,
+  validateResendEmailOtp,
   validateProperty,
   validateContact,
   handleValidationErrors
