@@ -193,7 +193,7 @@
                         window.location.href = '/verify-email?email=' + encodeURIComponent(data.email || '');
                     }, 500);
                 } else {
-                    showError(result.error || 'Invalid email or password. Please try again.');
+                showError(result.error || 'Invalid email or password. Please try again.');
                 }
                 setLoading(false);
             }

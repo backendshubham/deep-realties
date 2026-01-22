@@ -355,7 +355,13 @@
                 document.getElementById('successMessage').classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             } else {
-                showError(result.error || 'Failed to send message');
+                // Show detailed validation errors if available
+                let errorMessage = result.error || 'Failed to send message';
+                if (result.details && Array.isArray(result.details) && result.details.length > 0) {
+                    const errorDetails = result.details.map(err => err.msg || err.message).join(', ');
+                    errorMessage = errorDetails;
+                }
+                showError(errorMessage);
             }
         } catch (error) {
             console.error('Error:', error);
