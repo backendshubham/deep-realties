@@ -87,7 +87,7 @@ const validateProperty = [
 const validateContact = [
   body('full_name').trim().notEmpty(),
   body('email').isEmail().normalizeEmail(),
-  body('subject').trim().notEmpty(),
+  body('subject').optional().trim(),
   body('message').trim().notEmpty(),
   handleValidationErrors
 ];

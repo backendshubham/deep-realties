@@ -8,7 +8,7 @@ const submitContact = async (req, res, next) => {
       full_name,
       email,
       phone,
-      subject,
+      subject: subject || 'Contact Form Inquiry',
       message
     });
 
