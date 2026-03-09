@@ -13,7 +13,7 @@ const handleValidationErrors = (req, res, next) => {
 
 // Auth validators
 const validateRegister = [
-  body('email').isEmail().normalizeEmail(),
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
   body('password').isLength({ min: 6 }),
   body('full_name').trim().notEmpty(),
   body('phone').optional().isMobilePhone(),
@@ -33,7 +33,7 @@ const validateVerifyEmail = [
 ];
 
 const validateResendEmailOtp = [
-  body('email').isEmail().normalizeEmail(),
+  body('email').isEmail().normalizeEmail().withMessage('Please provide a valid email address'),
   handleValidationErrors
 ];
 

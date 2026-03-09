@@ -61,8 +61,69 @@ function otpEmailTemplate(params) {
 </html>`;
 }
 
+function passwordResetEmailTemplate(params) {
+  const brandName = 'DeepRealties';
+  const supportEmail = 'deeprealties@gmail.com';
+  const resetUrl = escapeHtml(params.resetUrl);
+  const expiresMinutes = escapeHtml(params.expiresMinutes || '60');
+
+  return `<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${brandName} Password Reset</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f6f7fb;font-family:Arial,Helvetica,sans-serif;">
+    <div style="max-width:600px;margin:0 auto;padding:24px;">
+      <div style="background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e9ecf3;">
+        <div style="padding:20px 24px;background:#0f172a;color:#ffffff;">
+          <div style="font-size:18px;font-weight:700;letter-spacing:.2px;">${brandName}</div>
+          <div style="font-size:12px;opacity:.9;margin-top:4px;">Reset your password</div>
+        </div>
+
+        <div style="padding:24px;">
+          <p style="margin:0 0 12px;color:#0f172a;font-size:14px;line-height:22px;">
+            We received a request to reset your password. Click the button below to reset it:
+          </p>
+
+          <div style="margin:24px 0;text-align:center;">
+            <a href="${resetUrl}" style="display:inline-block;padding:14px 32px;background:#10b981;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;font-size:14px;">Reset Password</a>
+          </div>
+
+          <p style="margin:18px 0 12px;color:#334155;font-size:13px;line-height:20px;">
+            Or copy and paste this link into your browser:
+          </p>
+          <p style="margin:0 0 12px;color:#64748b;font-size:12px;line-height:18px;word-break:break-all;">
+            ${resetUrl}
+          </p>
+
+          <p style="margin:18px 0 12px;color:#334155;font-size:13px;line-height:20px;">
+            This link will expire in <b>${expiresMinutes} minutes</b>.
+          </p>
+          <p style="margin:0;color:#64748b;font-size:12px;line-height:18px;">
+            If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.
+          </p>
+        </div>
+
+        <div style="padding:16px 24px;border-top:1px solid #e9ecf3;background:#fbfcff;">
+          <div style="font-size:12px;color:#64748b;line-height:18px;">
+            Need help? Contact us at <a href="mailto:${supportEmail}" style="color:#2563eb;text-decoration:none;">${supportEmail}</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:12px;color:#94a3b8;font-size:11px;line-height:16px;">
+        © ${new Date().getFullYear()} ${brandName}. All rights reserved.
+      </div>
+    </div>
+  </body>
+</html>`;
+}
+
 module.exports = {
-  otpEmailTemplate
+  otpEmailTemplate,
+  passwordResetEmailTemplate
 };
 
 

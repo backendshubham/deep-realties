@@ -348,6 +348,23 @@ app.get('/verify-email', (req, res) => {
   });
 });
 
+app.get('/reset-password', (req, res) => {
+  console.log('Reset password route hit:', req.originalUrl);
+  const seo = generateSEO({
+    title: 'Reset Password - DeepRealties',
+    description: 'Reset your DeepRealties account password.',
+    keywords: 'reset password, forgot password, password recovery',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, follow'
+  });
+  res.render('pages/reset-password', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
 app.get('/dashboard', (req, res) => {
   const seo = generateSEO({
     title: 'Dashboard - Manage Your Account | DeepRealties',
