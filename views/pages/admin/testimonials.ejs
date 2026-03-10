@@ -1,0 +1,265 @@
+<%- include('../../layouts/main', { content: `
+<div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-display font-bold text-gray-900 dark:text-white mb-1">Manage Testimonials</h1>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Create, archive and delete client testimonials.</p>
+      </div>
+      <button id="addTestimonialBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-colors">
+        + Add Testimonial
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <input type="checkbox" id="showArchived" class="rounded border-gray-300 dark:border-gray-600 text-emerald-600 focus:ring-emerald-500">
+          <span>Show archived</span>
+        </label>
+      </div>
+
+      <div id="testimonialsLoading" class="text-center py-10">
+        <div class="inline-loader-spinner mx-auto mb-3"></div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Loading testimonials...</p>
+      </div>
+
+      <div id="testimonialsEmpty" class="hidden text-center py-10">
+        <p class="text-gray-600 dark:text-gray-400 text-sm">No testimonials found. Create your first testimonial.</p>
+      </div>
+
+      <div id="testimonialsList" class="hidden space-y-4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for add testimonial (reuse global modal) -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const listEl = document.getElementById('testimonialsList');
+    const loadingEl = document.getElementById('testimonialsLoading');
+    const emptyEl = document.getElementById('testimonialsEmpty');
+    const showArchivedEl = document.getElementById('showArchived');
+    const addBtn = document.getElementById('addTestimonialBtn');
+
+    async function loadTestimonials() {
+      loadingEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.classList.add('hidden');
+
+      const params = new URLSearchParams();
+      if (showArchivedEl.checked) {
+        params.append('include_archived', 'true');
+      }
+
+      try {
+        const res = await fetch('/api/testimonials?' + params.toString());
+        const data = await res.json();
+        const testimonials = data.testimonials || [];
+
+        loadingEl.classList.add('hidden');
+
+        if (!testimonials.length) {
+          emptyEl.classList.remove('hidden');
+          return;
+        }
+
+        listEl.classList.remove('hidden');
+        listEl.innerHTML = testimonials.map(t => {
+          const isArchived = t.is_archived;
+          return '<div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">' +
+            '<div class="flex-1">' +
+              '<p class="text-sm text-gray-600 dark:text-gray-300 italic mb-2">\"' + (t.quote || '').replace(/"/g, '&quot;') + '\"</p>' +
+              '<div class="font-semibold text-gray-900 dark:text-white">' + (t.name || '') + '</div>' +
+              '<div class="text-xs text-emerald-600 dark:text-emerald-400">' + (t.role || '') + '</div>' +
+              '<div class="mt-1 flex flex-wrap gap-3 text-xs text-gray-500 dark:text-gray-400">' +
+                (t.tag ? '<span>' + t.tag + '</span>' : '') +
+                (t.location ? '<span>' + t.location + '</span>' : '') +
+                (isArchived ? '<span class="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[11px]">Archived</span>' : '') +
+              '</div>' +
+            '</div>' +
+            '<div class="flex gap-2 sm:flex-col sm:items-stretch">' +
+              '<button data-id="' + t.id + '" class="archive-testimonial px-3 py-1.5 text-xs rounded-lg ' +
+                (isArchived ? 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200') +
+              '">' + (isArchived ? 'Unarchive' : 'Archive') + '</button>' +
+              '<button data-id="' + t.id + '" class="delete-testimonial px-3 py-1.5 text-xs rounded-lg bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-300">Delete</button>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      } catch (err) {
+        console.error('Error loading testimonials', err);
+        loadingEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        if (typeof window.showError === 'function') {
+          window.showError('Failed to load testimonials.');
+        }
+      }
+    }
+
+    async function createTestimonial(payload) {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/testimonials', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to create testimonial');
+      }
+      return data;
+    }
+
+    async function archiveToggle(id, archive) {
+      const token = localStorage.getItem('token');
+      const url = '/api/testimonials/' + id + (archive ? '/archive' : '/unarchive');
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to update testimonial');
+      }
+      return data;
+    }
+
+    async function deleteTestimonial(id) {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/testimonials/' + id, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to delete testimonial');
+      }
+      return data;
+    }
+
+    function openAddModal() {
+      const formHtml =
+        '<form id="testimonialForm" class="space-y-4">' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Client Name *</label>' +
+            '<input type="text" id="tName" required class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role / Label *</label>' +
+            '<input type="text" id="tRole" required class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div class="grid grid-cols-2 gap-3">' +
+            '<div>' +
+              '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Initials *</label>' +
+              '<input type="text" id="tInitials" maxlength="3" required class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>' +
+              '<input type="text" id="tLocation" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Tag (e.g. \"Commercial Space\")</label>' +
+            '<input type="text" id="tTag" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Quote *</label>' +
+            '<textarea id="tQuote" rows="3" required class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"></textarea>' +
+          '</div>' +
+          '<button type="submit" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold">Save Testimonial</button>' +
+        '</form>';
+
+      if (typeof window.showModal === 'function') {
+        window.showModal('Add Testimonial', formHtml);
+        const form = document.getElementById('testimonialForm');
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            await createTestimonial({
+              name: document.getElementById('tName').value.trim(),
+              role: document.getElementById('tRole').value.trim(),
+              initials: document.getElementById('tInitials').value.trim(),
+              tag: document.getElementById('tTag').value.trim(),
+              location: document.getElementById('tLocation').value.trim(),
+              quote: document.getElementById('tQuote').value.trim()
+            });
+            if (typeof window.showSuccess === 'function') {
+              window.showSuccess('Testimonial added successfully');
+            }
+            if (typeof window.closeModal === 'function') {
+              window.closeModal();
+            }
+            loadTestimonials();
+          } catch (err) {
+            console.error(err);
+            if (typeof window.showError === 'function') {
+              window.showError(err.message || 'Failed to add testimonial');
+            }
+          }
+        });
+      }
+    }
+
+    addBtn.addEventListener('click', openAddModal);
+    showArchivedEl.addEventListener('change', loadTestimonials);
+
+    listEl.addEventListener('click', function (e) {
+      const archiveBtn = e.target.closest('.archive-testimonial');
+      const deleteBtn = e.target.closest('.delete-testimonial');
+      if (archiveBtn) {
+        const id = archiveBtn.getAttribute('data-id');
+        const isCurrentlyArchived = archiveBtn.textContent.trim().toLowerCase() === 'unarchive';
+        archiveToggle(id, !isCurrentlyArchived)
+          .then(() => {
+            if (typeof window.showSuccess === 'function') {
+              window.showSuccess(isCurrentlyArchived ? 'Testimonial unarchived' : 'Testimonial archived');
+            }
+            loadTestimonials();
+          })
+          .catch(err => {
+            console.error(err);
+            if (typeof window.showError === 'function') {
+              window.showError(err.message || 'Failed to update testimonial');
+            }
+          });
+      } else if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        if (typeof window.showConfirm === 'function') {
+          window.showConfirm(
+            'Delete Testimonial',
+            'Are you sure you want to permanently delete this testimonial?',
+            async () => {
+              try {
+                await deleteTestimonial(id);
+                if (typeof window.showSuccess === 'function') {
+                  window.showSuccess('Testimonial deleted successfully');
+                }
+                loadTestimonials();
+              } catch (err) {
+                console.error(err);
+                if (typeof window.showError === 'function') {
+                  window.showError(err.message || 'Failed to delete testimonial');
+                }
+              }
+            },
+            () => {},
+            'Delete',
+            'Cancel',
+            true
+          );
+        }
+      }
+    });
+
+    loadTestimonials();
+  });
+</script>
+` }) %>
+

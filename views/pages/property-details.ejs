@@ -104,7 +104,7 @@
             if (isOwner) {
                 buttonHtml = '<div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg p-4 text-center">' +
                     '<p class="text-sm text-emerald-700 dark:text-emerald-300 font-medium mb-2">This is your property</p>' +
-                    '<a href="/my-properties" class="button-text inline-block px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">' +
+                    '<a href="/my-properties" rel="nofollow" class="button-text inline-block px-4 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors">' +
                         'Manage Property' +
                     '</a>' +
                     '</div>';
@@ -119,13 +119,13 @@
             if (images.length > 0) {
                 const imageItems = images.map((img, index) => {
                     return '<div class="carousel-slide' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
-                        '<img src="' + img + '" alt="' + p.title + ' - Image ' + (index + 1) + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">' +
+                        '<img src="' + img + '" alt="' + p.title + ' - Image ' + (index + 1) + '" width="800" height="400" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">' +
                         '</div>';
                 }).join('');
                 
                 const thumbnailItems = images.map((img, index) => {
                     return '<div class="thumbnail-item' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
-                        '<img src="' + img + '" alt="Thumbnail ' + (index + 1) + '" class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer border-2' + (index === 0 ? ' border-emerald-500' : ' border-transparent') + ' hover:border-emerald-400 transition-all">' +
+                        '<img src="' + img + '" alt="Thumbnail ' + (index + 1) + '" width="200" height="80" class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer border-2' + (index === 0 ? ' border-emerald-500' : ' border-transparent') + ' hover:border-emerald-400 transition-all">' +
                         '</div>';
                 }).join('');
                 
@@ -151,7 +151,7 @@
                     '</div>' : '') +
                 '</div>';
             } else {
-                carouselHtml = '<img src="' + placeholderImage + '" alt="' + p.title + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">';
+                carouselHtml = '<img src="' + placeholderImage + '" alt="' + p.title + '" width="800" height="400" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">';
             }
             
             container.innerHTML = 
@@ -217,7 +217,7 @@
         // Create contact details HTML with company information
         const contactHtml = '<div class="space-y-4">' +
             '<div class="text-center mb-4">' +
-                '<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Contact Us</h3>' +
+                '<h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Contact Us</h2>' +
                 '<p class="text-sm text-gray-600 dark:text-gray-400">Get in touch with DeepRealties for this property</p>' +
                 '<p class="text-xs text-gray-500 dark:text-gray-500 mt-2">Property ID: <span class="font-semibold">' + propertyId + '</span></p>' +
             '</div>' +

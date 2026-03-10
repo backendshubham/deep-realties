@@ -1,0 +1,375 @@
+{
+  "views\\pages\\about.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\contact.ejs": {
+    "headings": [
+      1,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\dashboard.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\events.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\list-property.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\projects.ejs": {
+    "headings": [
+      1,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\admin\\property-details.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\buy-property.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\contact.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\dashboard.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\events.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\home.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\invest.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\my-properties.ejs": {
+    "headings": [
+      1,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\project-details.ejs": {
+    "headings": [
+      3,
+      1,
+      3,
+      3,
+      1,
+      1,
+      3,
+      3,
+      1,
+      3,
+      1
+    ],
+    "issues": [
+      "Skip H1->H3",
+      "Skip H1->H3",
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\projects.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\properties.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\property-details.ejs": {
+    "headings": [
+      1,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\rent.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  },
+  "views\\pages\\sell.ejs": {
+    "headings": [
+      1,
+      3,
+      3,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3,
+      4,
+      4,
+      4,
+      4,
+      3,
+      3,
+      3,
+      3
+    ],
+    "issues": [
+      "Skip H1->H3"
+    ]
+  }
+}

@@ -50,7 +50,7 @@
                 const p = data.project;
                 const mainImage = (p.images && p.images[0]) ? p.images[0] : placeholderImage;
                 const imageGallery = (p.images || []).slice(1, 5).map(function(img) {
-                    return '<img src="' + img + '" alt="' + (p.name || 'Project') + '" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity" onclick="changeMainImage(this.src)">';
+                    return '<img src="' + img + '" alt="' + (p.name || 'Project') + '" width="200" height="80" class="w-full h-20 object-cover rounded cursor-pointer hover:opacity-80 transition-opacity" onclick="changeMainImage(this.src)">';
                 }).join('');
                 
                 const statusClass = p.status === 'completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' : 
@@ -63,14 +63,14 @@
                      (p.price_range_max ? 'Up to ₹' + p.price_range_max.toLocaleString() : 'Price on request'));
                 
                 const highlightsHTML = (p.highlights || []).length > 0 ? 
-                    '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Highlights</h3><ul class="space-y-2">' +
+                    '<div class="mb-4 sm:mb-6"><h2 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Highlights</h2><ul class="space-y-2">' +
                     p.highlights.map(function(highlight) {
                         return '<li class="flex items-start"><svg class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 dark:text-emerald-400 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg><span class="text-sm sm:text-base text-gray-700 dark:text-gray-300">' + highlight + '</span></li>';
                     }).join('') +
                     '</ul></div>' : '';
                 
                 const amenitiesHTML = (p.amenities || []).length > 0 ?
-                    '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Amenities</h3><div class="flex flex-wrap gap-2">' +
+                    '<div class="mb-4 sm:mb-6"><h2 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2 sm:mb-3">Amenities</h2><div class="flex flex-wrap gap-2">' +
                     p.amenities.map(function(amenity) {
                         return '<span class="px-2 sm:px-3 py-1 text-xs sm:text-sm bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-lg">' + amenity + '</span>';
                     }).join('') +
@@ -91,7 +91,7 @@
                 container.innerHTML = 
                     '<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">' +
                         '<div>' +
-                            '<img id="mainProjectImage" src="' + mainImage + '" alt="' + (p.name || 'Project') + '" class="w-full h-48 sm:h-64 lg:h-80 xl:h-96 object-cover rounded-lg mb-4">' +
+                            '<img id="mainProjectImage" src="' + mainImage + '" alt="' + (p.name || 'Project') + '" width="800" height="400" class="w-full h-48 sm:h-64 lg:h-80 xl:h-96 object-cover rounded-lg mb-4">' +
                             (imageGallery ? '<div class="grid grid-cols-4 gap-2">' + imageGallery + '</div>' : '') +
                         '</div>' +
                         '<div>' +
@@ -116,7 +116,7 @@
                                 (p.possession_date ? '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300"><strong class="text-gray-900 dark:text-white">Possession Date:</strong> ' + new Date(p.possession_date).toLocaleDateString() + '</p>' : '') +
                             '</div>' +
                             
-                            (p.description ? '<div class="mb-4 sm:mb-6"><h3 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2">Description</h3><p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">' + p.description + '</p></div>' : '') +
+                            (p.description ? '<div class="mb-4 sm:mb-6"><h2 class="card-title text-base sm:text-lg text-gray-900 dark:text-white mb-2">Description</h2><p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">' + p.description + '</p></div>' : '') +
                             
                             highlightsHTML +
                             amenitiesHTML +

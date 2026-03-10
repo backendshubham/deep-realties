@@ -50,7 +50,10 @@ router.post('/multiple', authenticateToken, uploadMultiple('files', 10), (req, r
 });
 
 // Property images upload (specific endpoint)
-router.post('/property-images', authenticateToken, uploadMultiple('images', 10), (req, res) => {
+// NOTE: This endpoint is intentionally public so that even guests submitting
+// the public "Sell Property" form can upload images. Other upload routes
+// remain protected by authenticateToken.
+router.post('/property-images', uploadMultiple('images', 10), (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: 'No images uploaded' });

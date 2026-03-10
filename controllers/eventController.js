@@ -256,7 +256,13 @@ const updateEvent = async (req, res, next) => {
 const deleteEvent = async (req, res, next) => {
   try {
     const { id } = req.params;
-    await db('events').where({ id }).update({ is_active: false });
+    // Permanently delete the event instead of just soft-deleting.
+    // This ensures it disappears from both public and admin event lists immediately.
+    const deletedCount = await db('events').where({ id }).del();
+
+    if (!deletedCount) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
 
     res.json({ message: 'Event deleted successfully' });
   } catch (error) {
