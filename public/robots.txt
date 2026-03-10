@@ -1,16 +1,19 @@
-# robots.txt for DeepRealties
 User-agent: *
 Allow: /
+
+# Block admin and account pages from indexing
 Disallow: /admin/
 Disallow: /dashboard
 Disallow: /my-properties
 Disallow: /login
 Disallow: /register
+
+# Block API endpoints
 Disallow: /api/
 
-# Sitemap
+# Sitemap location
 Sitemap: https://deeprealties.in/sitemap.xml
 
-# Crawl-delay
+# Friendly crawl rate
 Crawl-delay: 1
 
