@@ -13,7 +13,7 @@ const handleValidationErrors = (req, res, next) => {
 
 // Auth validators
 const validateRegister = [
-  body('email').isEmail().normalizeEmail(),
+  body('email').trim().isEmail().normalizeEmail(),
   body('password').isLength({ min: 6 }),
   body('full_name').trim().notEmpty(),
   body('phone').optional().isMobilePhone(),
@@ -21,7 +21,7 @@ const validateRegister = [
 ];
 
 const validateLogin = [
-  body('email').isEmail().normalizeEmail(),
+  body('email').trim().isEmail().normalizeEmail(),
   body('password').notEmpty(),
   handleValidationErrors
 ];
@@ -86,7 +86,7 @@ const validateProperty = [
 // Contact validators
 const validateContact = [
   body('full_name').trim().notEmpty(),
-  body('email').isEmail().normalizeEmail(),
+  body('email').trim().isEmail().normalizeEmail(),
   body('subject').optional().trim(),
   body('message').trim().notEmpty(),
   handleValidationErrors

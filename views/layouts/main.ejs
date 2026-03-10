@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Primary Meta Tags -->
-    <title><%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %></title>
-    <meta name="title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties - Premium Real Estate | Buy, Sell, Rent Properties') %>">
+    <title><%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties: Premium Real Estate & Property') %></title>
+    <meta name="title" content="<%= typeof seo !== 'undefined' && seo.title ? seo.title : (typeof title !== 'undefined' ? title : 'DeepRealties: Premium Real Estate & Property') %>">
     <meta name="description" content="<%= typeof seo !== 'undefined' && seo.description ? seo.description : 'Find your dream property with DeepRealties. Premium real estate services for buying, selling, and renting properties. Trusted by 50+ happy families. Expert guidance, verified properties, and best market prices.' %>">
     <meta name="keywords" content="<%= typeof seo !== 'undefined' && seo.keywords ? seo.keywords : 'real estate, buy property, sell property, rent property, property investment, real estate agent, property listings, homes for sale, apartments for rent, commercial property' %>">
     <meta name="author" content="<%= typeof seo !== 'undefined' && seo.author ? seo.author : 'DeepRealties' %>">
@@ -98,9 +98,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DeepRealties">
     
-    <!-- Favicon - Letter D -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2310b981' rx='20'/%3E%3Ctext x='50' y='75' font-size='80' font-weight='bold' font-family='Arial, sans-serif' text-anchor='middle' fill='white'%3ED%3C/text%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2310b981' rx='20'/%3E%3Ctext x='50' y='75' font-size='80' font-weight='bold' font-family='Arial, sans-serif' text-anchor='middle' fill='white'%3ED%3C/text%3E%3C/svg%3E">
+    <!-- Favicon - Use DeepRealties logo so Google and browsers show brand icon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="apple-touch-icon" href="/favicon-32x32.png">
     
     <!-- Structured Data (JSON-LD) -->
     <% if (typeof structuredData !== 'undefined' && structuredData) { %>
@@ -826,7 +826,7 @@
     <div id="detailModal" class="modal-overlay hidden">
         <div class="modal-content w-full max-w-2xl mx-3 sm:mx-4 p-4 sm:p-5 lg:p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-3 sm:mb-4">
-                <h2 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Details</h2>
+                <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Details</h3>
                 <button onclick="closeModal()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors p-1">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -1178,6 +1178,7 @@
         
         // Logout function
         function handleLogout() {
+            console.log("handleLogout called!");
             showConfirm(
                 'Confirm Logout',
                 'Are you sure you want to logout? You will need to login again to access your account.',

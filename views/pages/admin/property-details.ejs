@@ -181,14 +181,14 @@
                         const imgSrc = escapeHtml(img);
                         const imgAlt = escapeHtml(p.title) + ' - Image ' + (index + 1);
                         return '<div class="carousel-slide' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
-                            '<img src="' + imgSrc + '" alt="' + imgAlt + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">' +
+                            '<img src="' + imgSrc + '" alt="' + imgAlt + '" width="800" height="400" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">' +
                             '</div>';
                     }).join('');
                     
                     const thumbnailItems = images.map((img, index) => {
                         const imgSrc = escapeHtml(img);
                         return '<div class="thumbnail-item' + (index === 0 ? ' active' : '') + '" data-slide="' + index + '">' +
-                            '<img src="' + imgSrc + '" alt="Thumbnail ' + (index + 1) + '" class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer border-2' + (index === 0 ? ' border-emerald-500' : ' border-transparent') + ' hover:border-emerald-400 transition-all">' +
+                            '<img src="' + imgSrc + '" alt="Thumbnail ' + (index + 1) + '" width="200" height="80" class="w-full h-16 sm:h-20 object-cover rounded cursor-pointer border-2' + (index === 0 ? ' border-emerald-500' : ' border-transparent') + ' hover:border-emerald-400 transition-all">' +
                             '</div>';
                     }).join('');
                     
@@ -214,7 +214,7 @@
                         '</div>' : '') +
                     '</div>';
                 } else {
-                    carouselHtml = '<img src="' + placeholderImage + '" alt="' + p.title + '" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">';
+                    carouselHtml = '<img src="' + placeholderImage + '" alt="' + p.title + '" width="800" height="400" class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">';
                 }
                 
                 // Admin action buttons - using data attributes to avoid quote issues
@@ -275,15 +275,15 @@
                                     '</p>' +
                                     (p.google_earth_link ? '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300">' +
                                         '<strong class="text-gray-900 dark:text-white">Google Earth Link:</strong> ' +
-                                        '<a href="' + p.google_earth_link + '" target="_blank" class="text-emerald-600 dark:text-emerald-400 hover:underline">View on Google Earth</a>' +
+                                        '<a href="' + p.google_earth_link + '" target="_blank" rel="noopener noreferrer" class="text-emerald-600 dark:text-emerald-400 hover:underline">View on Google Earth</a>' +
                                     '</p>' : '') +
                                 '</div>' +
                                 '<div class="mb-6">' +
-                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h3>' +
+                                    '<h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h2>' +
                                     '<p class="text-sm sm:text-base text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">' + escapeHtml(description) + '</p>' +
                                 '</div>' +
                                 '<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6">' +
-                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Admin Actions</h3>' +
+                                    '<h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Admin Actions</h2>' +
                                     '<div class="flex flex-wrap gap-3">' +
                                         '<div class="flex-1 min-w-[150px]">' +
                                             '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Status</label>' +
@@ -297,7 +297,7 @@
                                     '</div>' +
                                 '</div>' +
                                 '<div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">' +
-                                    '<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Property Information</h3>' +
+                                    '<h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Property Information</h2>' +
                                     '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">' +
                                         '<div><span class="text-gray-600 dark:text-gray-400">Created:</span> <span class="text-gray-900 dark:text-white">' + (p.created_at ? new Date(p.created_at).toLocaleDateString() : 'N/A') + '</span></div>' +
                                         '<div><span class="text-gray-600 dark:text-gray-400">Updated:</span> <span class="text-gray-900 dark:text-white">' + (p.updated_at ? new Date(p.updated_at).toLocaleDateString() : 'N/A') + '</span></div>' +
