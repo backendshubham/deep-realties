@@ -102,6 +102,17 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/favicon-32x32.png">
     
+    <!-- Google Analytics -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EP7MHL25VR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-EP7MHL25VR');
+    </script>
+    
     <!-- Structured Data (JSON-LD) -->
     <% if (typeof structuredData !== 'undefined' && structuredData) { %>
     <script type="application/ld+json">

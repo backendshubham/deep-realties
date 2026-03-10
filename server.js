@@ -34,7 +34,9 @@ app.use(helmet({
         "'self'", 
         "'unsafe-inline'", 
         "https://cdn.tailwindcss.com", 
-        "https://maps.googleapis.com"
+        "https://maps.googleapis.com",
+        "https://www.googletagmanager.com",
+        "https://www.google-analytics.com"
       ],
       "style-src": [
         "'self'", 
@@ -56,7 +58,12 @@ app.use(helmet({
         "data:", 
         "https://fonts.gstatic.com"
       ],
-      "connect-src": ["'self'", "https://maps.googleapis.com"],
+      "connect-src": [
+        "'self'", 
+        "https://maps.googleapis.com",
+        "https://www.google-analytics.com",
+        "https://www.googletagmanager.com"
+      ],
       "frame-src": ["'self'", "https://www.google.com"],
       "script-src-attr": ["'unsafe-inline'"]
     },
