@@ -17,12 +17,37 @@ const eventRoutes = require('./routes/events');
 const investmentRoutes = require('./routes/investments');
 const contactRoutes = require('./routes/contact');
 const enquiryRoutes = require('./routes/enquiries');
+const blogRoutes = require('./routes/blogs');
 const testimonialRoutes = require('./routes/testimonials');
 const adminRoutes = require('./routes/admin');
 const uploadRoutes = require('./routes/upload');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Helper to convert plain text blog content into HTML paragraphs
+function plainTextToHtml(text) {
+  if (!text) return '';
+  const normalized = text.replace(/\r\n/g, '\n');
+  const paragraphs = normalized
+    .split(/\n\s*\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  if (!paragraphs.length) return '';
+
+  return paragraphs
+    .map((p) => {
+      const withLineBreaks = p.replace(/\n/g, '<br>');
+      // Detect headings (short lines without punctuation at end, or lines that look like titles)
+      const isHeading = p.length < 80 && !p.endsWith('.') && !p.endsWith(',') && !p.endsWith(':');
+      if (isHeading) {
+        return `<h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mt-8 mb-4">${withLineBreaks}</h2>`;
+      }
+      return `<p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">${withLineBreaks}</p>`;
+    })
+    .join('\n');
+}
 
 // Security middleware
 app.use(helmet({
@@ -51,7 +76,9 @@ app.use(helmet({
         "https://maps.gstatic.com", 
         "https://maps.googleapis.com", 
         "https://images.unsplash.com",
-        "https://ui-avatars.com"
+        "https://ui-avatars.com",
+        "https://picsum.photos",
+        "https://*.picsum.photos"
       ],
       "font-src": [
         "'self'", 
@@ -119,6 +146,7 @@ app.use('/api/events', eventRoutes);
 app.use('/api/investments', investmentRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/enquiries', enquiryRoutes);
+app.use('/api/blogs', blogRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
@@ -308,6 +336,75 @@ app.get('/events', (req, res) => {
     structuredData: structuredData,
     req: req
   });
+});
+
+app.get('/blogs', (req, res) => {
+  const seo = generateSEO({
+    title: 'Real Estate Blog & Guides | DeepRealties',
+    description: 'Read expert real estate blogs, guides and tips from DeepRealties. Learn how to buy, sell, rent and invest in property with confidence.',
+    keywords: 'real estate blog, property blog, real estate tips, property investment tips, home buying guide, selling property guide, real estate news Indore',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl
+  });
+  const structuredData = generateStructuredData(seo, 'Blog');
+  res.render('pages/blogs', {
+    title: seo.title,
+    seo,
+    structuredData,
+    req
+  });
+});
+
+app.get('/blogs/:slug', async (req, res, next) => {
+  try {
+    const db = require('./config/database');
+    const slug = req.params.slug;
+    const blog = await db('blogs')
+      .where({ slug, is_published: true })
+      .first();
+
+    if (!blog) {
+      return next();
+    }
+
+    const seo = generateSEO({
+      title: blog.seo_title || blog.title,
+      description: blog.seo_description || (blog.excerpt || 'Read this real estate article from DeepRealties.'),
+      keywords: blog.seo_keywords || 'real estate blog, property blog, real estate tips, DeepRealties',
+      url: getBaseUrl() + req.originalUrl,
+      canonical: getBaseUrl() + req.originalUrl
+    });
+
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: seo.title,
+      description: seo.description,
+      datePublished: blog.published_at || blog.created_at,
+      dateModified: blog.updated_at || blog.published_at || blog.created_at,
+      author: {
+        '@type': 'Organization',
+        name: 'DeepRealties'
+      },
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': seo.url
+      }
+    };
+
+    const blogHtml = plainTextToHtml(blog.content || '');
+
+    res.render('pages/blog-details', {
+      title: seo.title,
+      seo,
+      structuredData,
+      blog,
+      blogHtml,
+      req
+    });
+  } catch (error) {
+    next(error);
+  }
 });
 
 app.get('/about', (req, res) => {
