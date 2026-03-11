@@ -632,6 +632,20 @@ app.get('/admin/testimonials', (req, res) => {
   });
 });
 
+app.get('/admin/blogs', (req, res) => {
+  const seo = generateSEO({
+    title: 'Manage Blogs - Admin Panel | DeepRealties',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, nofollow'
+  });
+  res.render('pages/admin/blogs', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
 app.get('/admin', (req, res) => {
   res.redirect('/admin/dashboard');
 });
