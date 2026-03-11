@@ -116,10 +116,15 @@ const updateBlog = async (req, res, next) => {
       slug,
       excerpt,
       content,
+      featured_image_url,
       featuredImageUrl,
+      seo_title,
       seoTitle,
+      seo_description,
       seoDescription,
+      seo_keywords,
       seoKeywords,
+      is_published,
       isPublished
     } = req.body;
 
@@ -143,9 +148,10 @@ const updateBlog = async (req, res, next) => {
       }
     }
 
-    const is_published = typeof isPublished === 'boolean' ? isPublished : blog.is_published;
+    const publishedValue = is_published !== undefined ? is_published : isPublished;
+    const finalIsPublished = typeof publishedValue === 'boolean' ? publishedValue : blog.is_published;
     let published_at = blog.published_at;
-    if (is_published && !blog.is_published && !blog.published_at) {
+    if (finalIsPublished && !blog.is_published && !blog.published_at) {
       published_at = new Date();
     }
 
@@ -156,11 +162,11 @@ const updateBlog = async (req, res, next) => {
         slug: finalSlug,
         excerpt: excerpt ?? blog.excerpt,
         content: content ?? blog.content,
-        featured_image_url: featuredImageUrl ?? blog.featured_image_url,
-        seo_title: seoTitle ?? blog.seo_title,
-        seo_description: seoDescription ?? blog.seo_description,
-        seo_keywords: seoKeywords ?? blog.seo_keywords,
-        is_published,
+        featured_image_url: featured_image_url ?? featuredImageUrl ?? blog.featured_image_url,
+        seo_title: seo_title ?? seoTitle ?? blog.seo_title,
+        seo_description: seo_description ?? seoDescription ?? blog.seo_description,
+        seo_keywords: seo_keywords ?? seoKeywords ?? blog.seo_keywords,
+        is_published: finalIsPublished,
         published_at
       })
       .returning('*');

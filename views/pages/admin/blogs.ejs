@@ -1,0 +1,346 @@
+<%- include('../../layouts/main', { content: `
+<div class="min-h-screen py-8 bg-gray-50 dark:bg-gray-900">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-display font-bold text-gray-900 dark:text-white mb-1">Manage Blogs</h1>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Create, edit and publish blog posts for SEO.</p>
+      </div>
+      <button id="addBlogBtn" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm hover:shadow-md transition-colors">
+        + Add Blog Post
+      </button>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <label class="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+          <input type="checkbox" id="showDrafts" class="rounded border-gray-300 dark:border-gray-600 text-emerald-600 focus:ring-emerald-500" checked>
+          <span>Show drafts</span>
+        </label>
+      </div>
+
+      <div id="blogsLoading" class="text-center py-10">
+        <div class="inline-loader-spinner mx-auto mb-3"></div>
+        <p class="text-gray-600 dark:text-gray-400 text-sm">Loading blogs...</p>
+      </div>
+
+      <div id="blogsEmpty" class="hidden text-center py-10">
+        <p class="text-gray-600 dark:text-gray-400 text-sm">No blog posts found. Create your first blog post.</p>
+      </div>
+
+      <div id="blogsList" class="hidden space-y-4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const listEl = document.getElementById('blogsList');
+    const loadingEl = document.getElementById('blogsLoading');
+    const emptyEl = document.getElementById('blogsEmpty');
+    const showDraftsEl = document.getElementById('showDrafts');
+    const addBtn = document.getElementById('addBlogBtn');
+
+    async function loadBlogs() {
+      loadingEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      listEl.classList.add('hidden');
+
+      const token = localStorage.getItem('token');
+
+      try {
+        const res = await fetch('/api/blogs/admin/list-all', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        let blogs = data.blogs || [];
+
+        // Filter: if "Show drafts" is unchecked, only show published blogs
+        if (!showDraftsEl.checked) {
+          blogs = blogs.filter(b => b.is_published);
+        }
+
+        loadingEl.classList.add('hidden');
+
+        if (!blogs.length) {
+          emptyEl.classList.remove('hidden');
+          return;
+        }
+
+        listEl.classList.remove('hidden');
+        listEl.innerHTML = blogs.map(b => {
+          const isPublished = b.is_published;
+          const publishedDate = b.published_at ? new Date(b.published_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+          return '<div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">' +
+            '<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">' +
+              '<div class="flex-1 min-w-0">' +
+                '<div class="flex items-center gap-2 mb-1">' +
+                  '<h3 class="font-semibold text-gray-900 dark:text-white truncate">' + (b.title || 'Untitled') + '</h3>' +
+                  (isPublished 
+                    ? '<span class="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 text-[11px] font-medium">Published</span>' 
+                    : '<span class="px-2 py-0.5 rounded-full bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 text-[11px] font-medium">Draft</span>') +
+                '</div>' +
+                '<p class="text-sm text-gray-500 dark:text-gray-400 truncate mb-1">/blogs/' + (b.slug || '') + '</p>' +
+                (b.excerpt ? '<p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">' + b.excerpt + '</p>' : '') +
+                (publishedDate ? '<p class="text-xs text-gray-400 dark:text-gray-500 mt-1">Published: ' + publishedDate + '</p>' : '') +
+              '</div>' +
+              '<div class="flex flex-wrap gap-2">' +
+                '<button data-id="' + b.id + '" class="edit-blog px-3 py-1.5 text-xs rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:hover:bg-blue-900/50">Edit</button>' +
+                '<button data-id="' + b.id + '" data-published="' + isPublished + '" class="toggle-publish px-3 py-1.5 text-xs rounded-lg ' +
+                  (isPublished ? 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-300' : 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300') +
+                '">' + (isPublished ? 'Unpublish' : 'Publish') + '</button>' +
+                '<button data-id="' + b.id + '" class="delete-blog px-3 py-1.5 text-xs rounded-lg bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-300">Delete</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('');
+      } catch (err) {
+        console.error('Error loading blogs', err);
+        loadingEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        if (typeof window.showError === 'function') {
+          window.showError('Failed to load blogs.');
+        }
+      }
+    }
+
+    async function saveBlog(payload, id = null) {
+      const token = localStorage.getItem('token');
+      const url = id ? '/api/blogs/' + id : '/api/blogs';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save blog');
+      }
+      return data;
+    }
+
+    async function deleteBlog(id) {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/blogs/' + id, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to delete blog');
+      }
+      return data;
+    }
+
+    async function getBlog(id) {
+      const token = localStorage.getItem('token');
+      const res = await fetch('/api/blogs/admin/list-all', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const data = await res.json();
+      return (data.blogs || []).find(b => b.id == id);
+    }
+
+    function openBlogModal(blog = null) {
+      const isEdit = !!blog;
+      const formHtml =
+        '<form id="blogForm" class="space-y-4">' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Title *</label>' +
+            '<input type="text" id="bTitle" required value="' + (blog?.title || '').replace(/"/g, '&quot;') + '" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Slug (URL-friendly)</label>' +
+            '<input type="text" id="bSlug" value="' + (blog?.slug || '').replace(/"/g, '&quot;') + '" placeholder="auto-generated-from-title" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Excerpt (Short description)</label>' +
+            '<textarea id="bExcerpt" rows="2" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' + (blog?.excerpt || '') + '</textarea>' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Featured Image URL</label>' +
+            '<input type="url" id="bImage" value="' + (blog?.featured_image_url || '').replace(/"/g, '&quot;') + '" placeholder="https://example.com/image.jpg" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+          '</div>' +
+          '<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">' +
+            '<div>' +
+              '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Title</label>' +
+              '<input type="text" id="bSeoTitle" value="' + (blog?.seo_title || '').replace(/"/g, '&quot;') + '" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Description</label>' +
+              '<input type="text" id="bSeoDesc" value="' + (blog?.seo_description || '').replace(/"/g, '&quot;') + '" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+            '</div>' +
+            '<div>' +
+              '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">SEO Keywords</label>' +
+              '<input type="text" id="bSeoKeywords" value="' + (blog?.seo_keywords || '').replace(/"/g, '&quot;') + '" placeholder="keyword1, keyword2" class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Content *</label>' +
+            '<textarea id="bContent" rows="8" required class="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white">' + (blog?.content || '') + '</textarea>' +
+            '<p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Use blank lines to separate paragraphs. Short lines (under 80 chars) without punctuation will be treated as headings.</p>' +
+          '</div>' +
+          '<div class="flex items-center gap-2">' +
+            '<input type="checkbox" id="bPublish" ' + (blog?.is_published ? 'checked' : '') + ' class="rounded border-gray-300 dark:border-gray-600 text-emerald-600 focus:ring-emerald-500">' +
+            '<label for="bPublish" class="text-sm text-gray-700 dark:text-gray-300">Publish immediately</label>' +
+          '</div>' +
+          '<button type="submit" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold">' + (isEdit ? 'Update Blog' : 'Save Blog') + '</button>' +
+        '</form>';
+
+      if (typeof window.showModal === 'function') {
+        window.showModal(isEdit ? 'Edit Blog Post' : 'Add Blog Post', formHtml);
+      } else {
+        let existingModal = document.getElementById('fallbackBlogModal');
+        if (existingModal) existingModal.remove();
+        
+        const modalHtml = \`
+          <div id="fallbackBlogModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/50" onclick="document.getElementById('fallbackBlogModal').remove()"></div>
+            <div class="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">\${isEdit ? 'Edit Blog Post' : 'Add Blog Post'}</h3>
+                <button onclick="document.getElementById('fallbackBlogModal').remove()" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+              </div>
+              \${formHtml}
+            </div>
+          </div>
+        \`;
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+      }
+      
+      const form = document.getElementById('blogForm');
+      if (form) {
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          try {
+            const payload = {
+              title: document.getElementById('bTitle').value.trim(),
+              slug: document.getElementById('bSlug').value.trim() || undefined,
+              excerpt: document.getElementById('bExcerpt').value.trim(),
+              featured_image_url: document.getElementById('bImage').value.trim(),
+              seo_title: document.getElementById('bSeoTitle').value.trim(),
+              seo_description: document.getElementById('bSeoDesc').value.trim(),
+              seo_keywords: document.getElementById('bSeoKeywords').value.trim(),
+              content: document.getElementById('bContent').value.trim(),
+              is_published: document.getElementById('bPublish').checked
+            };
+            await saveBlog(payload, blog?.id);
+            if (typeof window.showSuccess === 'function') {
+              window.showSuccess(isEdit ? 'Blog updated successfully' : 'Blog created successfully');
+            } else {
+              alert(isEdit ? 'Blog updated successfully' : 'Blog created successfully');
+            }
+            if (typeof window.closeModal === 'function') {
+              window.closeModal();
+            }
+            const fallbackModal = document.getElementById('fallbackBlogModal');
+            if (fallbackModal) fallbackModal.remove();
+            loadBlogs();
+          } catch (err) {
+            console.error(err);
+            if (typeof window.showError === 'function') {
+              window.showError(err.message || 'Failed to save blog');
+            } else {
+              alert(err.message || 'Failed to save blog');
+            }
+          }
+        });
+      }
+    }
+
+    addBtn.addEventListener('click', () => openBlogModal());
+    showDraftsEl.addEventListener('change', loadBlogs);
+
+    listEl.addEventListener('click', async function (e) {
+      const editBtn = e.target.closest('.edit-blog');
+      const toggleBtn = e.target.closest('.toggle-publish');
+      const deleteBtn = e.target.closest('.delete-blog');
+
+      if (editBtn) {
+        const id = editBtn.getAttribute('data-id');
+        try {
+          const blog = await getBlog(id);
+          if (blog) {
+            openBlogModal(blog);
+          } else {
+            alert('Blog not found');
+          }
+        } catch (err) {
+          console.error('Error fetching blog:', err);
+          alert('Failed to load blog data');
+        }
+      } else if (toggleBtn) {
+        const id = toggleBtn.getAttribute('data-id');
+        const isPublished = toggleBtn.getAttribute('data-published') === 'true';
+        try {
+          await saveBlog({ is_published: !isPublished }, id);
+          if (typeof window.showSuccess === 'function') {
+            window.showSuccess(isPublished ? 'Blog unpublished' : 'Blog published');
+          } else {
+            alert(isPublished ? 'Blog unpublished' : 'Blog published');
+          }
+          loadBlogs();
+        } catch (err) {
+          console.error(err);
+          if (typeof window.showError === 'function') {
+            window.showError(err.message || 'Failed to update blog');
+          } else {
+            alert(err.message || 'Failed to update blog');
+          }
+        }
+      } else if (deleteBtn) {
+        const id = deleteBtn.getAttribute('data-id');
+        const confirmDelete = typeof window.showConfirm === 'function' 
+          ? await new Promise(resolve => {
+              window.showConfirm(
+                'Delete Blog',
+                'Are you sure you want to permanently delete this blog post?',
+                () => resolve(true),
+                () => resolve(false),
+                'Delete',
+                'Cancel',
+                true
+              );
+            })
+          : confirm('Are you sure you want to permanently delete this blog post?');
+        
+        if (confirmDelete) {
+          try {
+            await deleteBlog(id);
+            if (typeof window.showSuccess === 'function') {
+              window.showSuccess('Blog deleted successfully');
+            } else {
+              alert('Blog deleted successfully');
+            }
+            loadBlogs();
+          } catch (err) {
+            console.error(err);
+            if (typeof window.showError === 'function') {
+              window.showError(err.message || 'Failed to delete blog');
+            } else {
+              alert(err.message || 'Failed to delete blog');
+            }
+          }
+        }
+      }
+    });
+
+    loadBlogs();
+  });
+</script>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>
+` }) %>
