@@ -1,0 +1,42 @@
+<%
+  const hasDates = blog && (blog.published_at || blog.created_at);
+  const publishedDate = hasDates
+    ? new Date(blog.published_at || blog.created_at).toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    : null;
+%>
+<%- include('../layouts/main', { content: `
+<section class="py-10 sm:py-14 lg:py-16 bg-gradient-to-b from-emerald-50 via-emerald-50/40 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mb-6 text-sm text-emerald-700 dark:text-emerald-300">
+      <a href="/" class="hover:underline">Home</a>
+      <span class="mx-1">/</span>
+      <a href="/blogs" class="hover:underline">Blog</a>
+    </div>
+
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-gray-900 dark:text-white mb-4">
+      ${blog && blog.title ? blog.title : 'Blog'}
+    </h1>
+
+    ${publishedDate ? `
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">
+        Published ${publishedDate}
+      </p>
+    ` : ''}
+
+    ${blog && blog.featured_image_url ? `
+      <div class="mb-10 rounded-xl overflow-hidden shadow-lg">
+        <img src="${blog.featured_image_url}" alt="${blog.title || 'Blog image'}" class="w-full aspect-video object-cover">
+      </div>
+    ` : ''}
+
+    <article class="mt-8">
+      ${blogHtml && blogHtml.length ? blogHtml : '<p class="text-gray-700 dark:text-gray-300">No content available.</p>'}
+    </article>
+  </div>
+</section>
+` }) %>
+

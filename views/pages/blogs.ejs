@@ -1,0 +1,109 @@
+<%- include('../layouts/main', { content: `
+<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+    <span class="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm font-semibold border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
+      Real Estate Blog
+    </span>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-6 px-2 text-gray-900 dark:text-white">
+      Property Insights & Guides
+    </h1>
+    <p class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
+      Learn how to buy, sell, rent and invest in real estate with simple expert articles from DeepRealties.
+    </p>
+  </div>
+</section>
+
+<section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div id="blogsLoading" class="text-center py-10">
+      <div class="inline-loader-spinner mx-auto mb-3"></div>
+      <p class="text-gray-600 dark:text-gray-400 text-sm">Loading blogs...</p>
+    </div>
+
+    <div id="blogsEmpty" class="hidden text-center py-10">
+      <p class="text-gray-600 dark:text-gray-400 text-sm">No blogs have been published yet. Please check back soon.</p>
+    </div>
+
+    <div id="blogsGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const gridEl = document.getElementById('blogsGrid');
+    const loadingEl = document.getElementById('blogsLoading');
+    const emptyEl = document.getElementById('blogsEmpty');
+
+    async function loadBlogs() {
+      loadingEl.classList.remove('hidden');
+      emptyEl.classList.add('hidden');
+      gridEl.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/blogs');
+        if (!res.ok) {
+          throw new Error('Failed to load blogs');
+        }
+        const data = await res.json();
+        const blogs = data.blogs || [];
+
+        loadingEl.classList.add('hidden');
+
+        if (!blogs.length) {
+          emptyEl.classList.remove('hidden');
+          return;
+        }
+
+        gridEl.classList.remove('hidden');
+        gridEl.innerHTML = blogs.map(function (b) {
+          const date = b.published_at || b.created_at;
+          const displayDate = date
+            ? new Date(date).toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })
+            : '';
+          const excerpt =
+            b.excerpt ||
+            (b.content ? (b.content.length > 160 ? b.content.substring(0, 157) + '...' : b.content) : '');
+
+          return (
+            '<article class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col">' +
+              '<div class="p-5 sm:p-6 flex-1 flex flex-col">' +
+                '<div class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mb-2">' +
+                  (displayDate || '&nbsp;') +
+                '</div>' +
+                '<h2 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">' +
+                  (b.title || 'Untitled Blog') +
+                '</h2>' +
+                (excerpt
+                  ? '<p class="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">' + excerpt + '</p>'
+                  : '') +
+                '<div class="mt-auto pt-2">' +
+                  '<a href="/blogs/' + encodeURIComponent(b.slug) + '" class="inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300">' +
+                    'Read Article' +
+                    '<svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
+                      '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>' +
+                    '</svg>' +
+                  '</a>' +
+                '</div>' +
+              '</div>' +
+            '</article>'
+          );
+        }).join('');
+      } catch (err) {
+        console.error('Error loading blogs', err);
+        loadingEl.classList.add('hidden');
+        emptyEl.classList.remove('hidden');
+        if (typeof window.showError === 'function') {
+          window.showError('Failed to load blogs.');
+        }
+      }
+    }
+
+    loadBlogs();
+  });
+</script>
+` }) %>
+

@@ -79,6 +79,14 @@
 <priority>0.8</priority>
 </url>
 
+<!-- Blog -->
+<url>
+<loc>https://deeprealties.in/blogs</loc>
+<lastmod>2026-03-10</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.8</priority>
+</url>
+
 <!-- Info Pages -->
 <url>
 <loc>https://deeprealties.in/events</loc>
