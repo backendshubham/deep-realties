@@ -263,10 +263,9 @@
             return false;
         }
         
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            showError('Please enter a valid email address.');
+        // Basic email presence check (browser + server will do full validation)
+        if (!email) {
+            showError('Please enter your email address.');
             return false;
         }
         
