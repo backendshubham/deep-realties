@@ -8,6 +8,10 @@ const generateToken = (userId) => {
   );
 };
 
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
 const formatProperty = (property) => {
   if (!property) return null;
   
@@ -323,6 +327,7 @@ const generateStructuredData = (seo, pageType = 'WebSite') => {
 
 module.exports = {
   generateToken,
+  generateOTP,
   formatProperty,
   formatRental,
   buildPropertyQuery,

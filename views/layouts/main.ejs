@@ -94,10 +94,22 @@
     <meta itemprop="image" content="<%= typeof seo !== 'undefined' && seo.image ? seo.image : 'https://storage.googleapis.com/supersourcing-doc-dev/8d866c52-57fe-4a85-9f41-f64c074bd6ee.jpeg' %>">
     
     <!-- Mobile Web App Capabilities -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DeepRealties">
     
+    <!-- Theme Initialization - Runs before anything else to prevent flashing -->
+    <script>
+        (function() {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'true') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+
     <!-- Favicon - Use DeepRealties logo so Google and browsers show brand icon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/favicon-32x32.png">
@@ -125,7 +137,16 @@
     <script>
         // Configure Tailwind dark mode to use class strategy
         tailwind.config = {
-            darkMode: 'class'
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'lux-midnight': '#0f172a',
+                        'lux-gold': '#D4AF37',
+                        'emerald-primary': '#10b981',
+                    }
+                }
+            }
         }
     </script>
     
@@ -192,74 +213,33 @@
             font-family: 'Outfit', system-ui, sans-serif;
         }
         
-        /* Global Typography System - Consistent Fonts */
-        /* Serif Font for Headings */
-        h1, h2, h3, h4, h5, h6,
-        .font-display,
-        .hero-title,
-        .section-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
+        /* Global Glassmorphism System */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Sans-serif Font for Body Text, Buttons, Labels */
-        p, span, a, button, div, label, input, textarea, select,
-        .font-body,
-        .hero-subtitle,
-        .card-title,
-        .stat-label,
-        .badge-text,
-        .button-text {
-            font-family: 'Outfit', system-ui, sans-serif;
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
         }
-        
-        .font-display {
-            font-family: 'Playfair Display', Georgia, serif;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        
-        .font-accent {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-        }
-        
-        /* Typography Utilities */
-        .hero-title {
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-        }
-        
-        .hero-subtitle {
-            font-weight: 400;
-            letter-spacing: 0.01em;
-            line-height: 1.6;
-        }
-        
-        .section-title {
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        
-        .card-title {
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-        
-        .stat-label {
-            font-weight: 500;
-            letter-spacing: 0.01em;
-        }
-        
-        .badge-text {
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        
-        .button-text {
-            font-weight: 600;
-            letter-spacing: 0.01em;
+
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Dark mode styles */
@@ -820,18 +800,7 @@
     
     <%- include('../partials/footer') %>
     
-    <!-- Floating Chat Button -->
-    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
-        <button 
-            class="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center group touch-manipulation"
-            aria-label="Chat with us"
-            onclick="window.open('https://wa.me/918305551215', '_blank')"
-        >
-            <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-            </svg>
-        </button>
-    </div>
+    
     
     <!-- Modal Component -->
     <div id="detailModal" class="modal-overlay hidden">
@@ -920,51 +889,23 @@
     <script>
         // Update theme toggle animation
         function updateThemeToggle(isDark) {
-            const toggle = document.getElementById('themeToggle');
             const circle = document.getElementById('themeToggleCircle');
             const sunIcon = document.getElementById('sunIcon');
             const moonIcon = document.getElementById('moonIcon');
             
-            if (!toggle || !circle) return;
+            if (!circle) return;
             
-            // Wait for layout to be ready
-            setTimeout(() => {
-                // Get actual dimensions
-                const toggleWidth = toggle.offsetWidth || (window.innerWidth >= 640 ? 56 : 44);
-                const circleWidth = circle.offsetWidth || (window.innerWidth >= 640 ? 20 : 16);
-                const padding = window.innerWidth >= 640 ? 6 : 4;
-                
-                // Calculate positions - circle should be centered vertically and positioned horizontally
-                const leftPosition = padding;
-                const rightPosition = toggleWidth - circleWidth - padding;
-                const translateX = isDark ? rightPosition : leftPosition;
-                
-                if (isDark) {
-                    // Move circle to right (dark mode) - perfectly centered vertically
-                    circle.style.left = translateX + 'px';
-                    circle.style.transform = 'translateY(-50%)';
-                    
-                    // Switch icons smoothly
-                    if (sunIcon) {
-                        sunIcon.classList.add('hidden');
-                    }
-                    if (moonIcon) {
-                        moonIcon.classList.remove('hidden');
-                    }
-                } else {
-                    // Move circle to left (light mode) - perfectly centered vertically
-                    circle.style.left = translateX + 'px';
-                    circle.style.transform = 'translateY(-50%)';
-                    
-                    // Switch icons smoothly
-                    if (sunIcon) {
-                        sunIcon.classList.remove('hidden');
-                    }
-                    if (moonIcon) {
-                        moonIcon.classList.add('hidden');
-                    }
-                }
-            }, 10);
+            if (isDark) {
+                // Move to right for dark mode
+                circle.style.transform = 'translateX(24px)';
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+            } else {
+                // Move to left for light mode
+                circle.style.transform = 'translateX(0)';
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+            }
         }
         
         // Enhanced dark mode toggle function with animations

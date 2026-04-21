@@ -78,7 +78,8 @@ app.use(helmet({
         "https://images.unsplash.com",
         "https://ui-avatars.com",
         "https://picsum.photos",
-        "https://*.picsum.photos"
+        "https://*.picsum.photos",
+        "https://www.transparenttextures.com"
       ],
       "font-src": [
         "'self'", 
@@ -89,7 +90,8 @@ app.use(helmet({
         "'self'", 
         "https://maps.googleapis.com",
         "https://www.google-analytics.com",
-        "https://www.googletagmanager.com"
+        "https://www.googletagmanager.com",
+        "https://www.google.com"
       ],
       "frame-src": ["'self'", "https://www.google.com"],
       "script-src-attr": ["'unsafe-inline'"]
@@ -473,6 +475,36 @@ app.get('/register', (req, res) => {
   });
 });
 
+app.get('/forgot-password', (req, res) => {
+  const seo = generateSEO({
+    title: 'Forgot Password - Reset Your Access | DeepRealties',
+    description: 'Recover your DeepRealties account access. Enter your email to receive a password reset code.',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, follow'
+  });
+  res.render('pages/forgot-password', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
+app.get('/reset-password', (req, res) => {
+  const seo = generateSEO({
+    title: 'Reset Password - Secure Your Account | DeepRealties',
+    description: 'Create a new secure password for your DeepRealties account.',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, follow'
+  });
+  res.render('pages/reset-password', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
 app.get('/dashboard', (req, res) => {
   const seo = generateSEO({
     title: 'Dashboard - Manage Your Account | DeepRealties',
@@ -642,6 +674,35 @@ app.get('/admin/blogs', (req, res) => {
   res.render('pages/admin/blogs', {
     title: seo.title,
     seo: seo,
+    req: req
+  });
+});
+
+app.get('/admin/blogs/add', (req, res) => {
+  const seo = generateSEO({
+    title: 'Add Blog Post - Admin Panel | DeepRealties',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, nofollow'
+  });
+  res.render('pages/admin/add-blog', {
+    title: seo.title,
+    seo: seo,
+    req: req
+  });
+});
+
+app.get('/admin/blogs/edit/:id', (req, res) => {
+  const seo = generateSEO({
+    title: 'Edit Blog Post - Admin Panel | DeepRealties',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, nofollow'
+  });
+  res.render('pages/admin/edit-blog', {
+    title: seo.title,
+    seo: seo,
+    blogId: req.params.id,
     req: req
   });
 });
