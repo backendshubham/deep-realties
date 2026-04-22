@@ -132,23 +132,8 @@
     </script>
     <% } %>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configure Tailwind dark mode to use class strategy
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        'lux-midnight': '#0f172a',
-                        'lux-gold': '#D4AF37',
-                        'emerald-primary': '#10b981',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Tailwind CSS (Production Build) -->
+    <link rel="stylesheet" href="/css/output.css">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -381,12 +366,13 @@
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(2px);
             z-index: 99999;
-            display: flex;
+            display: none; /* Forced hidden by default */
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none !important;
         }
         
         .dark .page-loader {
@@ -394,12 +380,10 @@
         }
         
         .page-loader.show {
+            display: flex !important;
             opacity: 1;
             visibility: visible;
-        }
-        
-        .page-loader:not(.show) {
-            pointer-events: none;
+            pointer-events: auto !important;
         }
         
         .loader-container {
@@ -513,15 +497,18 @@
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            display: flex;
+            display: none; /* Forced hidden */
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
+            pointer-events: none !important;
         }
         
         .modal-overlay.show {
+            display: flex !important;
             opacity: 1;
+            pointer-events: auto !important;
         }
         
         .modal-content {
@@ -552,15 +539,18 @@
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1001;
-            display: flex;
+            display: none; /* Forced hidden */
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
+            pointer-events: none !important;
         }
         
         .confirm-overlay.show {
+            display: flex !important;
             opacity: 1;
+            pointer-events: auto !important;
         }
         
         .confirm-content {
@@ -794,7 +784,7 @@
 <body class="bg-gradient-to-b from-emerald-50 via-emerald-50/30 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
     <%- include('../partials/navbar') %>
     
-    <main class="flex-grow">
+    <main class="flex-grow pt-32 sm:pt-36">
         <%- typeof content !== 'undefined' ? content : '' %>
     </main>
     
@@ -803,7 +793,7 @@
     
     
     <!-- Modal Component -->
-    <div id="detailModal" class="modal-overlay hidden">
+    <div id="detailModal" class="modal-overlay hidden" style="display: none !important;">
         <div class="modal-content w-full max-w-2xl mx-3 sm:mx-4 p-4 sm:p-5 lg:p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-3 sm:mb-4">
                 <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Details</h3>
@@ -823,7 +813,7 @@
     </div>
     
     <!-- Confirmation Dialog Component -->
-    <div id="confirmDialog" class="confirm-overlay hidden">
+    <div id="confirmDialog" class="confirm-overlay hidden" style="display: none !important;">
         <div class="confirm-content p-6">
             <div class="mb-4">
                 <h3 id="confirmTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Confirm Action</h3>
@@ -843,45 +833,43 @@
     <!-- Toast Notification Container -->
     <div id="toastContainer" class="toast-container"></div>
     
-    <!-- Full Page Loader -->
-    <div id="pageLoader" class="page-loader show">
+    <!-- Full Page Loader (Aggressively hidden by default) -->
+    <div id="pageLoader" class="page-loader" style="display: none !important;">
         <div class="loader-spinner"></div>
     </div>
     
-    <!-- Immediate script to hide loader on back/forward navigation -->
     <script>
-        // This runs immediately, before any other scripts
+        // Universal Loader Management
         (function() {
-            // Check if page was restored from cache using pageshow event
-            // We need to set up the listener immediately
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    // Page was restored from cache - hide loader immediately
-                    const loader = document.getElementById('pageLoader');
-                    if (loader) {
-                        loader.classList.remove('show');
-                        loader.style.display = 'none';
-                    }
-                }
-            });
+            const loader = document.getElementById('pageLoader');
             
-            // Also check immediately if we can detect back/forward navigation
-            // Using a small delay to ensure DOM is ready
-            setTimeout(function() {
-                const loader = document.getElementById('pageLoader');
-                // If loader is still showing after a very short delay, it might be a restored page
-                // We'll let the pageshow handler take care of it, but also hide it here as backup
-                if (loader && loader.classList.contains('show')) {
-                    // Check if this is likely a restored page by checking if content is already loaded
-                    const hasContent = document.body && document.body.children.length > 5;
-                    if (hasContent) {
-                        // Content seems to be loaded, hide loader
-                        setTimeout(function() {
-                            loader.classList.remove('show');
-                        }, 100);
-                    }
-                }
-            }, 50);
+            function hideLoader() {
+                if (!loader) return;
+                loader.classList.remove('show');
+                loader.style.setProperty('display', 'none', 'important');
+                document.body.style.overflow = '';
+            }
+
+            function showLoader(text) {
+                if (!loader) return;
+                loader.style.setProperty('display', 'flex', 'important');
+                loader.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Expose to global scope
+            window.showPageLoader = showLoader;
+            window.hidePageLoader = hideLoader;
+
+            // Hide immediately if it somehow exists
+            hideLoader();
+
+            // Clear any stuck state on load
+            window.addEventListener('load', hideLoader);
+            window.addEventListener('pageshow', (e) => { if(e.persisted) hideLoader(); });
+            
+            // Fail-safe
+            setTimeout(hideLoader, 2000);
         })();
     </script>
     
@@ -1162,6 +1150,7 @@
             
             modalTitle.textContent = title;
             modalBody.innerHTML = content;
+            modal.style.setProperty('display', 'flex', 'important');
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.add('show'), 10);
         }
@@ -1169,7 +1158,10 @@
         function closeModal() {
             const modal = document.getElementById('detailModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.classList.add('hidden'), 200);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.setProperty('display', 'none', 'important');
+            }, 200);
         }
         
         // Make modal functions globally available
@@ -1213,6 +1205,7 @@
                 if (onCancel) onCancel();
             });
             
+            dialog.style.setProperty('display', 'flex', 'important');
             dialog.classList.remove('hidden');
             setTimeout(() => dialog.classList.add('show'), 10);
         }
@@ -1220,7 +1213,10 @@
         function closeConfirm() {
             const dialog = document.getElementById('confirmDialog');
             dialog.classList.remove('show');
-            setTimeout(() => dialog.classList.add('hidden'), 200);
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+                dialog.style.setProperty('display', 'none', 'important');
+            }, 200);
         }
         
         // Make confirmation functions globally available
@@ -1461,43 +1457,15 @@
             }
         }, true); // Use capture phase for immediate execution
         
-        // Also hide loader on pagehide to prevent it from showing when navigating away
-        window.addEventListener('pagehide', function() {
-            const loader = document.getElementById('pageLoader');
-            if (loader) {
-                loader.classList.remove('show');
-            }
-            isPageRestored = false; // Reset flag when navigating away
-        });
-        
-        // Show loader on link clicks (for navigation)
-        document.addEventListener('click', function(e) {
-            const link = e.target.closest('a');
-            if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#')) {
-                const href = link.getAttribute('href');
-                // Only show loader for internal links
-                if (href && (href.startsWith('/') || href.includes(window.location.hostname))) {
-                    // Don't show for links that open in new tab
-                    if (!link.target || link.target === '_self') {
-                        setTimeout(() => {
-                            showPageLoader('Loading page...');
-                        }, 100);
-                    }
-                }
-            }
-        });
+        // Restore Page Logic (Accidentally removed in previous step)
         
         // Close modal/dialog on overlay click
         document.addEventListener('click', function(e) {
             const modal = document.getElementById('detailModal');
             const confirm = document.getElementById('confirmDialog');
             
-            if (e.target === modal) {
-                closeModal();
-            }
-            if (e.target === confirm) {
-                closeConfirm();
-            }
+            if (e.target === modal) closeModal();
+            if (e.target === confirm) closeConfirm();
         });
         
         // Close modal/dialog on Escape key
@@ -1505,43 +1473,45 @@
             if (e.key === 'Escape') {
                 const modal = document.getElementById('detailModal');
                 const confirm = document.getElementById('confirmDialog');
-                
-                if (!modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-                if (!confirm.classList.contains('hidden')) {
-                    closeConfirm();
+                if (modal && !modal.classList.contains('hidden')) closeModal();
+                if (confirm && !confirm.classList.contains('hidden')) closeConfirm();
+            }
+        });
+        
+        // Show loader on link clicks
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#')) {
+                const href = link.getAttribute('href');
+                if (href && (href.startsWith('/') || href.includes(window.location.hostname))) {
+                    if (!link.target || link.target === '_self') {
+                        setTimeout(() => {
+                            if (window.showPageLoader) window.showPageLoader('Loading...');
+                        }, 100);
+                    }
                 }
             }
         });
         
-        // Initialize on page load
         function initializePage() {
-            // Initialize dark mode - default to light theme
+            // Initialize dark mode
             const darkMode = localStorage.getItem('darkMode') === 'true';
             if (darkMode) {
                 document.documentElement.classList.add('dark');
             } else {
-                // Ensure light theme is active
                 document.documentElement.classList.remove('dark');
-                // Set default to light if not set
                 if (localStorage.getItem('darkMode') === null) {
                     localStorage.setItem('darkMode', 'false');
                 }
             }
-            // Initialize theme toggle position with animation
-            setTimeout(() => {
-                updateThemeToggle(darkMode);
-            }, 100);
+            if (window.updateThemeToggle) updateThemeToggle(darkMode);
             
-            // Check auth status immediately and retry if needed
-            checkAuth().catch(err => {
-                console.error('Auth check error:', err);
-                // Retry after a short delay
-                setTimeout(() => checkAuth(), 200);
-            });
+            // Check auth
+            if (window.checkAuth) {
+                checkAuth().catch(err => console.error('Auth error:', err));
+            }
         }
-        
+
         // Run immediately if DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializePage);
@@ -1549,13 +1519,8 @@
             initializePage();
         }
         
-        // Also run on DOMContentLoaded as backup
-        document.addEventListener('DOMContentLoaded', function() {
-            // Small delay to ensure all elements are rendered
-            setTimeout(() => {
-                checkAuth().catch(err => console.error('Auth check error:', err));
-            }, 100);
-        });
+        // Final fail-safe hide
+        setTimeout(() => { if(window.hidePageLoader) window.hidePageLoader(); }, 500);
     </script>
 </body>
 </html>

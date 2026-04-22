@@ -1,4 +1,7 @@
-exports.up = function (knex) {
+exports.up = async function (knex) {
+  const exists = await knex.schema.hasTable('blogs');
+  if (exists) return;
+
   return knex.schema.createTable('blogs', (table) => {
     table.uuid('id').primary().defaultTo(knex.raw('gen_random_uuid()'));
     table.string('title').notNullable();
@@ -12,7 +15,7 @@ exports.up = function (knex) {
     table.boolean('is_published').defaultTo(false);
     table.timestamp('published_at');
     table.timestamps(true, true);
-    
+
     table.index('slug');
     table.index('is_published');
   });

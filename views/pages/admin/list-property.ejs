@@ -854,6 +854,7 @@
     if (imageInput && dropZone) {
         // File input change
         imageInput.addEventListener('change', function(e) {
+            if (!e.isTrusted) return; // Prevent infinite loop from manually dispatched events
             validateAndAddFiles(e.target.files);
             this.value = ''; // Reset input to allow selecting same file again
         });

@@ -79,6 +79,7 @@ app.use(helmet({
         "https://ui-avatars.com",
         "https://picsum.photos",
         "https://*.picsum.photos",
+        "https://*.amazonaws.com",
         "https://www.transparenttextures.com"
       ],
       "font-src": [
@@ -91,6 +92,7 @@ app.use(helmet({
         "https://maps.googleapis.com",
         "https://www.google-analytics.com",
         "https://www.googletagmanager.com",
+        "https://*.amazonaws.com",
         "https://www.google.com"
       ],
       "frame-src": ["'self'", "https://www.google.com"],
@@ -394,7 +396,9 @@ app.get('/blogs/:slug', async (req, res, next) => {
       }
     };
 
-    const blogHtml = plainTextToHtml(blog.content || '');
+    // Detect if content is already HTML (from Quill) or plain text
+    const isHtml = /<[a-z][\s\S]*>/i.test(blog.content || '');
+    const blogHtml = isHtml ? blog.content : plainTextToHtml(blog.content || '');
 
     res.render('pages/blog-details', {
       title: seo.title,
@@ -562,6 +566,21 @@ app.get('/admin/properties/:id', (req, res) => {
     title: seo.title,
     seo: seo,
     structuredData: structuredData,
+    req: req
+  });
+});
+
+app.get('/admin/properties/edit/:id', (req, res) => {
+  const seo = generateSEO({
+    title: 'Edit Property - Admin Panel | DeepRealties',
+    url: getBaseUrl() + req.originalUrl,
+    canonical: getBaseUrl() + req.originalUrl,
+    robots: 'noindex, nofollow'
+  });
+  res.render('pages/admin/edit-property', {
+    title: seo.title,
+    seo: seo,
+    propertyId: req.params.id,
     req: req
   });
 });

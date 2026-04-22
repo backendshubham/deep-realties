@@ -548,28 +548,30 @@
 
         function renderTestimonial(index) {
             const t = testimonials[index];
-            if (!t || !quoteEl) return;
+            if (!t) return;
 
             currentTestimonial = index;
 
-            quoteEl.textContent = t.quote;
-            nameEl.textContent = t.name;
-            roleEl.textContent = t.role;
-            initialsEl.textContent = t.initials;
-            tagEl.textContent = t.tag;
-            locationEl.textContent = t.location;
+            if (quoteEl) quoteEl.textContent = t.quote;
+            if (nameEl) nameEl.textContent = t.name;
+            if (roleEl) roleEl.textContent = t.role;
+            if (initialsEl) initialsEl.textContent = t.initials;
+            if (tagEl) tagEl.textContent = t.tag;
+            if (locationEl) locationEl.textContent = t.location;
 
-            dots.forEach((dot, i) => {
-                if (i === index) {
-                    dot.classList.remove('bg-slate-300', 'dark:bg-white/20', 'bg-slate-200', 'dark:bg-white/10');
-                    dot.classList.add('bg-emerald-600', 'dark:bg-emerald-400');
-                    dot.style.width = '2.5rem';
-                } else {
-                    dot.classList.add('bg-slate-200', 'dark:bg-white/10');
-                    dot.classList.remove('bg-emerald-600', 'dark:bg-emerald-400');
-                    dot.style.width = '1rem';
-                }
-            });
+            if (dots && dots.length) {
+                dots.forEach((dot, i) => {
+                    if (i === index) {
+                        dot.classList.remove('bg-slate-300', 'dark:bg-white/20', 'bg-slate-200', 'dark:bg-white/10');
+                        dot.classList.add('bg-emerald-600', 'dark:bg-emerald-400');
+                        dot.style.width = '2.5rem';
+                    } else {
+                        dot.classList.add('bg-slate-200', 'dark:bg-white/10');
+                        dot.classList.remove('bg-emerald-600', 'dark:bg-emerald-400');
+                        dot.style.width = '1rem';
+                    }
+                });
+            }
         }
 
         function startTestimonialAutoPlay() {

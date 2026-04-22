@@ -9,7 +9,9 @@
     "migrate": "knex migrate:latest",
     "migrate:rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
-    "migrate:reset": "knex migrate:rollback --all && knex migrate:latest && knex seed:run"
+    "migrate:reset": "knex migrate:rollback --all && knex migrate:latest && knex seed:run",
+    "build:css": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css",
+    "watch:css": "npx tailwindcss -i ./public/css/input.css -o ./public/css/output.css --watch"
   },
   "keywords": [
     "real-estate",
@@ -39,6 +41,9 @@
     "pg": "^8.11.3"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "autoprefixer": "^10.5.0",
+    "nodemon": "^3.0.2",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^3.4.19"
   }
 }

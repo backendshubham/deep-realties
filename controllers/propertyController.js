@@ -308,25 +308,43 @@ const createProperty = async (req, res, next) => {
 };
 
 const updateProperty = async (req, res, next) => {
+  const trx = await db.transaction();
   try {
     const { id } = req.params;
-    const property = await db('properties').where({ id }).first();
+    const property = await trx('properties').where({ id }).first();
 
     if (!property) {
+      await trx.rollback();
       return res.status(404).json({ error: 'Property not found' });
     }
 
     // Check ownership or admin
     if (req.user.role !== 'admin' && property.seller_id !== req.user.id) {
+      await trx.rollback();
       return res.status(403).json({ error: 'Not authorized to update this property' });
     }
 
+    const propertyType = req.body.property_type || property.property_type;
+    
+    // Parse numeric fields for update, similar to createProperty
     const updateData = {
       ...req.body,
       updated_at: db.fn.now()
     };
 
-    // Map parking_available to parking (database column name)
+    // Correctly parse price if present
+    if (updateData.price !== undefined && updateData.price !== null && updateData.price !== '') {
+      const price = parseFloat(updateData.price);
+      if (!isNaN(price)) updateData.price = price;
+    }
+
+    // Correctly parse area if present
+    if (updateData.area_sqft !== undefined && updateData.area_sqft !== null && updateData.area_sqft !== '') {
+      const area = parseFloat(updateData.area_sqft);
+      if (!isNaN(area)) updateData.area_sqft = area;
+    }
+
+    // Map parking_available
     if (updateData.parking_available !== undefined) {
       updateData.parking = updateData.parking_available;
       delete updateData.parking_available;
@@ -335,20 +353,57 @@ const updateProperty = async (req, res, next) => {
     if (req.body.amenities) {
       updateData.amenities = Array.isArray(req.body.amenities) ? req.body.amenities : [];
     }
-    if (req.body.images) {
-      updateData.images = Array.isArray(req.body.images) ? req.body.images : [];
-    }
 
-    const [updated] = await db('properties')
+    // Capture images to a separate variable and REMOVE from main updateData
+    const newImages = Array.isArray(req.body.images) ? req.body.images : null;
+    delete updateData.images;
+
+    // Clean updateData of undefined or null fields to avoid DB errors
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === undefined || updateData[key] === null || updateData[key] === '') {
+        delete updateData[key];
+      }
+    });
+
+    // Update main properties table
+    const [updated] = await trx('properties')
       .where({ id })
       .update(updateData)
       .returning('*');
 
+    // Handle Image Synchronization
+    if (newImages !== null) {
+      // 1. Delete existing images for this property
+      await trx('property_images').where({ property_id: id }).delete();
+      
+      // 2. Insert new image set
+      if (newImages.length > 0) {
+        const imageRecords = newImages.map((imageUrl, index) => ({
+          property_id: id,
+          image_url: imageUrl,
+          display_order: index
+        }));
+        await trx('property_images').insert(imageRecords);
+      }
+    }
+
+    await trx.commit();
+
+    // Fetch final state with images
+    const finalImages = await db('property_images')
+      .where({ property_id: id })
+      .orderBy('display_order', 'asc')
+      .select('image_url');
+
+    const formatted = formatProperty(updated);
+    formatted.images = finalImages.map(img => img.image_url);
+
     res.json({
       message: 'Property updated successfully',
-      property: formatProperty(updated)
+      property: formatted
     });
   } catch (error) {
+    if (trx) await trx.rollback();
     next(error);
   }
 };

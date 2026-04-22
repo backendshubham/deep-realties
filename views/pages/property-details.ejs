@@ -155,12 +155,17 @@
 </section>
 
 <script>
+    console.log("PROPERTY DETAILS SCRIPT LOADED");
     async function loadPropertyDetails() {
+        console.log("loadPropertyDetails CALLED");
         const pathParts = window.location.pathname.split('/');
         const propertyId = pathParts[pathParts.length - 1];
+        console.log("Extracted propertyId:", propertyId);
         
         try {
+            console.log("Fetching /api/properties/" + propertyId);
             const response = await fetch('/api/properties/' + propertyId);
+            console.log("Response status:", response.status);
             if (!response.ok) throw new Error('Property not found');
             const data = await response.json();
             const p = data.property;
@@ -171,17 +176,17 @@
             // Update Text Elements
             document.getElementById('breadcrumbTitle').textContent = p.title;
             document.getElementById('propTitle').textContent = p.title;
-            document.getElementById('propLocation').textContent = \\\`\\\${p.locality}, \\\${p.city}\\\`;
-            document.getElementById('propPrice').textContent = \\\`₹\\\${p.price.toLocaleString()}\\\`;
+            document.getElementById('propLocation').textContent = p.locality + ', ' + p.city;
+            document.getElementById('propPrice').textContent = '₹' + p.price.toLocaleString();
             document.getElementById('propTypeBadge').textContent = p.property_type.toUpperCase();
             document.getElementById('propTypeDisplay').textContent = p.property_type;
-            document.getElementById('propIdBadge').textContent = \\\`ID: \\\${p.id.substring(0, 8).toUpperCase()}\\\`;
-            document.getElementById('propArea').textContent = \\\`\\\${p.area_sqft} Sq.Ft\\\`;
-            document.getElementById('propDescription').textContent = p.description || 'A masterpiece of architectural design located in Indore\\'s most prestigious postcode.';
+            document.getElementById('propIdBadge').textContent = 'ID: ' + p.id.substring(0, 8).toUpperCase();
+            document.getElementById('propArea').textContent = p.area_sqft + ' Sq.Ft';
+            document.getElementById('propDescription').textContent = p.description || "A masterpiece of architectural design located in Indore's most prestigious postcode.";
 
             if (p.bedrooms) {
                 document.getElementById('bedroomStat').classList.remove('hidden');
-                document.getElementById('propBedrooms').textContent = \\\`\\\${p.bedrooms} Premium BDS\\\`;
+                document.getElementById('propBedrooms').textContent = p.bedrooms + ' Premium BDS';
             }
 
             // Image Gallery Logic
@@ -229,50 +234,49 @@
 
         } catch (e) {
             console.error(e);
-            document.body.innerHTML = \\\`
-                <div class="min-h-screen flex items-center justify-center bg-lux-midnight text-white text-center p-8">
-                    <div>
-                        <h1 class="text-6xl font-display font-bold mb-4">404</h1>
-                        <p class="text-xl text-gray-400 mb-8">This estate has been moved, acquired, or never existed.</p>
-                        <a href="/properties" class="px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold">Return to Library</a>
-                    </div>
-                </div>
-            \\\`;
+            document.body.innerHTML = '<div class="min-h-screen flex items-center justify-center bg-lux-midnight text-white text-center p-8">' +
+                    '<div>' +
+                        '<h1 class="text-6xl font-display font-bold mb-4">404</h1>' +
+                        '<p class="text-xl text-gray-400 mb-8">This estate has been moved, acquired, or never existed.</p>' +
+                        '<a href="/properties" class="px-8 py-3 bg-emerald-600 text-white rounded-xl font-bold">Return to Library</a>' +
+                    '</div>' +
+                '</div>';
         }
     }
 
     function showContactDetails() {
         const p = window.currentPropertyData;
-        const content = \\\`
-            <div class="space-y-8 p-4">
-                <div class="flex items-center space-x-6 p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/10">
-                    <div class="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center text-white text-2xl font-bold">D</div>
-                    <div>
-                        <h4 class="text-xl font-bold text-gray-900 dark:text-white">DeepRealties Concierge</h4>
-                        <p class="text-xs text-emerald-500 font-bold uppercase tracking-widest">Certified Curator</p>
-                    </div>
-                </div>
+        const content = '<div class="space-y-8 p-4">' +
+                '<div class="flex items-center space-x-6 p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/10">' +
+                    '<div class="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center text-white text-2xl font-bold">D</div>' +
+                    '<div>' +
+                        '<h4 class="text-xl font-bold text-gray-900 dark:text-white">DeepRealties Concierge</h4>' +
+                        '<p class="text-xs text-emerald-500 font-bold uppercase tracking-widest">Certified Curator</p>' +
+                    '</div>' +
+                '</div>' +
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                    <a href="tel:+918305551215" class="p-6 bg-emerald-600 text-white rounded-3xl hover:bg-emerald-500 transition-all font-bold">
-                        <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                        Call
-                    </a>
-                    <a href="mailto:deeprealties@gmail.com" class="p-6 bg-white/5 text-emerald-500 border border-emerald-500/30 rounded-3xl hover:bg-emerald-500 hover:text-white transition-all font-bold">
-                        <svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                        Email
-                    </a>
-                </div>
-
-                <div class="text-center">
-                    <p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest">Property Assignment Reference</p>
-                    <p class="text-sm font-mono text-emerald-500 mt-1">\\\${p.id}</p>
-                </div>
-            </div>
-        \\\`;
+                '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">' +
+                    '<a href="tel:+918305551215" class="p-6 bg-emerald-600 text-white rounded-3xl hover:bg-emerald-500 transition-all font-bold">' +
+                        '<svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>' +
+                        'Call' +
+                    '</a>' +
+                    '<a href="mailto:deeprealties@gmail.com" class="p-6 bg-white/5 text-emerald-500 border border-emerald-500/30 rounded-3xl hover:bg-emerald-500 hover:text-white transition-all font-bold">' +
+                        '<svg class="w-6 h-6 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>' +
+                        'Email' +
+                    '</a>' +
+                '</div>' +
+                '<div class="text-center">' +
+                    '<p class="text-[10px] text-gray-500 dark:text-gray-400 uppercase tracking-widest">Property Assignment Reference</p>' +
+                    '<p class="text-sm font-mono text-emerald-500 mt-1">' + p.id + '</p>' +
+                '</div>' +
+            '</div>';
         window.showModal && window.showModal('Assignment Curator', content);
     }
 
-    document.addEventListener('DOMContentLoaded', loadPropertyDetails);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadPropertyDetails);
+    } else {
+        loadPropertyDetails();
+    }
 </script>
 ` }) %>
