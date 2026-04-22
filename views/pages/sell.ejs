@@ -1,1144 +1,608 @@
 <%- include('../layouts/main', { content: `
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 overflow-hidden">
-    <!-- Decorative Background Elements -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
-        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+<section class="relative min-h-[60vh] flex items-center pt-32 pb-20 overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80" 
+             alt="Luxury Property" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-lux-midnight via-lux-midnight/80 to-transparent dark:from-black dark:via-black/90 dark:to-transparent"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <span class="badge-text inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
-            List Your Property
-        </span>
-        <h1 class="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-3 sm:mb-4 px-2">
-            <span class="text-gray-900 dark:text-white">Sell Property</span>
-        </h1>
-        <p class="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            Reach thousands of potential buyers through our premium platform
-        </p>
-    </div>
-</section>
 
-<!-- Informative Content Section -->
-<section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-900">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12">
-            <div>
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    Sell Your Property Quickly and Easily
-                </h2>
-                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                    Ready to sell your property? List it on our platform and reach thousands of verified buyers actively searching for properties like yours. Whether you're selling a plot, flat, house, or farmland, we make the process simple and hassle-free.
-                </p>
-                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                    Our platform connects you with genuine buyers, helping you get the best price for your property. With our easy listing process and expert support, selling your property has never been easier.
-                </p>
-            </div>
-            <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-8 border border-emerald-100 dark:border-emerald-800">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">How It Works</h2>
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold mr-3">1</div>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Fill Out Property Details</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Provide information about your property including type, location, price, area, and amenities.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold mr-3">2</div>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">We Review & Verify</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Our team reviews your listing within 24-48 hours to ensure all details are accurate and complete.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold mr-3">3</div>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Get Listed & Reach Buyers</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Once approved, your property goes live and becomes visible to thousands of potential buyers.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-emerald-500/10 blur-[120px] pointer-events-none"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Wide Buyer Reach</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    Your property listing reaches thousands of verified buyers actively searching for properties. Maximize your visibility and find the right buyer faster.
-                </p>
-            </div>
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Verified Listings</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    All listings are verified for authenticity, ensuring buyers trust your property details. Build credibility and attract serious buyers.
-                </p>
-            </div>
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Free Listing</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    List your property for free with no hidden charges. Pay only when you successfully sell through our platform.
-                </p>
-            </div>
-        </div>
-
-        <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">What Types of Properties Can You Sell?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-                        </svg> Plots & Land
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Sell residential or commercial plots with clear documentation. Whether it's a small plot or large land parcel, list it and find buyers quickly.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg> Flats & Apartments
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        List your apartment or flat with all details including BHK configuration, floor, facing direction, and amenities. Attract buyers looking for ready-to-move-in properties.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                        </svg> Houses & Villas
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Sell independent houses, villas, or bungalows. Highlight features like garden space, parking, number of floors, and nearby facilities to attract the right buyers.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg> Farmland
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        List agricultural land or farmland for sale. Provide details in bigha or acre measurements and attract investors or farmers looking for agricultural properties.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Tips for a Successful Property Listing</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-3">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Accurate Details:</strong> Provide complete and accurate information about your property to attract serious buyers.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Quality Photos:</strong> Upload clear, high-quality images of your property to make a great first impression.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Competitive Pricing:</strong> Research market rates and set a competitive price to attract more buyers.
-                        </p>
-                    </div>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Detailed Description:</strong> Write a compelling description highlighting unique features, nearby facilities, and benefits.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Location Details:</strong> Mention nearby landmarks, schools, hospitals, and connectivity to help buyers make informed decisions.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Quick Response:</strong> Respond promptly to buyer inquiries to increase your chances of a successful sale.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Form Section -->
-<section class="py-8 sm:py-12 lg:py-16 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Success Message -->
-        <div id="successMessage" class="hidden bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl p-8 mb-6 shadow-sm">
-            <h2 class="text-2xl font-bold text-emerald-700 dark:text-emerald-400 mb-3">Property Submitted!</h2>
-            <p class="text-emerald-600 dark:text-emerald-300 mb-6 text-base leading-relaxed">
-                Your property has been submitted for review. Our team will verify the details and approve it within 24-48 hours.
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div class="max-w-3xl">
+            <span class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
+                PREMIUM LISTING CONCIERGE
+            </span>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
+                Sell Your Property <br/>
+                <span class="text-emerald-400">At Premium Value</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-white/70 mb-10 max-w-2xl leading-relaxed">
+                Connect with serious buyers and get the best market value for your property through our exclusive luxury network.
             </p>
+            
             <div class="flex flex-wrap gap-4">
-                <a href="/properties" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors shadow-sm hover:shadow-md">
-                    View Properties
+                <a href="#sellForm" class="px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold transition-all shadow-lg shadow-emerald-900/20 flex items-center group">
+                    Start Listing Now
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
                 </a>
-                <button onclick="resetForm()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg font-semibold transition-colors">
-                    List Another Property
-                </button>
+                <a href="/contact" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold backdrop-blur-md border border-white/10 transition-all">
+                    Consult Agent
+                </a>
             </div>
         </div>
-        
-        <!-- Empty card below success message (shown when success is visible) -->
-        <div id="emptyCard" class="hidden bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 min-h-[200px] mb-6"></div>
-        
-        <div id="sellFormContainer" class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
-            <form id="sellForm" class="space-y-6">
+    </div>
+</section>
+
+<!-- Stats & Trust Section -->
+<section class="py-20 relative bg-white dark:bg-lux-midnight overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="relative">
+                <div class="absolute -top-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-8">
+                    Why Choose <span class="text-emerald-500">DeepRealties</span> <br/>To Sell Your Property?
+                </h2>
+                <div class="space-y-6">
+                    <div class="flex items-start p-6 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-emerald-500/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 flex-shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Verified Network</h3>
+                            <p class="text-gray-600 dark:text-gray-400">Access our exclusive database of pre-verified buyers looking for premium opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start p-6 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 hover:border-emerald-500/50 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-500 mr-4 flex-shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Maximum ROI</h3>
+                            <p class="text-gray-600 dark:text-gray-400">Our data-driven pricing strategies ensure you get the absolute best value for your asset.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <div class="glass-panel p-8 text-center rounded-3xl">
+                    <div class="text-4xl font-bold text-emerald-500 mb-2">500+</div>
+                    <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400">Trusted Sales</div>
+                </div>
+                <div class="glass-panel p-8 text-center rounded-3xl mt-12">
+                    <div class="text-4xl font-bold text-emerald-500 mb-2">₹100Cr+</div>
+                    <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400">Inventory Sold</div>
+                </div>
+                <div class="glass-panel p-8 text-center rounded-3xl">
+                    <div class="text-4xl font-bold text-emerald-500 mb-2">98%</div>
+                    <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400">Success Rate</div>
+                </div>
+                <div class="glass-panel p-8 text-center rounded-3xl mt-12">
+                    <div class="text-4xl font-bold text-emerald-500 mb-2">15 Days</div>
+                    <div class="text-sm uppercase tracking-widest text-gray-500 dark:text-gray-400">Avg. Sale Time</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Listing Form Section -->
+<section id="sellSection" class="py-24 bg-gray-50 dark:bg-black/40 relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">List Your Property</h2>
+            <p class="text-gray-600 dark:text-gray-400">Fill in the details below to start your premium selling journey.</p>
+        </div>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="hidden glass-panel border-emerald-500/50 p-12 text-center rounded-3xl mb-12">
+            <div class="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg shadow-emerald-500/20">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Listing Received!</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                Your property details have been submitted successfully. Our concierge team will review and contact you within 24 hours.
+            </p>
+            <button onclick="resetForm()" class="px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors">
+                List Another Property
+            </button>
+        </div>
+
+        <div id="sellFormContainer" class="glass-panel rounded-[2rem] p-8 md:p-12 border-white/10 shadow-2xl relative overflow-hidden">
+            <!-- Form Background Accent -->
+            <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 blur-[80px] -mr-32 -mt-32"></div>
+            
+            <form id="sellForm" class="space-y-12 relative z-10">
                 <!-- Property Type Selection -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                        Property Type <span class="text-red-500">*</span>
-                    </label>
-                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="plot" required class="mr-2">
-                            <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
-                            </svg>
-                            <span class="text-sm">Plot</span>
+                <div class="space-y-6">
+                    <label class="block text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-widest">Select Property Type</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="property_type" value="flat" class="peer sr-only" checked>
+                            <div class="p-4 text-center rounded-2xl border-2 border-gray-100 dark:border-white/5 bg-white dark:bg-white/5 peer-checked:border-emerald-50:peer-checked:border-emerald-500 peer-checked:bg-emerald-500/5 transition-all group-hover:border-emerald-500/30">
+                                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 peer-checked:text-emerald-500 capitalize">Flat</span>
+                            </div>
                         </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="flat" required class="mr-2">
-                            <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                            </svg>
-                            <span class="text-sm">Flat</span>
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="property_type" value="house" class="peer sr-only">
+                            <div class="p-4 text-center rounded-2xl border-2 border-gray-100 dark:border-white/5 bg-white dark:bg-white/5 peer-checked:border-emerald-50:peer-checked:border-emerald-500 peer-checked:bg-emerald-500/5 transition-all group-hover:border-emerald-500/30">
+                                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 peer-checked:text-emerald-500 capitalize">House</span>
+                            </div>
                         </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="house" required class="mr-2">
-                            <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                            </svg>
-                            <span class="text-sm">House</span>
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="property_type" value="plot" class="peer sr-only">
+                            <div class="p-4 text-center rounded-2xl border-2 border-gray-100 dark:border-white/5 bg-white dark:bg-white/5 peer-checked:border-emerald-50:peer-checked:border-emerald-500 peer-checked:bg-emerald-500/5 transition-all group-hover:border-emerald-500/30">
+                                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 peer-checked:text-emerald-500 capitalize">Plot</span>
+                            </div>
                         </label>
-                        <label class="flex items-center p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:border-emerald-500 dark:hover:border-emerald-500 transition-colors">
-                            <input type="radio" name="property_type" value="farmland" required class="mr-2">
-                            <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <span class="text-sm">Farm Land</span>
+                        <label class="relative cursor-pointer group">
+                            <input type="radio" name="property_type" value="farmland" class="peer sr-only">
+                            <div class="p-4 text-center rounded-2xl border-2 border-gray-100 dark:border-white/5 bg-white dark:bg-white/5 peer-checked:border-emerald-50:peer-checked:border-emerald-500 peer-checked:bg-emerald-500/5 transition-all group-hover:border-emerald-500/30">
+                                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 peer-checked:text-emerald-500 capitalize">Farmland</span>
+                            </div>
                         </label>
                     </div>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Property Title <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="title" required placeholder="e.g., Luxury 3BHK Villa in Prime Location"
-                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Description <span class="text-red-500">*</span>
-                    </label>
-                    <textarea name="description" rows="4" required placeholder="Describe your property in detail..."
-                              class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"></textarea>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Basic Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Listing Title</label>
+                        <input type="text" name="title" required placeholder="e.g. Luxurious 4BHK Villa in Premium Colony"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Description</label>
+                        <textarea name="description" rows="4" required placeholder="Describe the key features, amenities and selling points..."
+                                  class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all"></textarea>
+                    </div>
+
+                    <div id="priceGroup">
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Total Price (₹)</label>
+                        <input type="number" name="price" placeholder="e.g. 7500000"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+
+                    <div id="pricePerBighaGroup" class="hidden">
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Price Per Bigha (₹)</label>
+                        <input type="number" name="price_per_bigha" placeholder="e.g. 1500000"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+
+                    <div id="areaSqftGroup">
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Total Area (Sq.Ft)</label>
+                        <input type="number" name="area_sqft" placeholder="e.g. 1500"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+
+                    <!-- Plot Specific Fields -->
+                    <div id="plotFields" class="hidden md:col-span-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Total Area (Sq.Ft)</label>
+                                <input type="number" name="plot_total_area" placeholder="e.g. 1200"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Length (ft)</label>
+                                <input type="number" name="plot_length" placeholder="e.g. 40"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Width (ft)</label>
+                                <input type="number" name="plot_width" placeholder="e.g. 30"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Farmland Specific Fields -->
+                    <div id="farmlandFields" class="hidden md:col-span-2">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Area in Bigha</label>
+                                <input type="number" step="0.01" name="farmland_bigha" placeholder="e.g. 2.5"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Area in Acre</label>
+                                <input type="number" step="0.01" name="farmland_acre" placeholder="e.g. 1.2"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">No. of Plots (If Any)</label>
+                                <input type="number" name="number_of_plots" placeholder="e.g. 1"
+                                       class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Details -->
+                    <div id="commonDetails" class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div id="bedroomGroup">
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Bedrooms</label>
+                            <input type="number" name="bedrooms" placeholder="3"
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                        </div>
+                        <div id="bathroomGroup">
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Bathrooms</label>
+                            <input type="number" name="bathrooms" placeholder="2"
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                        </div>
+                        <div id="floorGroup">
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Total Floors</label>
+                            <input type="number" name="floors" placeholder="2"
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                        </div>
+                    </div>
+
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Locality <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="locality" required placeholder="Area / Locality"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            City <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="city" required placeholder="City"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                </div>
-                
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        State <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="state" required placeholder="State"
-                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div id="priceFieldContainer">
-                        <label id="priceLabel" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Price (₹) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" name="price" required id="priceInput" placeholder="Property Price"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div id="areaFieldContainer">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Area (sqft) <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" name="area_sqft" placeholder="Area in square feet"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div id="numberOfPlotsContainer" class="hidden">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Number of Plots (Optional)
-                        </label>
-                        <input type="number" name="number_of_plots" placeholder="e.g., 2" min="1" step="1"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                </div>
-                
-                <!-- Plot Fields (shown when Plot is selected) -->
-                <div id="plotFields" class="hidden">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Length (ft) <span class="text-red-500">*</span>
-                            </label>
-                            <input type="number" name="plot_length" placeholder="e.g., 50" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Width (ft) <span class="text-red-500">*</span>
-                            </label>
-                            <input type="number" name="plot_width" placeholder="e.g., 30" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Total Area (sqft) <span class="text-red-500">*</span>
-                            </label>
-                            <input type="number" name="plot_total_area" placeholder="e.g., 1500" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Farm Land Fields (shown when Farm Land is selected) -->
-                <div id="farmlandFields" class="hidden space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Bigha
-                            </label>
-                            <input type="number" name="farmland_bigha" placeholder="e.g., 5" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Acre
-                            </label>
-                            <input type="number" name="farmland_acre" placeholder="e.g., 2" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Price per bigha (₹)
-                            </label>
-                            <input type="number" name="price_per_bigha" placeholder="e.g., 500000" min="0" step="0.01"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Other Property Fields (shown for Flat, House only) -->
-                <div id="otherPropertyFields" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Bedrooms
-                        </label>
-                        <input type="number" name="bedrooms" placeholder="Number of bedrooms"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Bathrooms
-                        </label>
-                        <input type="number" name="bathrooms" placeholder="Number of bathrooms"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                </div>
-                
-                <div id="floorsField" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Floors
-                        </label>
-                        <input type="number" name="floors" placeholder="Number of floors"
-                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                    </div>
-                    <div id="facingField">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Facing
-                        </label>
-                        <select name="facing" 
-                                class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                            <option value="">Select Facing</option>
-                            <option value="north">North</option>
-                            <option value="south">South</option>
-                            <option value="east">East</option>
-                            <option value="west">West</option>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Property Facing</label>
+                        <select name="facing" class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all appearance-none">
+                            <option value="">Select Direction</option>
+                            <option value="North">North</option>
+                            <option value="South">South</option>
+                            <option value="East">East</option>
+                            <option value="West">West</option>
+                            <option value="North-East">North-East</option>
+                            <option value="North-West">North-West</option>
+                            <option value="South-East">South-East</option>
+                            <option value="South-West">South-West</option>
                         </select>
                     </div>
-                </div>
-                
-                <div id="googleEarthField">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Google Earth Link
-                    </label>
-                    <input type="url" name="google_earth_link" placeholder="https://earth.google.com/..."
-                           class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                </div>
-                
-                <!-- Amenities -->
-                <div id="amenitiesSection">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                        Amenities
-                    </label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="swimming_pool" class="mr-2">
-                            <span>Swimming Pool</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="gym" class="mr-2">
-                            <span>Gym</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="garden" class="mr-2">
-                            <span>Garden</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="security" class="mr-2">
-                            <span>Security</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="parking" class="mr-2">
-                            <span>Parking</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="power_backup" class="mr-2">
-                            <span>Power Backup</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="lift" class="mr-2">
-                            <span>Lift</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="club_house" class="mr-2">
-                            <span>Club House</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="children_play_area" class="mr-2">
-                            <span>Children Play Area</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="sports_facility" class="mr-2">
-                            <span>Sports Facility</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="water_supply" class="mr-2">
-                            <span>Water Supply</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="cctv" class="mr-2">
-                            <span>CCTV</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="intercom" class="mr-2">
-                            <span>Intercom</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="fire_safety" class="mr-2">
-                            <span>Fire Safety</span>
-                        </label>
-                        <label class="flex items-center p-3 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                            <input type="checkbox" name="amenities" value="rainwater_harvesting" class="mr-2">
-                            <span>Rainwater Harvesting</span>
-                        </label>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Locality</label>
+                        <input type="text" name="locality" required placeholder="e.g. Vijay Nagar"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">City</label>
+                        <input type="text" name="city" required placeholder="e.g. Indore"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">State</label>
+                        <input type="text" name="state" required placeholder="e.g. Madhya Pradesh"
+                               class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
                     </div>
                 </div>
-                
-                <div id="parkingAvailableSection">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="parking_available" class="mr-2">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Parking Available</span>
-                    </label>
+
+                <!-- Image Upload -->
+                <div class="space-y-6">
+                    <label class="block text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-widest">Property Images (Max 5)</label>
+                    <div id="imageDropZone" class="relative group">
+                        <input type="file" id="propertyImages" name="images" multiple accept="image/*" class="sr-only">
+                        <div class="border-2 border-dashed border-gray-200 dark:border-white/10 rounded-3xl p-12 text-center transition-all group-hover:border-emerald-500/50 group-hover:bg-emerald-500/5 cursor-pointer">
+                            <div id="dropZoneContent">
+                                <div class="w-16 h-16 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 text-emerald-500">
+                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-900 dark:text-white font-bold text-lg mb-1">Click or drag images to upload</p>
+                                <p class="text-gray-500 dark:text-gray-400">High quality photos attract more buyers</p>
+                            </div>
+                            <div id="dropZoneActive" class="hidden">
+                                <p class="text-emerald-500 font-bold text-xl">Drop images here</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Previews -->
+                    <div id="imagePreviews" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
                 </div>
-                
+
                 <!-- Contact Information -->
-                <div id="contactInfoSection" class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Your Contact Information</h2>
-                    
-                    <div id="loggedInUserInfo" class="hidden mb-4 p-4 bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 rounded-lg">
-                        <p class="text-sm text-emerald-700 dark:text-emerald-300 font-medium">
-                            <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                <div class="space-y-8 pt-8 border-t border-gray-100 dark:border-white/10">
+                    <div id="loggedInUserInfo" class="hidden p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            Using your account information (you can edit if needed)
-                        </p>
+                            <span>Your contact information will be pre-filled from your account.</span>
+                        </div>
                     </div>
-                    
-                    <div id="contactFields" class="space-y-4">
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Full Name <span class="text-red-500">*</span>
-                            </label>
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Full Name</label>
                             <input type="text" id="full_name" name="full_name" required placeholder="Your Name"
-                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
                         </div>
-                        
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Email <span class="text-red-500">*</span>
-                                </label>
-                                <input type="email" id="email" name="email" required placeholder="your@email.com"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Phone <span class="text-red-500">*</span>
-                                </label>
-                                <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"
-                                       class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
-                            </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="email@example.com"
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-2 uppercase tracking-widest">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"
+                                   class="w-full px-6 py-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
                         </div>
                     </div>
                 </div>
-                
-                <!-- Property Images Upload Section -->
-                <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-                    <div class="mb-4">
-                        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Property Images</h2>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">
-                            Upload 1-5 high-quality images. <span class="text-red-500">*</span> At least 1 image is required.
-                        </p>
-                    </div>
-                    
-                    <div class="space-y-4">
-                        <!-- Drag and Drop Upload Area -->
-                        <div id="dropZone" class="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center transition-all hover:border-emerald-500 dark:hover:border-emerald-500 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 cursor-pointer">
-                            <input type="file" 
-                                   id="propertyImages" 
-                                   name="property_images" 
-                                   accept="image/*" 
-                                   multiple 
-                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
-                            
-                            <div id="dropZoneContent" class="pointer-events-none">
-                                <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500 mb-4" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                                <p class="text-base font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    <span class="text-emerald-600 dark:text-emerald-400">Click to upload</span> or drag and drop
-                                </p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    PNG, JPG, WebP up to 5MB each (Max 5 images)
-                                </p>
-                            </div>
-                            
-                            <div id="dropZoneActive" class="hidden pointer-events-none">
-                                <svg class="mx-auto h-12 w-12 text-emerald-500 mb-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                </svg>
-                                <p class="text-base font-medium text-emerald-600 dark:text-emerald-400">
-                                    Drop images here
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- Image Preview Container -->
-                        <div id="imagePreviewContainer" class="hidden">
-                            <div class="flex items-center justify-between mb-3">
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Selected Images <span id="selectedImageCount" class="text-emerald-600 dark:text-emerald-400">0</span>/5
-                                </p>
-                                <button type="button" id="clearAllImages" class="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium hidden">
-                                    Clear All
-                                </button>
-                            </div>
-                            <div id="imageGrid" class="flex flex-wrap gap-3">
-                            </div>
-                        </div>
-                    </div>
+
+                <!-- Submit Button -->
+                <div class="pt-8">
+                    <button type="submit" 
+                            class="w-full py-5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-lg rounded-2xl transition-all shadow-xl shadow-emerald-500/20 flex items-center justify-center group">
+                        <span>List Property Now</span>
+                        <svg class="w-6 h-6 ml-2 transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                    </button>
+                    <p class="text-center text-gray-500 dark:text-gray-400 mt-4 text-sm">
+                        By listing, you agree to our <a href="#" class="text-emerald-500 hover:underline">Terms of Service</a> and <a href="#" class="text-emerald-500 hover:underline">Privacy Policy</a>
+                    </p>
                 </div>
-                
-                <button type="submit" 
-                        class="w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-lg font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                    Submit Property
-                </button>
             </form>
         </div>
     </div>
 </section>
 
+<!-- Empty state hidden container -->
+<div id="emptyCard" class="hidden"></div>
+
 <script>
-    
+    // Property field toggling logic
     function togglePropertyFields() {
-        const propertyType = document.querySelector('input[name="property_type"]:checked')?.value;
+        const typeEl = document.querySelector('input[name="property_type"]:checked');
+        if (!typeEl) return;
+        const type = typeEl.value;
+        const commonDetails = document.getElementById('commonDetails');
+        const bedroomGroup = document.getElementById('bedroomGroup');
+        const bathroomGroup = document.getElementById('bathroomGroup');
+        const floorGroup = document.getElementById('floorGroup');
         const plotFields = document.getElementById('plotFields');
         const farmlandFields = document.getElementById('farmlandFields');
-        const otherFields = document.getElementById('otherPropertyFields');
-        const floorsField = document.getElementById('floorsField');
-        const facingField = document.getElementById('facingField');
-        const areaFieldContainer = document.getElementById('areaFieldContainer');
-        const areaInput = document.querySelector('input[name="area_sqft"]');
-        const priceFieldContainer = document.getElementById('priceFieldContainer');
-        const priceLabel = document.getElementById('priceLabel');
-        const priceInput = document.getElementById('priceInput');
-        const amenitiesSection = document.getElementById('amenitiesSection');
-        const parkingAvailableSection = document.getElementById('parkingAvailableSection');
-        const numberOfPlotsContainer = document.getElementById('numberOfPlotsContainer');
-        const googleEarthField = document.getElementById('googleEarthField');
-        
-        if (propertyType === 'plot') {
+        const areaSqftGroup = document.getElementById('areaSqftGroup');
+        const priceGroup = document.getElementById('priceGroup');
+        const pricePerBighaGroup = document.getElementById('pricePerBighaGroup');
+
+        // Reset all
+        [commonDetails, bedroomGroup, bathroomGroup, floorGroup, plotFields, farmlandFields, areaSqftGroup, priceGroup, pricePerBighaGroup].forEach(el => {
+            if (el) el.classList.add('hidden');
+        });
+
+        if (type === 'flat' || type === 'house') {
+            commonDetails.classList.remove('hidden');
+            bedroomGroup.classList.remove('hidden');
+            bathroomGroup.classList.remove('hidden');
+            floorGroup.classList.remove('hidden');
+            areaSqftGroup.classList.remove('hidden');
+            priceGroup.classList.remove('hidden');
+        } else if (type === 'plot') {
             plotFields.classList.remove('hidden');
-            farmlandFields.classList.add('hidden');
-            otherFields.classList.add('hidden');
-            floorsField.classList.add('hidden');
-            // Hide area_sqft field for plot (will use plot_total_area instead)
-            if (areaFieldContainer) areaFieldContainer.classList.add('hidden');
-            if (areaInput) areaInput.removeAttribute('required');
-            // Show price field and number of plots field next to price
-            if (priceFieldContainer) priceFieldContainer.classList.remove('hidden');
-            if (numberOfPlotsContainer) numberOfPlotsContainer.classList.remove('hidden');
-            // Hide google earth field for plot
-            if (googleEarthField) googleEarthField.classList.add('hidden');
-            // Hide amenities and parking available for plot
-            if (amenitiesSection) amenitiesSection.classList.add('hidden');
-            if (parkingAvailableSection) parkingAvailableSection.classList.add('hidden');
-            // Change price label and placeholder to "per sqft"
-            if (priceLabel) {
-                priceLabel.innerHTML = 'Price per sqft (₹) <span class="text-red-500">*</span>';
-            }
-            if (priceInput) {
-                priceInput.placeholder = 'Price per square foot (e.g., 5000)';
-            }
-        } else if (propertyType === 'farmland') {
-            // For Farm Land: show bigha, acre, price per bigha; hide price, area, bedrooms, bathrooms, floors, facing, amenities; show google earth
-            plotFields.classList.add('hidden');
+            priceGroup.classList.remove('hidden');
+        } else if (type === 'farmland') {
             farmlandFields.classList.remove('hidden');
-            otherFields.classList.add('hidden');
-            floorsField.classList.add('hidden');
-            // Hide price field for farmland
-            if (priceFieldContainer) priceFieldContainer.classList.add('hidden');
-            if (priceInput) priceInput.removeAttribute('required');
-            // Hide area_sqft field for farmland
-            if (areaFieldContainer) areaFieldContainer.classList.add('hidden');
-            if (areaInput) areaInput.removeAttribute('required');
-            // Hide number of plots field
-            if (numberOfPlotsContainer) numberOfPlotsContainer.classList.add('hidden');
-            // Show google earth field for farmland
-            if (googleEarthField) googleEarthField.classList.remove('hidden');
-            // Hide amenities and parking available for farmland
-            if (amenitiesSection) amenitiesSection.classList.add('hidden');
-            if (parkingAvailableSection) parkingAvailableSection.classList.add('hidden');
-        } else {
-            // For Flat and House: show all standard fields
-            plotFields.classList.add('hidden');
-            farmlandFields.classList.add('hidden');
-            otherFields.classList.remove('hidden');
-            floorsField.classList.remove('hidden');
-            // Show price and area_sqft fields for other types
-            if (priceFieldContainer) priceFieldContainer.classList.remove('hidden');
-            if (priceInput) priceInput.setAttribute('required', 'required');
-            if (areaFieldContainer) areaFieldContainer.classList.remove('hidden');
-            if (areaInput) areaInput.setAttribute('required', 'required');
-            // Hide number of plots field
-            if (numberOfPlotsContainer) numberOfPlotsContainer.classList.add('hidden');
-            // Hide google earth field for flat/house
-            if (googleEarthField) googleEarthField.classList.add('hidden');
-            // Show amenities and parking available for other types
-            if (amenitiesSection) amenitiesSection.classList.remove('hidden');
-            if (parkingAvailableSection) parkingAvailableSection.classList.remove('hidden');
-            // Change price label and placeholder back to regular
-            if (priceLabel) {
-                priceLabel.innerHTML = 'Price (₹) <span class="text-red-500">*</span>';
-            }
-            if (priceInput) {
-                priceInput.placeholder = 'Property Price';
-            }
+            priceGroup.classList.remove('hidden');
+            pricePerBighaGroup.classList.remove('hidden');
         }
     }
-    
-    // Image upload with drag and drop functionality
+
+    // Image handling logic
+    let selectedFiles = [];
     const imageInput = document.getElementById('propertyImages');
-    const dropZone = document.getElementById('dropZone');
+    const imagePreviews = document.getElementById('imagePreviews');
+    const dropZone = document.getElementById('imageDropZone');
     const dropZoneContent = document.getElementById('dropZoneContent');
     const dropZoneActive = document.getElementById('dropZoneActive');
-    const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-    const imageGrid = document.getElementById('imageGrid');
-    const selectedImageCount = document.getElementById('selectedImageCount');
-    const clearAllBtn = document.getElementById('clearAllImages');
-    let selectedFiles = [];
-    
-    function updateImagePreviews() {
-        if (selectedFiles.length === 0) {
-            imagePreviewContainer.classList.add('hidden');
-            clearAllBtn.classList.add('hidden');
+
+    if (dropZone) {
+        dropZone.onclick = () => imageInput.click();
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZoneActive.classList.remove('hidden');
+            dropZoneContent.classList.add('hidden');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZoneActive.classList.add('hidden');
+            dropZoneContent.classList.remove('hidden');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZoneActive.classList.add('hidden');
+            dropZoneContent.classList.remove('hidden');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        imageInput.onchange = (e) => handleFiles(e.target.files);
+    }
+
+    function handleFiles(files) {
+        const fileList = Array.from(files);
+        if (selectedFiles.length + fileList.length > 5) {
+            showError('You can only upload up to 5 images.');
             return;
         }
-        
-        imagePreviewContainer.classList.remove('hidden');
-        imageGrid.innerHTML = '';
-        selectedImageCount.textContent = selectedFiles.length;
-        
-        if (selectedFiles.length > 0) {
-            clearAllBtn.classList.remove('hidden');
-        }
-        
+
+        fileList.forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            selectedFiles.push(file);
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-square rounded-xl overflow-hidden group';
+                div.innerHTML = \\\`
+                    <img src="\\\${e.target.result}" class="w-full h-full object-cover">
+                    <button type="button" class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeImage(\\\${selectedFiles.length - 1})">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                \\\`;
+                imagePreviews.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        });
+        updateFileInput();
+    }
+
+    function removeImage(index) {
+        selectedFiles.splice(index, 1);
+        renderPreviews();
+        updateFileInput();
+    }
+
+    function renderPreviews() {
+        imagePreviews.innerHTML = '';
         selectedFiles.forEach((file, index) => {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                const previewCard = document.createElement('div');
-                previewCard.className = 'relative';
-                previewCard.dataset.index = index;
-                
-                previewCard.innerHTML = 
-                    '<div class="relative w-24 h-24 rounded-lg overflow-visible border-2 border-gray-200 dark:border-gray-700">' +
-                        '<img src="' + e.target.result + '" alt="Preview ' + (index + 1) + '" width="400" height="400" class="w-full h-full object-cover rounded-lg">' +
-                        '<button type="button" class="remove-image-btn absolute -top-1 -right-1 bg-red-500 hover:bg-red-600 active:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-lg border-2 border-white dark:border-gray-800 transition-all transform hover:scale-110 z-20 cursor-pointer" data-index="' + index + '" aria-label="Remove image" title="Remove image">' +
-                            '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">' +
-                                '<path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>' +
-                            '</svg>' +
-                        '</button>' +
-                        '<div class="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-xs font-bold px-1 py-0.5 text-center rounded-b-lg">' +
-                            (index + 1) +
-                        '</div>' +
-                    '</div>';
-                
-                imageGrid.appendChild(previewCard);
-                
-                // Add remove button event listener
-                const removeBtn = previewCard.querySelector('.remove-image-btn');
-                removeBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const idx = parseInt(this.dataset.index);
-                    removeImage(idx);
-                });
+            reader.onload = (e) => {
+                const div = document.createElement('div');
+                div.className = 'relative aspect-square rounded-xl overflow-hidden group';
+                div.innerHTML = \\\`
+                    <img src="\\\${e.target.result}" class="w-full h-full object-cover">
+                    <button type="button" class="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity" onclick="removeImage(\\\${index})">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                \\\`;
+                imagePreviews.appendChild(div);
             };
             reader.readAsDataURL(file);
         });
     }
-    
-    function removeImage(index) {
-        selectedFiles.splice(index, 1);
-        updateImagePreviews();
-        updateFileInput();
-    }
-    
+
     function updateFileInput() {
         const dataTransfer = new DataTransfer();
         selectedFiles.forEach(file => dataTransfer.items.add(file));
         imageInput.files = dataTransfer.files;
     }
-    
-    function validateAndAddFiles(files) {
-        const fileArray = Array.from(files);
-        const maxSize = 5 * 1024 * 1024; // 5MB
-        const validFiles = [];
-        const errors = [];
-        
-        // Check total count
-        if (selectedFiles.length + fileArray.length > 5) {
-            showError('Maximum 5 images allowed. You can only add ' + (5 - selectedFiles.length) + ' more image(s).');
-            return;
-        }
-        
-        fileArray.forEach(file => {
-            // Check file type
-            if (!file.type.startsWith('image/')) {
-                errors.push(file.name + ' is not an image file.');
-                return;
-            }
-            
-            // Check file size
-            if (file.size > maxSize) {
-                errors.push(file.name + ' exceeds 5MB size limit.');
-                return;
-            }
-            
-            validFiles.push(file);
-        });
-        
-        if (errors.length > 0) {
-            showError(errors.join(' '));
-        }
-        
-        if (validFiles.length > 0) {
-            selectedFiles = selectedFiles.concat(validFiles);
-            updateImagePreviews();
-            updateFileInput();
-        }
-    }
-    
-    if (imageInput && dropZone) {
-        // File input change
-        imageInput.addEventListener('change', function(e) {
-            validateAndAddFiles(e.target.files);
-            this.value = ''; // Reset input to allow selecting same file again
-        });
-        
-        // Drag and drop
-        dropZone.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropZoneContent.classList.add('hidden');
-            dropZoneActive.classList.remove('hidden');
-            dropZone.classList.add('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
-        });
-        
-        dropZone.addEventListener('dragleave', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropZoneContent.classList.remove('hidden');
-            dropZoneActive.classList.add('hidden');
-            dropZone.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
-        });
-        
-        dropZone.addEventListener('drop', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropZoneContent.classList.remove('hidden');
-            dropZoneActive.classList.add('hidden');
-            dropZone.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/20');
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                validateAndAddFiles(files);
-            }
-        });
-        
-        // Clear all button
-        if (clearAllBtn) {
-            clearAllBtn.addEventListener('click', function() {
-                selectedFiles = [];
-                updateImagePreviews();
-                updateFileInput();
-            });
-        }
-    }
-    
-    // Load user information if logged in and pre-fill contact fields
+
+    // Load user information
     async function loadUserInfo() {
         const token = localStorage.getItem('token');
-        if (!token) {
-            return; // User not logged in, show empty contact fields
-        }
+        if (!token) return;
         
         try {
             const response = await fetch('/api/auth/me', {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
+                headers: { 'Authorization': 'Bearer ' + token }
             });
-            
             if (response.ok) {
                 const data = await response.json();
                 if (data.user) {
-                    const user = data.user;
-                    
-                    // Show info message
-                    const loggedInUserInfo = document.getElementById('loggedInUserInfo');
-                    if (loggedInUserInfo) {
-                        loggedInUserInfo.classList.remove('hidden');
-                    }
-                    
-                    // Pre-fill contact fields with user data
-                    const fullNameInput = document.getElementById('full_name');
-                    const emailInput = document.getElementById('email');
-                    const phoneInput = document.getElementById('phone');
-                    
-                    if (fullNameInput && user.full_name) {
-                        fullNameInput.value = user.full_name;
-                    }
-                    if (emailInput && user.email) {
-                        emailInput.value = user.email;
-                    }
-                    if (phoneInput && user.phone) {
-                        phoneInput.value = user.phone;
-                    }
+                    const infoBox = document.getElementById('loggedInUserInfo');
+                    if (infoBox) infoBox.classList.remove('hidden');
+                    document.getElementById('full_name').value = data.user.full_name || '';
+                    document.getElementById('email').value = data.user.email || '';
+                    document.getElementById('phone').value = data.user.phone || '';
                 }
             }
-        } catch (error) {
-            console.error('Error loading user info:', error);
-            // If error, fields remain empty for user to fill
-        }
+        } catch (e) { console.error('Error loading user info:', e); }
     }
-    
-    document.addEventListener('DOMContentLoaded', function() {
-        loadUserInfo(); // Load user info first
-        
-        const propertyTypeRadios = document.querySelectorAll('input[name="property_type"]');
-        propertyTypeRadios.forEach(radio => {
-            radio.addEventListener('change', togglePropertyFields);
-        });
-        // Initialize on page load
-        togglePropertyFields();
-    });
-    
+
     function resetForm() {
         document.getElementById('successMessage').classList.add('hidden');
-        document.getElementById('emptyCard').classList.add('hidden');
         document.getElementById('sellFormContainer').style.display = 'block';
         document.getElementById('sellForm').reset();
-        togglePropertyFields(); // Reset field visibility
-        // Reset image previews
         selectedFiles = [];
-        if (typeof updateImagePreviews === 'function') {
-            updateImagePreviews();
-        }
-        if (typeof updateFileInput === 'function') {
-            updateFileInput();
-        }
-        document.getElementById('sellForm').scrollIntoView({ behavior: 'smooth' });
+        imagePreviews.innerHTML = '';
+        togglePropertyFields();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadUserInfo();
+        const radios = document.querySelectorAll('input[name="property_type"]');
+        radios.forEach(r => r.addEventListener('change', togglePropertyFields));
+        togglePropertyFields();
+    });
+
+    // Form Submission
     document.getElementById('sellForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
-        const data = {};
-        
-        // Get property type
-        data.property_type = formData.get('property_type');
-        
-        // Get basic fields
-        data.title = formData.get('title');
-        data.description = formData.get('description');
-        // Price is not required for farmland (uses price_per_bigha instead)
-        if (data.property_type !== 'farmland') {
-            data.price = parseFloat(formData.get('price'));
-        } else if (formData.get('price')) {
-            // Allow price for farmland if provided, but not required
-            data.price = parseFloat(formData.get('price'));
-        }
-        
-        // Handle area: for plot use plot_total_area or calculate from length*width, for others use area_sqft
-        if (data.property_type === 'plot') {
-            const plotTotalArea = formData.get('plot_total_area');
-            if (plotTotalArea && plotTotalArea.trim() !== '') {
-                data.area_sqft = parseFloat(plotTotalArea);
-            } else {
-                // Calculate from length * width if total area not provided
-                const length = parseFloat(formData.get('plot_length')) || 0;
-                const width = parseFloat(formData.get('plot_width')) || 0;
-                if (length > 0 && width > 0) {
-                    data.area_sqft = length * width;
-                } else {
-                    // Fallback to area_sqft if provided
-                    const areaSqft = formData.get('area_sqft');
-                    if (areaSqft && areaSqft.trim() !== '') {
-                        data.area_sqft = parseFloat(areaSqft);
-                    } else {
-                        return showError('Please provide either Total Area or Length & Width for the plot.');
-                    }
-                }
-            }
-            // Add number of plots if provided
-            if (formData.get('number_of_plots')) {
-                data.number_of_plots = parseInt(formData.get('number_of_plots'));
-            }
-        } else if (data.property_type === 'farmland') {
-            // For farmland, area is not required (uses bigha/acre instead)
-            // Don't set area_sqft for farmland
-        } else {
-            const areaSqft = formData.get('area_sqft');
-            if (!areaSqft || areaSqft.trim() === '') {
-                return showError('Please provide the area in square feet.');
-            }
-            data.area_sqft = parseFloat(areaSqft);
-        }
-        
-        data.locality = formData.get('locality');
-        data.city = formData.get('city');
-        data.state = formData.get('state');
-        
-        // Get optional fields - only for non-plot and non-farmland types
-        if (data.property_type !== 'plot' && data.property_type !== 'farmland') {
-            if (formData.get('bedrooms')) data.bedrooms = parseInt(formData.get('bedrooms'));
-            if (formData.get('bathrooms')) data.bathrooms = parseInt(formData.get('bathrooms'));
-            if (formData.get('floors')) data.floors = parseInt(formData.get('floors'));
-        }
-        if (formData.get('facing')) data.facing = formData.get('facing');
-        if (formData.get('google_earth_link')) data.google_earth_link = formData.get('google_earth_link');
-        
-        // Get farmland-specific fields
-        if (data.property_type === 'farmland') {
-            if (formData.get('farmland_bigha')) {
-                data.farmland_bigha = parseFloat(formData.get('farmland_bigha'));
-            }
-            if (formData.get('farmland_acre')) {
-                data.farmland_acre = parseFloat(formData.get('farmland_acre'));
-            }
-            if (formData.get('price_per_bigha')) {
-                data.price_per_bigha = parseFloat(formData.get('price_per_bigha'));
-            }
-        }
-        
-        // Get amenities (checkboxes)
-        data.amenities = formData.getAll('amenities');
-        data.parking_available = formData.get('parking_available') === 'on';
-        
-        // Get contact info - use logged-in user's info if available, otherwise use form data
-        const token = localStorage.getItem('token');
-        if (token) {
-            try {
-                const userResponse = await fetch('/api/auth/me', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                if (userResponse.ok) {
-                    const userData = await userResponse.json();
-                    if (userData.user) {
-                        // Use logged-in user's information
-                        data.full_name = userData.user.full_name || formData.get('full_name');
-                        data.email = userData.user.email || formData.get('email');
-                        data.phone = userData.user.phone || formData.get('phone');
-                    } else {
-                        // Fallback to form data
-                        data.full_name = formData.get('full_name');
-                        data.email = formData.get('email');
-                        data.phone = formData.get('phone');
-                    }
-                } else {
-                    // Fallback to form data
-                    data.full_name = formData.get('full_name');
-                    data.email = formData.get('email');
-                    data.phone = formData.get('phone');
-                }
-            } catch (error) {
-                // Fallback to form data
-                data.full_name = formData.get('full_name');
-                data.email = formData.get('email');
-                data.phone = formData.get('phone');
-            }
-        } else {
-            // User not logged in, use form data
-            data.full_name = formData.get('full_name');
-            data.email = formData.get('email');
-            data.phone = formData.get('phone');
-        }
-        
-        // Handle image uploads - validate before proceeding
-        if (!selectedFiles || selectedFiles.length === 0) {
-            showError('Please upload at least 1 image of the property.');
-            return;
-        }
-        
-        if (selectedFiles.length > 5) {
-            showError('Maximum 5 images allowed.');
-            return;
-        }
-        
-        // Ensure file input is updated before form submission
-        updateFileInput();
+        const submitBtn = e.target.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
         
         try {
-            const token = localStorage.getItem('token');
-            
-            // First, upload images
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="flex items-center"><svg class="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...</span>';
+
+            const formData = new FormData(e.target);
+            const data = {};
+            formData.forEach((value, key) => {
+                if (key === 'images') return;
+                if (key === 'amenities') {
+                    data[key] = data[key] || [];
+                    data[key].push(value);
+                    return;
+                }
+                const numValue = parseFloat(value);
+                data[key] = isNaN(numValue) || key === 'phone' ? value : numValue;
+            });
+
+            // 1. Upload Images
             const imageFormData = new FormData();
-            for (let i = 0; i < selectedFiles.length; i++) {
-                imageFormData.append('images', selectedFiles[i]);
-            }
+            selectedFiles.forEach(file => imageFormData.append('images', file));
             
-            const uploadResponse = await fetch('/api/upload/property-images', {
+            const uploadRes = await fetch('/api/upload/property-images', {
                 method: 'POST',
-                headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+                headers: localStorage.getItem('token') ? { 'Authorization': 'Bearer ' + localStorage.getItem('token') } : {},
                 body: imageFormData
             });
-            
-            if (!uploadResponse.ok) {
-                const uploadError = await uploadResponse.json();
-                throw new Error(uploadError.error || 'Failed to upload images');
-            }
-            
-            const uploadResult = await uploadResponse.json();
-            data.images = uploadResult.images || [];
-            
-            // Then create property with image URLs
-            const headers = { 'Content-Type': 'application/json' };
-            if (token) {
-                headers['Authorization'] = 'Bearer ' + token;
-            }
-            
-            const response = await fetch('/api/properties', {
+
+            if (!uploadRes.ok) throw new Error('Image upload failed');
+            const uploadData = await uploadRes.json();
+            data.images = uploadData.images;
+
+            // 2. Submit Property
+            const token = localStorage.getItem('token');
+            const res = await fetch('/api/properties', {
                 method: 'POST',
-                headers,
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token && { 'Authorization': 'Bearer ' + token })
+                },
                 body: JSON.stringify(data)
             });
-            
-            const result = await response.json();
-            
-            if (response.ok) {
-                // Show success message
+
+            if (res.ok) {
+                const result = await res.json();
                 document.getElementById('sellFormContainer').style.display = 'none';
                 document.getElementById('successMessage').classList.remove('hidden');
-                document.getElementById('emptyCard').classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                
-                // Redirect to property view after 2 seconds
                 if (result.property && result.property.id) {
-                    setTimeout(() => {
-                        window.location.href = '/properties/' + result.property.id;
-                    }, 2000);
+                    setTimeout(() => window.location.href = '/properties/' + result.property.id, 3000);
                 }
             } else {
-                if (typeof window.showError === 'function') {
-                    window.showError(result.error || 'Failed to submit property');
-                } else {
-                    alert(result.error || 'Failed to submit property');
-                }
+                const error = await res.json();
+                showError(error.error || 'Failed to submit property');
             }
         } catch (error) {
-            console.error('Error:', error);
-            if (typeof window.showError === 'function') {
-                window.showError('An error occurred. Please try again.');
-            } else {
-                alert('An error occurred. Please try again.');
-            }
+            console.error(error);
+            showError('An unexpected error occurred. Please try again.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
         }
     });
+
+    function showError(msg) {
+        if (window.showError) window.showError(msg);
+        else alert(msg);
+    }
 </script>
 ` }) %>
-
-

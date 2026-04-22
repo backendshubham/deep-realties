@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300;
+  }
+}
+
+/* Custom animations and lux themes */
+.font-display {
+  font-family: 'Outfit', sans-serif;
+}
+
+.lux-gradient {
+  @apply bg-gradient-to-r from-emerald-600 to-emerald-400;
+}
+
+.lux-card {
+  @apply bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all rounded-2xl;
+}

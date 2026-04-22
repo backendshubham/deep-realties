@@ -1,511 +1,270 @@
 <%- include('../layouts/main', { content: `
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-b from-emerald-50 via-emerald-50/50 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 py-12 sm:py-16 lg:py-20 xl:py-32 overflow-hidden">
-    <!-- Decorative Background Elements -->
-    <div class="absolute inset-0 overflow-hidden pointer-events-none">
-        <div class="absolute top-20 left-10 w-64 sm:w-96 h-64 sm:h-96 bg-emerald-100 dark:bg-emerald-900/10 rounded-full blur-3xl opacity-40"></div>
-        <div class="absolute bottom-20 right-20 w-56 sm:w-80 h-56 sm:h-80 bg-emerald-50 dark:bg-emerald-900/20 rounded-full blur-3xl opacity-30"></div>
+<section class="relative min-h-[50vh] flex items-center pt-32 pb-20 overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&q=80" 
+             alt="Luxury Events" 
+             class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-lux-midnight via-lux-midnight/80 to-transparent dark:from-black dark:via-black/90 dark:to-transparent"></div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        <span class="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-full mb-4 sm:mb-6 text-xs sm:text-sm font-semibold border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300">
-            Events & Exhibitions
-        </span>
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold mb-4 sm:mb-6 px-2">
-            <span class="text-gray-900 dark:text-white">Join Our Real Estate Events</span>
-        </h1>
-        <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
-            Connect with builders, dealers, and industry experts at our exclusive meetups and inaugurations
-        </p>
-    </div>
-</section>
 
-<!-- Informative Content Section -->
-<section class="py-8 sm:py-12 lg:py-16 bg-white dark:bg-gray-900">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-12">
-            <div>
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                    Join Our Real Estate Events & Exhibitions
-                </h2>
-                <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                    Stay connected with the real estate community through our exclusive events, builder meetups, dealer conferences, and project inaugurations. These events provide excellent opportunities to network, learn, and discover new investment opportunities.
-                </p>
-                <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
-                    Whether you're a property buyer, investor, builder, or dealer, our events bring together industry experts and stakeholders to share knowledge, showcase projects, and build meaningful connections.
-                </p>
-            </div>
-            <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-2xl p-8 border border-emerald-100 dark:border-emerald-800">
-                <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Why Attend Our Events?</h2>
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Network with Experts</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Connect with builders, dealers, investors, and real estate professionals in your area.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Discover Opportunities</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Learn about new projects, investment opportunities, and market trends.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Gain Insights</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Attend seminars and discussions to learn about real estate investment strategies.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                        </svg>
-                        <div>
-                            <h2 class="font-semibold text-gray-900 dark:text-white mb-1">Exclusive Access</h2>
-                            <p class="text-gray-600 dark:text-gray-300 text-sm">Get early access to project launches, special offers, and pre-booking opportunities.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Decorative Elements -->
+    <div class="absolute top-0 right-0 w-1/3 h-full bg-emerald-500/10 blur-[120px] pointer-events-none"></div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Builder Meetups</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    Connect with builders and developers to discuss new projects, construction quality, and investment opportunities. Perfect for investors and property buyers.
-                </p>
-            </div>
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Dealer Meetups</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    Network with real estate dealers and agents. Share market insights, discuss property trends, and explore collaboration opportunities.
-                </p>
-            </div>
-            <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
-                <svg class="w-12 h-12 text-emerald-600 dark:text-emerald-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
-                </svg>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Project Inaugurations</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    Attend project launch events and inaugurations. Be among the first to explore new developments and take advantage of launch offers.
-                </p>
-            </div>
-        </div>
-
-        <div class="bg-gradient-to-r from-emerald-50 to-emerald-100 dark:from-emerald-900/20 dark:to-emerald-800/20 rounded-2xl p-8 border border-emerald-200 dark:border-emerald-800 mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">What to Expect at Our Events</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                        </svg> Market Insights
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Learn about current real estate market trends, property prices, and investment opportunities from industry experts and market analysts.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg> Project Showcases
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Explore new residential and commercial projects with detailed presentations, site visits, and direct interaction with developers.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                        </svg> Expert Sessions
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Attend informative sessions on property investment, legal aspects, financing options, and real estate best practices.
-                    </p>
-                </div>
-                <div>
-                    <h2 class="font-semibold text-gray-900 dark:text-white mb-2 flex items-center">
-                        <svg class="w-6 h-6 mr-2 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2v2m0 0v13m-6-13h6m-6 0a2 2 0 01-2-2c0-1.105.895-2 2-2h6a2 2 0 012 2c0 1.105-.895 2-2 2"></path>
-                        </svg> Special Offers
-                    </h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
-                        Get exclusive discounts, early-bird pricing, and special deals available only to event attendees and registered participants.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-8 border border-blue-200 dark:border-blue-800">
-            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">How to Register for Events</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-3">
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">1.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Browse Events:</strong> Check our upcoming events page to see scheduled meetups, inaugurations, and exhibitions.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">2.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Select Event:</strong> Choose the event that interests you and click on "Register Now" or use the registration link.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">3.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Fill Details:</strong> Provide your name, email, and phone number to complete the registration process.
-                        </p>
-                    </div>
-                </div>
-                <div class="space-y-3">
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">4.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Confirmation:</strong> You'll receive a confirmation with event details, venue, date, and time.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">5.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Attend Event:</strong> Arrive at the venue on time with your confirmation details to participate in the event.
-                        </p>
-                    </div>
-                    <div class="flex items-start">
-                        <span class="text-emerald-600 dark:text-emerald-400 mr-2 font-bold">6.</span>
-                        <p class="text-gray-600 dark:text-gray-300 text-sm">
-                            <strong class="text-gray-900 dark:text-white">Network & Learn:</strong> Make the most of the event by networking with attendees and learning from experts.
-                        </p>
-                    </div>
-                </div>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <div class="max-w-3xl">
+            <span class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium mb-6 backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
+                EXCLUSIVE GATHERINGS
+            </span>
+            
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold text-white mb-6 leading-tight">
+                Connect at the <br/>
+                <span class="text-emerald-400">Pinnacle</span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-white/70 max-w-2xl leading-relaxed">
+                Join our elite circle of builders, investors, and connoisseurs at exclusive inaugurations and industry-shaping meetups.
+            </p>
         </div>
     </div>
 </section>
 
-<!-- Events Section -->
-<section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white via-emerald-50/20 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900">
+<!-- Event Filtering & Tabs -->
+<section class="py-12 bg-white dark:bg-lux-midnight border-b border-gray-100 dark:border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Tabs -->
-        <div class="flex border-b border-gray-200 dark:border-gray-700 mb-8">
-            <button onclick="switchTab('upcoming')" id="upcomingTab" class="px-6 py-3 font-semibold text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-600 dark:border-emerald-400 transition-colors">
-                Upcoming Events
-            </button>
-            <button onclick="switchTab('past')" id="pastTab" class="px-6 py-3 font-semibold text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
-                Past Events
-            </button>
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <div class="flex p-1 bg-gray-100 dark:bg-white/5 rounded-2xl w-fit">
+                <button onclick="switchTab('upcoming')" id="upcomingTab" 
+                        class="px-8 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-600 text-white shadow-lg">
+                    Upcoming Galas
+                </button>
+                <button onclick="switchTab('past')" id="pastTab" 
+                        class="px-8 py-3 rounded-xl font-bold text-sm transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                    Past Highlights
+                </button>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Filter by category:</span>
+                <div class="flex space-x-2">
+                    <button class="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 text-[10px] font-bold uppercase tracking-widest">All</button>
+                    <button class="px-4 py-2 rounded-full border border-gray-100 dark:border-white/10 text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 transition-colors">Inaugurations</button>
+                    <button class="px-4 py-2 rounded-full border border-gray-100 dark:border-white/10 text-gray-400 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 transition-colors">Meetups</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Event Grid -->
+<section class="py-24 bg-gray-50 dark:bg-black/20 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div id="loadingState" class="text-center py-40">
+            <div class="inline-loader-spinner mx-auto mb-4 border-t-emerald-500"></div>
+            <p class="text-gray-400 font-medium font-display uppercase tracking-widest text-[10px]">Preparing guest list...</p>
         </div>
 
-        <!-- Events List -->
-        <div id="loadingState" class="text-center py-12">
-            <div class="inline-loader-spinner mx-auto mb-4"></div>
-            <p class="text-gray-600 dark:text-gray-400">Loading events...</p>
+        <div id="emptyState" class="hidden text-center py-40 glass-panel rounded-[2rem]">
+            <p class="text-gray-500 dark:text-gray-400">No events currently scheduled. Please check back for exclusive invitations.</p>
         </div>
 
-        <div id="emptyState" class="hidden text-center py-12">
-            <p class="text-gray-600 dark:text-gray-400 text-lg">No events found</p>
+        <div id="eventsList" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Dynamically Loaded -->
         </div>
-
-        <div id="eventsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </div>
 </section>
 
 <script>
     let currentTab = 'upcoming';
 
-    document.addEventListener('DOMContentLoaded', function() {
-        loadEvents('upcoming');
-    });
-
-    // Delegate button clicks to avoid fragile inline onclick quoting
-    document.addEventListener('DOMContentLoaded', function() {
-        const eventsListEl = document.getElementById('eventsList');
-        if (!eventsListEl) return;
-
-        eventsListEl.addEventListener('click', function(e) {
-            const btn = e.target && e.target.closest ? e.target.closest('button[data-action][data-event-id]') : null;
-            if (!btn) return;
-
-            const action = btn.getAttribute('data-action');
-            const encodedId = btn.getAttribute('data-event-id') || '';
-            let eventId = encodedId;
-            try {
-                eventId = decodeURIComponent(encodedId);
-            } catch (_) {
-                // keep as-is
-            }
-
-            if (!eventId) return;
-
-            if (action === 'register') {
-                registerForEvent(eventId);
-            } else if (action === 'details') {
-                viewEventDetails(eventId);
-            }
-        });
-    });
+    document.addEventListener('DOMContentLoaded', () => loadEvents('upcoming'));
 
     function switchTab(tab) {
         currentTab = tab;
-        
-        // Update tab styles
-        const upcomingTab = document.getElementById('upcomingTab');
-        const pastTab = document.getElementById('pastTab');
+        const upcoming = document.getElementById('upcomingTab');
+        const past = document.getElementById('pastTab');
         
         if (tab === 'upcoming') {
-            upcomingTab.classList.add('text-emerald-600', 'dark:text-emerald-400', 'border-b-2', 'border-emerald-600', 'dark:border-emerald-400');
-            upcomingTab.classList.remove('text-gray-600', 'dark:text-gray-400');
-            pastTab.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'border-b-2', 'border-emerald-600', 'dark:border-emerald-400');
-            pastTab.classList.add('text-gray-600', 'dark:text-gray-400');
+            upcoming.className = 'px-8 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-600 text-white shadow-lg';
+            past.className = 'px-8 py-3 rounded-xl font-bold text-sm transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white';
         } else {
-            pastTab.classList.add('text-emerald-600', 'dark:text-emerald-400', 'border-b-2', 'border-emerald-600', 'dark:border-emerald-400');
-            pastTab.classList.remove('text-gray-600', 'dark:text-gray-400');
-            upcomingTab.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'border-b-2', 'border-emerald-600', 'dark:border-emerald-400');
-            upcomingTab.classList.add('text-gray-600', 'dark:text-gray-400');
+            past.className = 'px-8 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-600 text-white shadow-lg';
+            upcoming.className = 'px-8 py-3 rounded-xl font-bold text-sm transition-all text-gray-500 hover:text-gray-900 dark:hover:text-white';
         }
-        
         loadEvents(tab);
     }
 
     async function loadEvents(type) {
-        const loadingState = document.getElementById('loadingState');
-        const emptyState = document.getElementById('emptyState');
-        const eventsList = document.getElementById('eventsList');
+        const loading = document.getElementById('loadingState');
+        const empty = document.getElementById('emptyState');
+        const list = document.getElementById('eventsList');
 
-        // If DOM nodes are missing for some reason, avoid throwing (which would keep loader stuck)
-        if (!loadingState || !emptyState || !eventsList) return;
-
-        loadingState.classList.remove('hidden');
-        emptyState.classList.add('hidden');
-        eventsList.classList.add('hidden');
+        list.innerHTML = '';
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        list.classList.add('hidden');
 
         try {
-            const params = new URLSearchParams({
-                is_past: type === 'past' ? 'true' : 'false',
-                limit: '50'
-            });
-
-            // Protect against requests that never resolve (network/db hang)
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-            const response = await fetch('/api/events?' + params.toString(), { signal: controller.signal });
-            clearTimeout(timeoutId);
-
-            if (!response.ok) {
-                throw new Error('Failed to load events');
-            }
-
+            const response = await fetch('/api/events?is_past=' + (type === 'past'));
             const data = await response.json();
             const events = data.events || [];
 
+            loading.classList.add('hidden');
+
             if (events.length === 0) {
-                emptyState.classList.remove('hidden');
+                empty.classList.remove('hidden');
                 return;
             }
 
-            eventsList.classList.remove('hidden');
-            
-            const eventTypeLabels = {
-                'builder_meetup': 'Builder Meetup',
-                'dealer_meetup': 'Dealer Meetup',
-                'inauguration': 'Inauguration'
-            };
-
-            eventsList.innerHTML = events.map(event => {
-                const eventDate = new Date(event.event_date).toLocaleDateString('en-IN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                // Simple placeholder image as data URI (SVG) - using double quotes to avoid syntax errors
-                const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22%3E%3Crect fill=%22%23e5e7eb%22 width=%22400%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 fill=%22%239ca3af%22%3ENo Image%3C/text%3E%3C/svg%3E';
+            list.classList.remove('hidden');
+            list.innerHTML = events.map(event => {
+                const date = new Date(event.event_date);
+                const day = date.getDate();
+                const month = date.toLocaleString('default', { month: 'short' }).toUpperCase();
                 
-                const eventTime = event.event_time || '';
-                const eventImage = event.banner_image || (event.images && event.images[0]) || placeholderImage;
-                const description = event.description ? (event.description.length > 150 ? event.description.substring(0, 150) + '...' : event.description) : '';
-                const safeEventId = encodeURIComponent(String(event.id || ''));
+                return \`
+                    <div class="glass-panel group rounded-[3rem] overflow-hidden bg-white dark:bg-lux-midnight shadow-xl hover:border-emerald-500/30 transition-all duration-700">
+                        <div class="relative h-72 overflow-hidden">
+                            <img src="\${event.banner_image || event.images && event.images[0] || 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80'}" 
+                                 class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            
+                            <!-- Date Badge -->
+                            <div class="absolute top-6 left-6 w-16 h-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex flex-col items-center justify-center text-white">
+                                <span class="text-2xl font-display font-bold leading-none">\${day}</span>
+                                <span class="text-[10px] font-bold tracking-widest mt-1 opacity-80">\${month}</span>
+                            </div>
 
-                return '<div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow">' +
-                    '<div class="relative h-48 bg-gray-200 dark:bg-gray-700">' +
-                        '<img src="' + eventImage + '" alt="' + (event.title || 'Event') + '" width="400" height="300" class="w-full h-full object-cover" onerror="this.src=&quot;' + placeholderImage + '&quot;">' +
-                        '<span class="absolute top-3 right-3 px-3 py-1 bg-emerald-600 text-white text-xs font-semibold rounded-full">' +
-                            (eventTypeLabels[event.event_type] || event.event_type) +
-                        '</span>' +
-                    '</div>' +
-                    '<div class="p-6">' +
-                        '<h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">' + (event.title || 'Untitled Event') + '</h2>' +
-                        (description ? '<p class="text-gray-600 dark:text-gray-400 text-sm mb-4">' + description + '</p>' : '') +
-                        '<div class="space-y-2 mb-4">' +
-                            '<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">' +
-                                '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>' +
-                                '</svg>' +
-                                eventDate + (eventTime ? ' at ' + eventTime : '') +
-                            '</div>' +
-                            '<div class="flex items-center text-sm text-gray-600 dark:text-gray-400">' +
-                                '<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">' +
-                                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>' +
-                                    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>' +
-                                '</svg>' +
-                                (event.location || '') + ', ' + (event.city || '') +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="flex gap-3">' +
-                            (event.registration_link ? 
-                                '<a href="' + event.registration_link + '" target="_blank" rel="noopener noreferrer" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-center font-semibold transition-colors">Register Now</a>' :
-                                '<button type="button" data-action="register" data-event-id="' + safeEventId + '" class="flex-1 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">Register Now</button>'
-                            ) +
-                            '<button type="button" data-action="details" data-event-id="' + safeEventId + '" class="px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-900 dark:text-white rounded-lg transition-colors">Details</button>' +
-                        '</div>' +
-                    '</div>' +
-                '</div>';
+                            <div class="absolute bottom-6 left-6">
+                                <span class="inline-block px-3 py-1 bg-emerald-500 text-white text-[9px] font-bold uppercase tracking-widest rounded-full mb-2">
+                                    \${event.event_type.replace('_', ' ').toUpperCase()}
+                                </span>
+                                <div class="text-white font-bold text-sm flex items-center">
+                                    <svg class="w-4 h-4 mr-2 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                    \${event.city}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-8">
+                            <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-4 line-clamp-1 group-hover:text-emerald-500 transition-colors">
+                                \${event.title}
+                            </h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-8 line-clamp-2 leading-relaxed">
+                                \${event.description || 'Exclusive networking session focusing on the future of luxury real estate and community building.'}
+                            </p>
+                            
+                            <div class="flex gap-4">
+                                <button onclick="registerForEvent('\${event.id}')" 
+                                        class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-widest rounded-2xl transition-all shadow-lg shadow-emerald-500/20">
+                                    RSVP NOW
+                                </button>
+                                <button onclick="viewEventDetails('\${event.id}')" 
+                                        class="px-6 py-4 bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-gray-400 rounded-2xl hover:bg-emerald-500/10 hover:text-emerald-500 transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                \`;
             }).join('');
-
-        } catch (error) {
-            console.error('Error loading events:', error);
-            emptyState.classList.remove('hidden');
-            if (typeof window.showError === 'function') {
-                window.showError('Failed to load events. Please try again.');
-            }
-        } finally {
-            // Always stop the loading spinner
-            loadingState.classList.add('hidden');
+        } catch (e) {
+            console.error(e);
+            loading.classList.add('hidden');
+            empty.classList.remove('hidden');
         }
     }
 
-    function viewEventDetails(eventId) {
-        // Show event details in modal
-        fetch('/api/events/' + eventId)
-            .then(res => res.json())
-            .then(data => {
-                const event = data.event;
-                const eventDate = new Date(event.event_date).toLocaleDateString('en-IN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                
-                let content = '<div class="space-y-4">' +
-                    '<h2 class="text-2xl font-bold text-gray-900 dark:text-white">' + (event.title || 'Event') + '</h2>' +
-                    '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">' +
-                        '<div><strong>Date:</strong> ' + eventDate + (event.event_time ? ' at ' + event.event_time : '') + '</div>' +
-                        '<div><strong>Location:</strong> ' + (event.location || '') + ', ' + (event.city || '') + '</div>' +
-                    '</div>';
-                
-                if (event.description) {
-                    content += '<p class="text-gray-600 dark:text-gray-400">' + event.description + '</p>';
-                }
-                
-                if (event.agenda) {
-                    content += '<div><strong class="text-gray-900 dark:text-white">Agenda:</strong><div class="mt-2 text-gray-600 dark:text-gray-400 whitespace-pre-line">' + event.agenda + '</div></div>';
-                }
-                
-                if (event.contact_person || event.contact_email || event.contact_phone) {
-                    content += '<div><strong class="text-gray-900 dark:text-white">Contact:</strong><div class="mt-2 text-gray-600 dark:text-gray-400">';
-                    if (event.contact_person) content += event.contact_person + '<br>';
-                    if (event.contact_email) content += event.contact_email + '<br>';
-                    if (event.contact_phone) content += event.contact_phone;
-                    content += '</div></div>';
-                }
-                
-                if (event.rsvp_info) {
-                    content += '<div><strong class="text-gray-900 dark:text-white">RSVP:</strong><div class="mt-2 text-gray-600 dark:text-gray-400">' + event.rsvp_info + '</div></div>';
-                }
-                
-                content += '</div>';
-                
-                if (typeof window.showModal === 'function') {
-                    window.showModal('Event Details', content);
-                }
-            })
-            .catch(error => {
-                console.error('Error loading event details:', error);
-                if (typeof window.showError === 'function') {
-                    window.showError('Failed to load event details.');
-                }
+    // Modal Handling (Integrated with main.ejs functions)
+    window.registerForEvent = function(id) {
+        const formHTML = \`
+            <div class="p-4">
+                <form id="rsvpForm" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Full Name</label>
+                            <input type="text" id="regName" required class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-white focus:border-emerald-500">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Phone</label>
+                            <input type="tel" id="regPhone" required class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-white focus:border-emerald-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Email</label>
+                        <input type="email" id="regEmail" required class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-white focus:border-emerald-500">
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl shadow-xl">Confirm Invitation</button>
+                </form>
+            </div>
+        \`;
+        if (window.showModal) {
+            window.showModal('Exclusive Invitation Request', formHTML);
+            document.getElementById('rsvpForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                submitRSVP(id);
             });
-    }
+        }
+    };
 
-    function registerForEvent(eventId) {
-        if (typeof window.showModal === 'function') {
-            const formHTML = '<form id="registrationForm" class="space-y-4">' +
-                '<div>' +
-                    '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Full Name *</label>' +
-                    '<input type="text" id="regName" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">' +
-                '</div>' +
-                '<div>' +
-                    '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email *</label>' +
-                    '<input type="email" id="regEmail" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">' +
-                '</div>' +
-                '<div>' +
-                    '<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Phone *</label>' +
-                    '<input type="tel" id="regPhone" required class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">' +
-                '</div>' +
-                '<button type="submit" class="w-full px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-semibold transition-colors">Submit Registration</button>' +
-            '</form>';
-            
-            window.showModal('Event Registration', formHTML);
-
-            // Attach submit handler after modal content is in DOM (avoid fragile inline onsubmit quoting)
-            setTimeout(() => {
-                const form = document.getElementById('registrationForm');
-                if (!form) return;
-                form.addEventListener('submit', (e) => submitRegistration(e, eventId));
-            }, 0);
+    async function submitRSVP(id) {
+        const body = {
+            full_name: document.getElementById('regName').value,
+            email: document.getElementById('regEmail').value,
+            phone: document.getElementById('regPhone').value
+        };
+        
+        try {
+            const res = await fetch(\`/api/events/\${id}/register\`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (res.ok) {
+                window.showSuccess && window.showSuccess('Invitation confirmed! Looking forward to seeing you.');
+                window.closeModal && window.closeModal();
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (e) {
+            window.showError && window.showError(e.message || 'Request failed');
         }
     }
 
-    function submitRegistration(e, eventId) {
-        e.preventDefault();
-        const name = document.getElementById('regName').value;
-        const email = document.getElementById('regEmail').value;
-        const phone = document.getElementById('regPhone').value;
-
-        fetch('/api/events/' + eventId + '/register', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ full_name: name, email, phone })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.message) {
-                if (typeof window.showSuccess === 'function') {
-                    window.showSuccess('Successfully registered for the event!');
-                }
-                if (typeof window.closeModal === 'function') {
-                    window.closeModal();
-                }
-            } else {
-                if (typeof window.showError === 'function') {
-                    window.showError(data.error || 'Registration failed');
-                }
-            }
-        })
-        .catch(error => {
-            console.error('Registration error:', error);
-            if (typeof window.showError === 'function') {
-                window.showError('Registration failed. Please try again.');
-            }
-        });
-    }
+    window.viewEventDetails = async function(id) {
+        try {
+            const res = await fetch('/api/events/' + id);
+            const data = await res.json();
+            const event = data.event;
+            
+            const content = \`
+                <div class="space-y-6 text-gray-400">
+                    <p class="leading-relaxed">\${event.description || 'No detailed description available.'}</p>
+                    <div class="grid grid-cols-2 gap-6 pt-6 border-t border-white/5">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-2">When</h4>
+                            <p class="text-white text-sm">\${new Date(event.event_date).toDateString()} @ \${event.event_time || 'TBA'}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-2">Where</h4>
+                            <p class="text-white text-sm">\${event.location}, \${event.city}</p>
+                        </div>
+                    </div>
+                    \${event.agenda ? \`
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-widest text-emerald-500 mb-2">Agenda</h4>
+                            <div class="text-sm whitespace-pre-line">\${event.agenda}</div>
+                        </div>
+                    \` : ''}
+                </div>
+            \`;
+            window.showModal && window.showModal(event.title, content);
+        } catch (e) {
+            console.error(e);
+        }
+    };
 </script>
 ` }) %>

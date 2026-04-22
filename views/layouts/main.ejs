@@ -94,10 +94,22 @@
     <meta itemprop="image" content="<%= typeof seo !== 'undefined' && seo.image ? seo.image : 'https://storage.googleapis.com/supersourcing-doc-dev/8d866c52-57fe-4a85-9f41-f64c074bd6ee.jpeg' %>">
     
     <!-- Mobile Web App Capabilities -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="DeepRealties">
     
+    <!-- Theme Initialization - Runs before anything else to prevent flashing -->
+    <script>
+        (function() {
+            const darkMode = localStorage.getItem('darkMode');
+            if (darkMode === 'false') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+        })();
+    </script>
+
     <!-- Favicon - Use DeepRealties logo so Google and browsers show brand icon -->
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/favicon-32x32.png">
@@ -120,14 +132,8 @@
     </script>
     <% } %>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        // Configure Tailwind dark mode to use class strategy
-        tailwind.config = {
-            darkMode: 'class'
-        }
-    </script>
+    <!-- Tailwind CSS (Production Build) -->
+    <link rel="stylesheet" href="/css/output.css">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -192,74 +198,33 @@
             font-family: 'Outfit', system-ui, sans-serif;
         }
         
-        /* Global Typography System - Consistent Fonts */
-        /* Serif Font for Headings */
-        h1, h2, h3, h4, h5, h6,
-        .font-display,
-        .hero-title,
-        .section-title {
-            font-family: 'Playfair Display', Georgia, serif;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
+        /* Global Glassmorphism System */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        /* Sans-serif Font for Body Text, Buttons, Labels */
-        p, span, a, button, div, label, input, textarea, select,
-        .font-body,
-        .hero-subtitle,
-        .card-title,
-        .stat-label,
-        .badge-text,
-        .button-text {
-            font-family: 'Outfit', system-ui, sans-serif;
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
         }
-        
-        .font-display {
-            font-family: 'Playfair Display', Georgia, serif;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        
-        .font-accent {
-            font-family: 'Cormorant Garamond', Georgia, serif;
-        }
-        
-        /* Typography Utilities */
-        .hero-title {
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.1;
-        }
-        
-        .hero-subtitle {
-            font-weight: 400;
-            letter-spacing: 0.01em;
-            line-height: 1.6;
-        }
-        
-        .section-title {
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-        
-        .card-title {
-            font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-        
-        .stat-label {
-            font-weight: 500;
-            letter-spacing: 0.01em;
-        }
-        
-        .badge-text {
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
-        
-        .button-text {
-            font-weight: 600;
-            letter-spacing: 0.01em;
+
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         
         /* Dark mode styles */
@@ -401,12 +366,13 @@
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(2px);
             z-index: 99999;
-            display: flex;
+            display: none; /* Forced hidden by default */
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none !important;
         }
         
         .dark .page-loader {
@@ -414,12 +380,10 @@
         }
         
         .page-loader.show {
+            display: flex !important;
             opacity: 1;
             visibility: visible;
-        }
-        
-        .page-loader:not(.show) {
-            pointer-events: none;
+            pointer-events: auto !important;
         }
         
         .loader-container {
@@ -533,15 +497,18 @@
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1000;
-            display: flex;
+            display: none; /* Forced hidden */
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
+            pointer-events: none !important;
         }
         
         .modal-overlay.show {
+            display: flex !important;
             opacity: 1;
+            pointer-events: auto !important;
         }
         
         .modal-content {
@@ -572,15 +539,18 @@
             bottom: 0;
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 1001;
-            display: flex;
+            display: none; /* Forced hidden */
             align-items: center;
             justify-content: center;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
+            pointer-events: none !important;
         }
         
         .confirm-overlay.show {
+            display: flex !important;
             opacity: 1;
+            pointer-events: auto !important;
         }
         
         .confirm-content {
@@ -814,27 +784,16 @@
 <body class="bg-gradient-to-b from-emerald-50 via-emerald-50/30 to-white dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
     <%- include('../partials/navbar') %>
     
-    <main class="flex-grow">
+    <main class="flex-grow pt-32 sm:pt-36">
         <%- typeof content !== 'undefined' ? content : '' %>
     </main>
     
     <%- include('../partials/footer') %>
     
-    <!-- Floating Chat Button -->
-    <div class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
-        <button 
-            class="w-12 h-12 sm:w-14 sm:h-14 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-full shadow-lg hover:shadow-xl transition-all flex items-center justify-center group touch-manipulation"
-            aria-label="Chat with us"
-            onclick="window.open('https://wa.me/918305551215', '_blank')"
-        >
-            <svg class="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-            </svg>
-        </button>
-    </div>
+    
     
     <!-- Modal Component -->
-    <div id="detailModal" class="modal-overlay hidden">
+    <div id="detailModal" class="modal-overlay hidden" style="display: none !important;">
         <div class="modal-content w-full max-w-2xl mx-3 sm:mx-4 p-4 sm:p-5 lg:p-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-3 sm:mb-4">
                 <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Details</h3>
@@ -854,7 +813,7 @@
     </div>
     
     <!-- Confirmation Dialog Component -->
-    <div id="confirmDialog" class="confirm-overlay hidden">
+    <div id="confirmDialog" class="confirm-overlay hidden" style="display: none !important;">
         <div class="confirm-content p-6">
             <div class="mb-4">
                 <h3 id="confirmTitle" class="text-xl font-bold text-gray-900 dark:text-white mb-2">Confirm Action</h3>
@@ -874,45 +833,43 @@
     <!-- Toast Notification Container -->
     <div id="toastContainer" class="toast-container"></div>
     
-    <!-- Full Page Loader -->
-    <div id="pageLoader" class="page-loader show">
+    <!-- Full Page Loader (Aggressively hidden by default) -->
+    <div id="pageLoader" class="page-loader" style="display: none !important;">
         <div class="loader-spinner"></div>
     </div>
     
-    <!-- Immediate script to hide loader on back/forward navigation -->
     <script>
-        // This runs immediately, before any other scripts
+        // Universal Loader Management
         (function() {
-            // Check if page was restored from cache using pageshow event
-            // We need to set up the listener immediately
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    // Page was restored from cache - hide loader immediately
-                    const loader = document.getElementById('pageLoader');
-                    if (loader) {
-                        loader.classList.remove('show');
-                        loader.style.display = 'none';
-                    }
-                }
-            });
+            const loader = document.getElementById('pageLoader');
             
-            // Also check immediately if we can detect back/forward navigation
-            // Using a small delay to ensure DOM is ready
-            setTimeout(function() {
-                const loader = document.getElementById('pageLoader');
-                // If loader is still showing after a very short delay, it might be a restored page
-                // We'll let the pageshow handler take care of it, but also hide it here as backup
-                if (loader && loader.classList.contains('show')) {
-                    // Check if this is likely a restored page by checking if content is already loaded
-                    const hasContent = document.body && document.body.children.length > 5;
-                    if (hasContent) {
-                        // Content seems to be loaded, hide loader
-                        setTimeout(function() {
-                            loader.classList.remove('show');
-                        }, 100);
-                    }
-                }
-            }, 50);
+            function hideLoader() {
+                if (!loader) return;
+                loader.classList.remove('show');
+                loader.style.setProperty('display', 'none', 'important');
+                document.body.style.overflow = '';
+            }
+
+            function showLoader(text) {
+                if (!loader) return;
+                loader.style.setProperty('display', 'flex', 'important');
+                loader.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Expose to global scope
+            window.showPageLoader = showLoader;
+            window.hidePageLoader = hideLoader;
+
+            // Hide immediately if it somehow exists
+            hideLoader();
+
+            // Clear any stuck state on load
+            window.addEventListener('load', hideLoader);
+            window.addEventListener('pageshow', (e) => { if(e.persisted) hideLoader(); });
+            
+            // Fail-safe
+            setTimeout(hideLoader, 2000);
         })();
     </script>
     
@@ -920,51 +877,23 @@
     <script>
         // Update theme toggle animation
         function updateThemeToggle(isDark) {
-            const toggle = document.getElementById('themeToggle');
             const circle = document.getElementById('themeToggleCircle');
             const sunIcon = document.getElementById('sunIcon');
             const moonIcon = document.getElementById('moonIcon');
             
-            if (!toggle || !circle) return;
+            if (!circle) return;
             
-            // Wait for layout to be ready
-            setTimeout(() => {
-                // Get actual dimensions
-                const toggleWidth = toggle.offsetWidth || (window.innerWidth >= 640 ? 56 : 44);
-                const circleWidth = circle.offsetWidth || (window.innerWidth >= 640 ? 20 : 16);
-                const padding = window.innerWidth >= 640 ? 6 : 4;
-                
-                // Calculate positions - circle should be centered vertically and positioned horizontally
-                const leftPosition = padding;
-                const rightPosition = toggleWidth - circleWidth - padding;
-                const translateX = isDark ? rightPosition : leftPosition;
-                
-                if (isDark) {
-                    // Move circle to right (dark mode) - perfectly centered vertically
-                    circle.style.left = translateX + 'px';
-                    circle.style.transform = 'translateY(-50%)';
-                    
-                    // Switch icons smoothly
-                    if (sunIcon) {
-                        sunIcon.classList.add('hidden');
-                    }
-                    if (moonIcon) {
-                        moonIcon.classList.remove('hidden');
-                    }
-                } else {
-                    // Move circle to left (light mode) - perfectly centered vertically
-                    circle.style.left = translateX + 'px';
-                    circle.style.transform = 'translateY(-50%)';
-                    
-                    // Switch icons smoothly
-                    if (sunIcon) {
-                        sunIcon.classList.remove('hidden');
-                    }
-                    if (moonIcon) {
-                        moonIcon.classList.add('hidden');
-                    }
-                }
-            }, 10);
+            if (isDark) {
+                // Move to right for dark mode
+                circle.style.transform = 'translateX(24px)';
+                if (sunIcon) sunIcon.classList.add('hidden');
+                if (moonIcon) moonIcon.classList.remove('hidden');
+            } else {
+                // Move to left for light mode
+                circle.style.transform = 'translateX(0)';
+                if (sunIcon) sunIcon.classList.remove('hidden');
+                if (moonIcon) moonIcon.classList.add('hidden');
+            }
         }
         
         // Enhanced dark mode toggle function with animations
@@ -1221,6 +1150,7 @@
             
             modalTitle.textContent = title;
             modalBody.innerHTML = content;
+            modal.style.setProperty('display', 'flex', 'important');
             modal.classList.remove('hidden');
             setTimeout(() => modal.classList.add('show'), 10);
         }
@@ -1228,7 +1158,10 @@
         function closeModal() {
             const modal = document.getElementById('detailModal');
             modal.classList.remove('show');
-            setTimeout(() => modal.classList.add('hidden'), 200);
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.style.setProperty('display', 'none', 'important');
+            }, 200);
         }
         
         // Make modal functions globally available
@@ -1272,6 +1205,7 @@
                 if (onCancel) onCancel();
             });
             
+            dialog.style.setProperty('display', 'flex', 'important');
             dialog.classList.remove('hidden');
             setTimeout(() => dialog.classList.add('show'), 10);
         }
@@ -1279,7 +1213,10 @@
         function closeConfirm() {
             const dialog = document.getElementById('confirmDialog');
             dialog.classList.remove('show');
-            setTimeout(() => dialog.classList.add('hidden'), 200);
+            setTimeout(() => {
+                dialog.classList.add('hidden');
+                dialog.style.setProperty('display', 'none', 'important');
+            }, 200);
         }
         
         // Make confirmation functions globally available
@@ -1520,43 +1457,15 @@
             }
         }, true); // Use capture phase for immediate execution
         
-        // Also hide loader on pagehide to prevent it from showing when navigating away
-        window.addEventListener('pagehide', function() {
-            const loader = document.getElementById('pageLoader');
-            if (loader) {
-                loader.classList.remove('show');
-            }
-            isPageRestored = false; // Reset flag when navigating away
-        });
-        
-        // Show loader on link clicks (for navigation)
-        document.addEventListener('click', function(e) {
-            const link = e.target.closest('a');
-            if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#')) {
-                const href = link.getAttribute('href');
-                // Only show loader for internal links
-                if (href && (href.startsWith('/') || href.includes(window.location.hostname))) {
-                    // Don't show for links that open in new tab
-                    if (!link.target || link.target === '_self') {
-                        setTimeout(() => {
-                            showPageLoader('Loading page...');
-                        }, 100);
-                    }
-                }
-            }
-        });
+        // Restore Page Logic (Accidentally removed in previous step)
         
         // Close modal/dialog on overlay click
         document.addEventListener('click', function(e) {
             const modal = document.getElementById('detailModal');
             const confirm = document.getElementById('confirmDialog');
             
-            if (e.target === modal) {
-                closeModal();
-            }
-            if (e.target === confirm) {
-                closeConfirm();
-            }
+            if (e.target === modal) closeModal();
+            if (e.target === confirm) closeConfirm();
         });
         
         // Close modal/dialog on Escape key
@@ -1564,43 +1473,45 @@
             if (e.key === 'Escape') {
                 const modal = document.getElementById('detailModal');
                 const confirm = document.getElementById('confirmDialog');
-                
-                if (!modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-                if (!confirm.classList.contains('hidden')) {
-                    closeConfirm();
+                if (modal && !modal.classList.contains('hidden')) closeModal();
+                if (confirm && !confirm.classList.contains('hidden')) closeConfirm();
+            }
+        });
+        
+        // Show loader on link clicks
+        document.addEventListener('click', function(e) {
+            const link = e.target.closest('a');
+            if (link && link.href && !link.href.startsWith('javascript:') && !link.href.startsWith('#')) {
+                const href = link.getAttribute('href');
+                if (href && (href.startsWith('/') || href.includes(window.location.hostname))) {
+                    if (!link.target || link.target === '_self') {
+                        setTimeout(() => {
+                            if (window.showPageLoader) window.showPageLoader('Loading...');
+                        }, 100);
+                    }
                 }
             }
         });
         
-        // Initialize on page load
         function initializePage() {
-            // Initialize dark mode - default to light theme
-            const darkMode = localStorage.getItem('darkMode') === 'true';
+            // Initialize dark mode
+            const darkMode = localStorage.getItem('darkMode') !== 'false';
             if (darkMode) {
                 document.documentElement.classList.add('dark');
-            } else {
-                // Ensure light theme is active
-                document.documentElement.classList.remove('dark');
-                // Set default to light if not set
                 if (localStorage.getItem('darkMode') === null) {
-                    localStorage.setItem('darkMode', 'false');
+                    localStorage.setItem('darkMode', 'true');
                 }
+            } else {
+                document.documentElement.classList.remove('dark');
             }
-            // Initialize theme toggle position with animation
-            setTimeout(() => {
-                updateThemeToggle(darkMode);
-            }, 100);
+            if (window.updateThemeToggle) updateThemeToggle(darkMode);
             
-            // Check auth status immediately and retry if needed
-            checkAuth().catch(err => {
-                console.error('Auth check error:', err);
-                // Retry after a short delay
-                setTimeout(() => checkAuth(), 200);
-            });
+            // Check auth
+            if (window.checkAuth) {
+                checkAuth().catch(err => console.error('Auth error:', err));
+            }
         }
-        
+
         // Run immediately if DOM is ready
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initializePage);
@@ -1608,13 +1519,8 @@
             initializePage();
         }
         
-        // Also run on DOMContentLoaded as backup
-        document.addEventListener('DOMContentLoaded', function() {
-            // Small delay to ensure all elements are rendered
-            setTimeout(() => {
-                checkAuth().catch(err => console.error('Auth check error:', err));
-            }, 100);
-        });
+        // Final fail-safe hide
+        setTimeout(() => { if(window.hidePageLoader) window.hidePageLoader(); }, 500);
     </script>
 </body>
 </html>

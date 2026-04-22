@@ -26,6 +26,29 @@ const validateLogin = [
   handleValidationErrors
 ];
 
+const validateOTP = [
+  body('email').trim().isEmail().normalizeEmail(),
+  body('otp').isString().isLength({ min: 6, max: 6 }),
+  handleValidationErrors
+];
+
+const validateResendOTP = [
+  body('email').trim().isEmail().normalizeEmail(),
+  handleValidationErrors
+];
+
+const validateForgotPassword = [
+  body('email').trim().isEmail().normalizeEmail(),
+  handleValidationErrors
+];
+
+const validateResetPassword = [
+  body('email').trim().isEmail().normalizeEmail(),
+  body('otp').isString().isLength({ min: 6, max: 6 }),
+  body('new_password').isLength({ min: 6 }),
+  handleValidationErrors
+];
+
 // Property validators
 const validateProperty = [
   body('title').trim().notEmpty(),
@@ -95,6 +118,10 @@ const validateContact = [
 module.exports = {
   validateRegister,
   validateLogin,
+  validateOTP,
+  validateResendOTP,
+  validateForgotPassword,
+  validateResetPassword,
   validateProperty,
   validateContact,
   handleValidationErrors
