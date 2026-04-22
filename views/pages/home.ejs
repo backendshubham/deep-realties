@@ -1,78 +1,77 @@
-<%- include('../layouts/main', { content: `
-<style>
+<%- include('../layouts/main', { content: ` <style>
     :root {
-        --lux-gold: #D4AF37;
-        --lux-midnight: #0f172a;
-        --emerald-primary: #10b981;
+    --lux-gold: #D4AF37;
+    --lux-midnight: #0f172a;
+    --emerald-primary: #10b981;
     }
 
     /* Enhanced Font Styles - Consistent Typography */
     .hero-title,
     .section-title,
     h1, h2, h3 {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        line-height: 1.1;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
     }
-    
+
     .hero-subtitle,
     .card-title,
     .stat-label,
     .badge-text,
     .button-text,
     p, span, a, button, div {
-        font-family: 'Outfit', system-ui, sans-serif;
+    font-family: 'Outfit', system-ui, sans-serif;
     }
-    
+
     /* Premium Glassmorphism */
     .glass-panel {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .dark .glass-panel {
-        background: rgba(15, 23, 42, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     /* Animations */
     @keyframes heroZoom {
-        from { transform: scale(1.1); }
-        to { transform: scale(1); }
+    from { transform: scale(1.1); }
+    to { transform: scale(1); }
     }
-    
+
     @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
     }
 
     .animate-reveal {
-        animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     }
-    
+
     /* Hero Styles */
     .hero-container {
-        height: 85vh;
-        min-height: 600px;
+    height: 85vh;
+    min-height: 600px;
     }
 
     .hero-bg-image {
-        animation: heroZoom 10s ease-out forwards;
+    animation: heroZoom 10s ease-out forwards;
     }
 
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-        width: 8px;
+    width: 8px;
     }
     ::-webkit-scrollbar-track {
-        background: #f1f5f9;
+    background: #f1f5f9;
     }
     ::-webkit-scrollbar-thumb {
-        background: var(--emerald-primary);
-        border-radius: 10px;
+    background: var(--emerald-primary);
+    border-radius: 10px;
     }
 
     /* Staggered Reveals */
@@ -83,564 +82,688 @@
 
     /* Hover Effects */
     .premium-card {
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .premium-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     }
-</style>
+    </style>
 
-<!-- Hero Section -->
-<section class="hero-container relative overflow-hidden bg-white dark:bg-gray-900 transition-colors">
-    <!-- Hero Background Image -->
-    <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1920" 
-             alt="Luxury Property" 
-             class="hero-bg-image w-full h-full object-cover opacity-20 dark:opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 via-white/40 dark:via-gray-900/40 to-transparent"></div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative z-10">
-        <!-- Badge -->
-        <div class="animate-reveal delay-1 flex justify-center lg:justify-start">
-            <div class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 backdrop-blur-md mb-8">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
-                <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Premium Real Estate Indore</span>
+    <!-- Hero Section -->
+    <section class="hero-container relative overflow-hidden bg-white dark:bg-gray-900 transition-colors">
+        <!-- Hero Background Image -->
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&q=80&w=1920"
+                alt="Luxury Property" class="hero-bg-image w-full h-full object-cover opacity-20 dark:opacity-60">
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-white dark:from-gray-900 via-white/40 dark:via-gray-900/40 to-transparent">
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-            <div class="text-center lg:text-left">
-                <h1 class="hero-title animate-reveal delay-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-gray-900 dark:text-white mb-6">
-                    Elevating the Art of <span class="text-emerald-600">Living</span>
-                </h1>
-                
-                <p class="hero-subtitle animate-reveal delay-3 text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                    Discover hand-picked premium properties that harmonize modern luxury with timeless comfort. Your dream home, curated by experts.
-                </p>
-
-                <div class="animate-reveal delay-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                    <a href="/properties" class="group px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all flex items-center justify-center shadow-lg shadow-emerald-600/20 hover:scale-105">
-                        Explore Properties
-                        <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                    </a>
-                    <a href="/contact" class="px-8 py-4 bg-white dark:bg-white/10 hover:bg-gray-100 dark:hover:bg-white/20 text-gray-900 dark:text-white backdrop-blur-md border border-gray-200 dark:border-white/20 rounded-lg font-bold transition-all flex items-center justify-center hover:scale-105">
-                        Book a Viewing
-                    </a>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-center relative z-10">
+            <!-- Badge -->
+            <div class="animate-reveal delay-1 flex justify-center lg:justify-start">
+                <div
+                    class="inline-flex items-center px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 backdrop-blur-md mb-8">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
+                    <span class="text-xs font-bold text-emerald-400 uppercase tracking-widest">Premium Real Estate
+                        Indore</span>
                 </div>
             </div>
 
-            <!-- Floating Hero Action Panel (Glassmorphism Search) -->
-            <div class="animate-reveal delay-5 hidden lg:block">
-                <div class="glass-panel p-8 rounded-2xl shadow-2xl">
-                    <h3 class="text-lux-midnight dark:text-white text-xl font-bold mb-6">Quick Property Search</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Location</label>
-                            <input type="text" placeholder="Indore, Bypass, Rau..." class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
-                        </div>
-                        <div class="grid grid-cols-2 gap-4">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left">
+                    <h1
+                        class="hero-title animate-reveal delay-2 text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-gray-900 dark:text-white mb-6">
+                        Elevating the Art of <span class="text-emerald-600">Living</span>
+                    </h1>
+
+                    <p
+                        class="hero-subtitle animate-reveal delay-3 text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        Discover hand-picked premium properties that harmonize modern luxury with timeless comfort. Your
+                        dream home, curated by experts.
+                    </p>
+
+                    <div class="animate-reveal delay-4 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="/properties"
+                            class="group px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold transition-all flex items-center justify-center shadow-lg shadow-emerald-600/20 hover:scale-105">
+                            Explore Properties
+                            <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                            </svg>
+                        </a>
+                        <a href="/contact"
+                            class="px-8 py-4 bg-white dark:bg-white/10 hover:bg-gray-100 dark:hover:bg-white/20 text-gray-900 dark:text-white backdrop-blur-md border border-gray-200 dark:border-white/20 rounded-lg font-bold transition-all flex items-center justify-center hover:scale-105">
+                            Book a Viewing
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Floating Hero Action Panel (Glassmorphism Search) -->
+                <div class="animate-reveal delay-5 hidden lg:block">
+                    <div class="glass-panel p-8 rounded-2xl shadow-2xl">
+                        <h3 class="text-lux-midnight dark:text-white text-xl font-bold mb-6">Quick Property Search</h3>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Property Type</label>
-                                <select class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
-                                    <option>BHK Apartment</option>
-                                    <option>Independent Villa</option>
-                                    <option>Plot / Land</option>
-                                    <option>Commercial</option>
-                                </select>
+                                <label
+                                    class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Location</label>
+                                <input type="text" placeholder="Indore, Bypass, Rau..."
+                                    class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
                             </div>
-                            <div>
-                                <label class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Price Range</label>
-                                <select class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
-                                    <option>20L - 50L</option>
-                                    <option>50L - 1Cr</option>
-                                    <option>1Cr - 5Cr</option>
-                                    <option>5Cr+</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button class="w-full py-4 bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 transition-all shadow-xl">
-                            Search Available Listings
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-            
-            <div class="hero-stats grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-3xl mx-auto px-4">
-                <div class="stat-item">
-                    <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1" data-target="100" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-                    <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Properties</div>
-                </div>
-                <div class="stat-item">
-                    <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1" data-target="50" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-                    <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Happy Clients</div>
-                </div>
-                <div class="stat-item">
-                    <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1" data-target="5" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-                    <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Years Experience</div>
-                </div>
-                <div class="stat-item">
-                    <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1" data-target="2" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-                    <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Cities Covered</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Services Section -->
-<section class="py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
-    <!-- Subtle Background Texture/Pattern -->
-    <div class="absolute inset-0 opacity-5 pointer-events-none">
-        <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-            <defs>
-                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                </pattern>
-            </defs>
-            <rect width="100" height="100" fill="url(#grid)" />
-        </svg>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center mb-20">
-            <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
-                Our Core Expertise
-            </span>
-            <h2 class="section-title text-4xl sm:text-5xl md:text-6xl text-slate-900 dark:text-white">
-                Bespoke Real Estate <span class="text-emerald-600">Solutions</span>
-            </h2>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Service Card 1 -->
-            <a href="/buy" class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
-                <div class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
-                    <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                </div>
-                <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Buy Property</h3>
-                <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                    A curated portfolio of the finest estates, villas, and apartments across Indore's prime locations.
-                </p>
-                <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
-                    View Listings <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </span>
-            </a>
-            
-            <!-- Service Card 2 -->
-            <a href="/sell" class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
-                <div class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
-                    <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-                <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Sell Property</h3>
-                <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Maximize your property's value with our data-driven valuation and high-impact marketing strategies.
-                </p>
-                <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
-                    Request Valuation <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </span>
-            </a>
-
-            <!-- Service Card 3 -->
-            <a href="/rent" class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
-                <div class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
-                    <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path></svg>
-                </div>
-                <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Rent Luxury</h3>
-                <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Experience elite living with our premium rental management services for both tenants and landlords.
-                </p>
-                <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
-                    Find Rentals <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </span>
-            </a>
-
-            <!-- Service Card 4 -->
-            <a href="/invest" class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
-                <div class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
-                    <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                </div>
-                <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Strategic Investment</h3>
-                <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                    Unlock high-growth opportunities with our expert real estate investment consulting and portfolio management.
-                </p>
-                <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
-                    Start Investing <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-                </span>
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- Features / Statistics Section -->
-<section class="py-20 bg-white dark:bg-lux-midnight dark:text-white overflow-hidden relative">
-    <!-- Abstract Glow -->
-    <div class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-emerald-600/10 dark:bg-emerald-600/20 rounded-full blur-[120px]"></div>
-    <div class="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-lux-gold/5 dark:bg-lux-gold/10 rounded-full blur-[120px]"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <span class="text-lux-gold uppercase font-bold tracking-widest text-xs mb-4 block">Proven Excellence</span>
-                <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-8 leading-tight">Mastering the Real Estate Market in Indore</h2>
-                <p class="text-gray-600 dark:text-gray-400 text-lg mb-10 leading-relaxed">
-                    With over a decade of combined experience, Deep Realties has become synonymous with trust, transparency, and top-tier service in the property sector.
-                </p>
-
-                <div class="grid grid-cols-2 gap-8">
-                    <div class="stat-item">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="150" data-unit="+">0+</div>
-                        <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">Elite Properties</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="200" data-unit="+">0+</div>
-                        <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">Premium Clients</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="12" data-unit="+">0+</div>
-                        <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">Awards Won</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="100" data-unit="%">0%</div>
-                        <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">Transparency</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="relative">
-                <div class="rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl relative group">
-                    <img src="/images/hero_interior.png" 
-                         alt="Modern Interior" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    <div class="absolute inset-0 bg-gradient-to-t from-lux-midnight to-transparent opacity-60"></div>
-                </div>
-                <!-- Floating Badge -->
-                <div class="absolute -bottom-6 -left-6 glass-panel p-6 rounded-xl animate-bounce" style="animation-duration: 4s;">
-                    <div class="text-emerald-600 font-bold text-3xl mb-1">98%</div>
-                    <div class="text-slate-900 dark:text-white text-xs font-bold uppercase">Client Retention</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Blog Section -->
-<section class="py-24 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-            <div class="max-w-2xl">
-                <span class="text-emerald-600 uppercase font-bold tracking-widest text-xs mb-4 block">Market Insights</span>
-                <h2 class="section-title text-4xl sm:text-5xl text-slate-900 dark:text-white mb-4">Latest From Architecture & Life</h2>
-                <p class="text-gray-500 dark:text-gray-400 text-lg">
-                    Stay informed with the latest real estate trends and lifestyle guides curated for the modern homeowner.
-                </p>
-            </div>
-            <a href="/blogs" class="group inline-flex items-center text-slate-900 dark:text-white font-bold hover:text-emerald-600 transition-colors">
-                Read All Articles 
-                <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-            </a>
-        </div>
-        
-        <div id="blogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            <!-- Loading Skeletons -->
-            <div class="animate-pulse">
-                <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
-            </div>
-            <div class="animate-pulse hidden md:block">
-                <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
-            </div>
-            <div class="animate-pulse hidden lg:block">
-                <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
-                <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Testimonials Section -->
-<section class="py-24 relative overflow-hidden bg-white dark:bg-lux-midnight">
-    <!-- Background Image with Heavy Blur -->
-    <div class="absolute inset-0">
-        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920" 
-             class="w-full h-full object-cover opacity-10 dark:opacity-20 blur-md scale-110">
-        <div class="absolute inset-0 bg-gradient-to-r from-white dark:from-lux-midnight via-white/90 dark:via-lux-midnight/90 to-transparent"></div>
-    </div>
-    
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid lg:grid-cols-12 gap-16 items-center">
-            <div class="lg:col-span-5">
-                <span class="text-lux-gold uppercase font-bold tracking-widest text-xs mb-4 block">Testimonials</span>
-                <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-8 leading-tight italic">
-                    Voices of <span class="text-lux-gold">Elegance</span> & Trust
-                </h2>
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="flex -space-x-3">
-                        <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight" src="https://ui-avatars.com/api/?name=John+D&background=058669&color=fff">
-                        <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight" src="https://ui-avatars.com/api/?name=Sara+L&background=C9A962&color=fff">
-                        <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight" src="https://ui-avatars.com/api/?name=Mike+R&background=10b981&color=fff">
-                    </div>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Joined by 50+ happy families</p>
-                </div>
-            </div>
-            
-            <div class="lg:col-span-7">
-                <div class="glass-panel p-10 rounded-3xl relative">
-                    <svg class="absolute -top-6 -left-6 w-16 h-16 text-emerald-600/10 dark:text-lux-gold/20" fill="currentColor" viewBox="0 0 32 32"><path d="M10 8v8h6v10H6V16H4V8h6zm12 0v8h6v10h-10V16h-2V8h6z"></path></svg>
-                    
-                    <div id="testimonialsSlider">
-                        <p id="testimonialQuote" class="text-2xl sm:text-3xl text-gray-800 dark:text-white font-medium leading-relaxed mb-10 italic">
-                            "Great investment advice and clear dealings. My portfolio has grown a lot with their help."
-                        </p>
-                        
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div id="testimonialAvatar" class="w-16 h-16 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">PP</div>
+                            <div class="grid grid-cols-2 gap-4">
                                 <div>
-                                    <h4 id="testimonialName" class="text-gray-900 dark:text-white font-bold text-lg">Priya Patel</h4>
-                                    <p id="testimonialRole" class="text-emerald-600 dark:text-lux-gold text-xs font-bold uppercase tracking-widest">Property Investor</p>
+                                    <label
+                                        class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Property
+                                        Type</label>
+                                    <select
+                                        class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
+                                        <option>BHK Apartment</option>
+                                        <option>Independent Villa</option>
+                                        <option>Plot / Land</option>
+                                        <option>Commercial</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-gray-500 mb-1 uppercase tracking-tight">Price
+                                        Range</label>
+                                    <select
+                                        class="w-full bg-gray-100 dark:bg-gray-800/50 border-none rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-emerald-500">
+                                        <option>20L - 50L</option>
+                                        <option>50L - 1Cr</option>
+                                        <option>1Cr - 5Cr</option>
+                                        <option>5Cr+</option>
+                                    </select>
                                 </div>
                             </div>
-                            
-                            <div class="flex gap-2" id="testimonialDots">
-                                <button class="testimonial-dot w-10 h-1 bg-slate-300 dark:bg-white/20 rounded-full transition-all" data-index="0"></button>
-                                <button class="testimonial-dot w-4 h-1 bg-slate-200 dark:bg-white/10 rounded-full transition-all" data-index="1"></button>
-                                <button class="testimonial-dot w-4 h-1 bg-slate-200 dark:bg-white/10 rounded-full transition-all" data-index="2"></button>
+                            <button
+                                class="w-full py-4 bg-emerald-600 text-white rounded-lg font-bold hover:bg-emerald-700 transition-all shadow-xl">
+                                Search Available Listings
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hero-stats grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-3xl mx-auto px-4">
+        <div class="stat-item">
+            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
+                data-target="100" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Properties</div>
+        </div>
+        <div class="stat-item">
+            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
+                data-target="50" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Happy Clients</div>
+        </div>
+        <div class="stat-item">
+            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
+                data-target="5" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Years Experience</div>
+        </div>
+        <div class="stat-item">
+            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
+                data-target="2" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Cities Covered</div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-24 bg-white dark:bg-gray-900 relative overflow-hidden">
+        <!-- Subtle Background Texture/Pattern -->
+        <div class="absolute inset-0 opacity-5 pointer-events-none">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100" height="100" fill="url(#grid)" />
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-20">
+                <span
+                    class="inline-block px-4 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest mb-4">
+                    Our Core Expertise
+                </span>
+                <h2 class="section-title text-4xl sm:text-5xl md:text-6xl text-slate-900 dark:text-white">
+                    Bespoke Real Estate <span class="text-emerald-600">Solutions</span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Service Card 1 -->
+                <a href="/buy"
+                    class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
+                    <div
+                        class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
+                        <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Buy Property</h3>
+                    <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+                        A curated portfolio of the finest estates, villas, and apartments across Indore's prime
+                        locations.
+                    </p>
+                    <span
+                        class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
+                        View Listings <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Service Card 2 -->
+                <a href="/sell"
+                    class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
+                    <div
+                        class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
+                        <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Sell Property</h3>
+                    <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+                        Maximize your property's value with our data-driven valuation and high-impact marketing
+                        strategies.
+                    </p>
+                    <span
+                        class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
+                        Request Valuation <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Service Card 3 -->
+                <a href="/rent"
+                    class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
+                    <div
+                        class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
+                        <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Rent Luxury</h3>
+                    <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+                        Experience elite living with our premium rental management services for both tenants and
+                        landlords.
+                    </p>
+                    <span
+                        class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
+                        Find Rentals <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Service Card 4 -->
+                <a href="/invest"
+                    class="premium-card group bg-white dark:bg-gray-800/50 rounded-2xl p-8 border border-gray-100 dark:border-gray-700/50 hover:border-emerald-500/50 transition-all flex flex-col items-center text-center shadow-sm">
+                    <div
+                        class="w-20 h-20 bg-emerald-50 dark:bg-gray-700 rounded-2xl shadow-inner flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
+                        <svg class="w-10 h-10 text-emerald-600 group-hover:text-white" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Strategic Investment</h3>
+                    <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
+                        Unlock high-growth opportunities with our expert real estate investment consulting and portfolio
+                        management.
+                    </p>
+                    <span
+                        class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
+                        Start Investing <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </path>
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / Statistics Section -->
+    <section class="py-20 bg-white dark:bg-lux-midnight dark:text-white overflow-hidden relative">
+        <!-- Abstract Glow -->
+        <div
+            class="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-emerald-600/10 dark:bg-emerald-600/20 rounded-full blur-[120px]">
+        </div>
+        <div
+            class="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-lux-gold/5 dark:bg-lux-gold/10 rounded-full blur-[120px]">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <span class="text-lux-gold uppercase font-bold tracking-widest text-xs mb-4 block">Proven
+                        Excellence</span>
+                    <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-8 leading-tight">
+                        Mastering the Real Estate Market in Indore</h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg mb-10 leading-relaxed">
+                        With over a decade of combined experience, Deep Realties has become synonymous with trust,
+                        transparency, and top-tier service in the property sector.
+                    </p>
+
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="stat-item">
+                            <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="150"
+                                data-unit="+">0+</div>
+                            <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
+                                Elite Properties</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="200"
+                                data-unit="+">0+</div>
+                            <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
+                                Premium Clients</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="12"
+                                data-unit="+">0+</div>
+                            <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
+                                Awards Won</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="100"
+                                data-unit="%">0%</div>
+                            <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
+                                Transparency</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="rounded-2xl overflow-hidden aspect-[4/5] shadow-2xl relative group">
+                        <img src="/images/hero_interior.png" alt="Modern Interior"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-lux-midnight to-transparent opacity-60">
+                        </div>
+                    </div>
+                    <!-- Floating Badge -->
+                    <div class="absolute -bottom-6 -left-6 glass-panel p-6 rounded-xl animate-bounce"
+                        style="animation-duration: 4s;">
+                        <div class="text-emerald-600 font-bold text-3xl mb-1">98%</div>
+                        <div class="text-slate-900 dark:text-white text-xs font-bold uppercase">Client Retention</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="py-24 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                <div class="max-w-2xl">
+                    <span class="text-emerald-600 uppercase font-bold tracking-widest text-xs mb-4 block">Market
+                        Insights</span>
+                    <h2 class="section-title text-4xl sm:text-5xl text-slate-900 dark:text-white mb-4">Latest From
+                        Architecture & Life</h2>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg">
+                        Stay informed with the latest real estate trends and lifestyle guides curated for the modern
+                        homeowner.
+                    </p>
+                </div>
+                <a href="/blogs"
+                    class="group inline-flex items-center text-slate-900 dark:text-white font-bold hover:text-emerald-600 transition-colors">
+                    Read All Articles
+                    <svg class="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path d="M17 8l4 4m0 0l-4 4m4-4H3" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div id="blogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <!-- Loading Skeletons -->
+                <div class="animate-pulse">
+                    <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
+                </div>
+                <div class="animate-pulse hidden md:block">
+                    <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
+                </div>
+                <div class="animate-pulse hidden lg:block">
+                    <div class="aspect-video bg-gray-200 dark:bg-gray-800 rounded-2xl mb-6"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-3/4 mb-4"></div>
+                    <div class="h-4 bg-gray-200 dark:bg-gray-800 rounded w-1/2"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-24 relative overflow-hidden bg-white dark:bg-lux-midnight">
+        <!-- Background Image with Heavy Blur -->
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920"
+                class="w-full h-full object-cover opacity-10 dark:opacity-20 blur-md scale-110">
+            <div
+                class="absolute inset-0 bg-gradient-to-r from-white dark:from-lux-midnight via-white/90 dark:via-lux-midnight/90 to-transparent">
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-5">
+                    <span
+                        class="text-lux-gold uppercase font-bold tracking-widest text-xs mb-4 block">Testimonials</span>
+                    <h2 class="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-8 leading-tight italic">
+                        Voices of <span class="text-lux-gold">Elegance</span> & Trust
+                    </h2>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="flex -space-x-3">
+                            <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight"
+                                src="https://ui-avatars.com/api/?name=John+D&background=058669&color=fff">
+                            <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight"
+                                src="https://ui-avatars.com/api/?name=Sara+L&background=C9A962&color=fff">
+                            <img class="w-12 h-12 rounded-full border-2 border-white dark:border-lux-midnight"
+                                src="https://ui-avatars.com/api/?name=Mike+R&background=10b981&color=fff">
+                        </div>
+                        <p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Joined by 50+ happy families</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="glass-panel p-10 rounded-3xl relative">
+                        <svg class="absolute -top-6 -left-6 w-16 h-16 text-emerald-600/10 dark:text-lux-gold/20"
+                            fill="currentColor" viewBox="0 0 32 32">
+                            <path d="M10 8v8h6v10H6V16H4V8h6zm12 0v8h6v10h-10V16h-2V8h6z"></path>
+                        </svg>
+
+                        <div id="testimonialsSlider">
+                            <p id="testimonialQuote"
+                                class="text-2xl sm:text-3xl text-gray-800 dark:text-white font-medium leading-relaxed mb-10 italic">
+                                "Great investment advice and clear dealings. My portfolio has grown a lot with their
+                                help."
+                            </p>
+
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-4">
+                                    <div id="testimonialAvatar"
+                                        class="w-16 h-16 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                                        PP</div>
+                                    <div>
+                                        <h4 id="testimonialName"
+                                            class="text-gray-900 dark:text-white font-bold text-lg">Priya Patel</h4>
+                                        <p id="testimonialRole"
+                                            class="text-emerald-600 dark:text-lux-gold text-xs font-bold uppercase tracking-widest">
+                                            Property Investor</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2" id="testimonialDots">
+                                    <button
+                                        class="testimonial-dot w-10 h-1 bg-slate-300 dark:bg-white/20 rounded-full transition-all"
+                                        data-index="0"></button>
+                                    <button
+                                        class="testimonial-dot w-4 h-1 bg-slate-200 dark:bg-white/10 rounded-full transition-all"
+                                        data-index="1"></button>
+                                    <button
+                                        class="testimonial-dot w-4 h-1 bg-slate-200 dark:bg-white/10 rounded-full transition-all"
+                                        data-index="2"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- CTA / Contact Section -->
-<section class="py-24 relative overflow-hidden">
-    <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
-        <h2 class="text-5xl sm:text-6xl md:text-7xl font-bold text-slate-900 dark:text-white mb-8">
-            Begin Your <br> <span class="text-emerald-600 italic">Signature</span> Journey
-        </h2>
-        <p class="text-gray-500 dark:text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
-            Schedule a private consultation with our property curators to explore Indore's most exclusive listings.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <a href="/contact" class="w-full sm:w-auto px-12 py-5 bg-slate-900 dark:bg-emerald-600 text-white rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-transform">
-                Consult With Us
-            </a>
-            <a href="/properties" class="w-full sm:w-auto px-12 py-5 border-2 border-slate-900 dark:border-white/20 text-slate-900 dark:text-white rounded-full font-bold text-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                Browse Collection
-            </a>
+    <!-- CTA / Contact Section -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-5xl sm:text-6xl md:text-7xl font-bold text-slate-900 dark:text-white mb-8">
+                Begin Your <br> <span class="text-emerald-600 italic">Signature</span> Journey
+            </h2>
+            <p class="text-gray-500 dark:text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
+                Schedule a private consultation with our property curators to explore Indore's most exclusive listings.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                <a href="/contact"
+                    class="w-full sm:w-auto px-12 py-5 bg-slate-900 dark:bg-emerald-600 text-white rounded-full font-bold text-lg shadow-2xl hover:scale-105 transition-transform">
+                    Consult With Us
+                </a>
+                <a href="/properties"
+                    class="w-full sm:w-auto px-12 py-5 border-2 border-slate-900 dark:border-white/20 text-slate-900 dark:text-white rounded-full font-bold text-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                    Browse Collection
+                </a>
+            </div>
         </div>
-    </div>
-    
-    <!-- Abstract Shapes -->
-    <div class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-emerald-50 dark:bg-emerald-900/10 rounded-tl-full -z-10"></div>
-    <div class="absolute top-0 left-0 w-1/4 h-1/4 bg-lux-gold/5 rounded-br-full -z-10"></div>
-</section>
 
-<script>
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, observerOptions);
-    
-    // Observe all animated elements
-    document.addEventListener('DOMContentLoaded', function() {
-        // Observe fade-in elements
-        document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .scale-in, .service-card').forEach(el => {
-            observer.observe(el);
-        });
-        
-        // Number counter animation
-        function animateCounter(element) {
-            const target = parseInt(element.getAttribute('data-target'));
-            const unit = element.getAttribute('data-unit') || '+';
-            const duration = 2000; // 2 seconds
-            const increment = target / (duration / 16); // 60fps
-            let current = 0;
-            
-            const updateCounter = () => {
-                current += increment;
-                if (current < target) {
-                    element.textContent = Math.floor(current) + unit;
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    element.textContent = target + unit;
-                }
-            };
-            
-            updateCounter();
-        }
-        
-        // Observe stat items for counter animation
-        const statObserver = new IntersectionObserver((entries) => {
+        <!-- Abstract Shapes -->
+        <div class="absolute bottom-0 right-0 w-1/3 h-1/3 bg-emerald-50 dark:bg-emerald-900/10 rounded-tl-full -z-10">
+        </div>
+        <div class="absolute top-0 left-0 w-1/4 h-1/4 bg-lux-gold/5 rounded-br-full -z-10"></div>
+    </section>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    const counter = entry.target.querySelector('.counter-number');
-                    if (counter && !counter.classList.contains('counted')) {
-                        counter.classList.add('counted');
-                        animateCounter(counter);
-                    }
+                    entry.target.classList.add('visible');
                 }
             });
-        }, { threshold: 0.5 });
-        
-        document.querySelectorAll('.stat-item').forEach(el => {
-            statObserver.observe(el);
-        });
+        }, observerOptions);
 
-        // Simple testimonials slider
-        const testimonials = [
-            {
-                quote: '\"Great investment advice and clear dealings. My portfolio has grown a lot with their help.\"',
-                name: 'Priya Patel',
-                role: 'Property Investor',
-                initials: 'PP',
-                tag: 'Commercial Space',
-                location: 'Indore'
-            },
-            {
-                quote: '\"DeepRealties made selling our family home smooth and stress-free. We got the right buyer at the right price.\"',
-                name: 'Rahul Sharma',
-                role: 'Home Seller',
-                initials: 'RS',
-                tag: 'Residential Villa',
-                location: 'Bhopal'
-            },
-            {
-                quote: '\"From shortlisting properties to final registration, their team guided us at every step. Highly recommended.\"',
-                name: 'Neha & Amit Verma',
-                role: 'First‑time Home Buyers',
-                initials: 'NV',
-                tag: '3BHK Apartment',
-                location: 'Indore'
-            }
-        ];
+        // Observe all animated elements
+        document.addEventListener('DOMContentLoaded', function () {
+            // Observe fade-in elements
+            document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right, .scale-in, .service-card').forEach(el => {
+                observer.observe(el);
+            });
 
-        const quoteEl = document.getElementById('testimonialQuote');
-        const nameEl = document.getElementById('testimonialName');
-        const roleEl = document.getElementById('testimonialRole');
-        const initialsEl = document.getElementById('testimonialInitials');
-        const tagEl = document.getElementById('testimonialTag');
-        const locationEl = document.getElementById('testimonialLocation');
-        const dots = document.querySelectorAll('.testimonial-dot');
+            // Number counter animation
+            function animateCounter(element) {
+                const target = parseInt(element.getAttribute('data-target'));
+                const unit = element.getAttribute('data-unit') || '+';
+                const duration = 2000; // 2 seconds
+                const increment = target / (duration / 16); // 60fps
+                let current = 0;
 
-        let currentTestimonial = 0;
-        let testimonialTimer;
-
-        function renderTestimonial(index) {
-            const t = testimonials[index];
-            if (!t) return;
-
-            currentTestimonial = index;
-
-            if (quoteEl) quoteEl.textContent = t.quote;
-            if (nameEl) nameEl.textContent = t.name;
-            if (roleEl) roleEl.textContent = t.role;
-            if (initialsEl) initialsEl.textContent = t.initials;
-            if (tagEl) tagEl.textContent = t.tag;
-            if (locationEl) locationEl.textContent = t.location;
-
-            if (dots && dots.length) {
-                dots.forEach((dot, i) => {
-                    if (i === index) {
-                        dot.classList.remove('bg-slate-300', 'dark:bg-white/20', 'bg-slate-200', 'dark:bg-white/10');
-                        dot.classList.add('bg-emerald-600', 'dark:bg-emerald-400');
-                        dot.style.width = '2.5rem';
+                const updateCounter = () => {
+                    current += increment;
+                    if (current < target) {
+                        element.textContent = Math.floor(current) + unit;
+                        requestAnimationFrame(updateCounter);
                     } else {
-                        dot.classList.add('bg-slate-200', 'dark:bg-white/10');
-                        dot.classList.remove('bg-emerald-600', 'dark:bg-emerald-400');
-                        dot.style.width = '1rem';
+                        element.textContent = target + unit;
                     }
-                });
+                };
+
+                updateCounter();
             }
-        }
 
-        function startTestimonialAutoPlay() {
-            if (testimonialTimer) clearInterval(testimonialTimer);
-            testimonialTimer = setInterval(() => {
-                const next = (currentTestimonial + 1) % testimonials.length;
-                renderTestimonial(next);
-            }, 2000); // faster, feels like continuous sliding
-        }
-
-        // If testimonials API is available, load dynamically; otherwise fallback to static array.
-        // If there is only ONE testimonial in DB, we blend it into the default set so the slider still cycles.
-        async function initTestimonials() {
-            try {
-                const res = await fetch('/api/testimonials');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (Array.isArray(data.testimonials) && data.testimonials.length) {
-                        const fromApi = data.testimonials.map(t => ({
-                            quote: '\"' + (t.quote || '') + '\"',
-                            name: t.name || '',
-                            role: t.role || '',
-                            initials: t.initials || (t.name || '').split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase(),
-                            tag: t.tag || '',
-                            location: t.location || ''
-                        }));
-                        if (fromApi.length >= 2) {
-                            // Fully replace when we have 2+ real testimonials
-                            testimonials.splice(0, testimonials.length, ...fromApi);
-                        } else if (fromApi.length === 1) {
-                            // Blend single real testimonial into first slot but keep defaults for continuous cycling
-                            testimonials[0] = fromApi[0];
+            // Observe stat items for counter animation
+            const statObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target.querySelector('.counter-number');
+                        if (counter && !counter.classList.contains('counted')) {
+                            counter.classList.add('counted');
+                            animateCounter(counter);
                         }
                     }
-                }
-            } catch (e) {
-                console.warn('Unable to load testimonials from API, using defaults');
-            }
-
-            if (quoteEl && dots.length) {
-                dots.forEach(dot => {
-                    dot.addEventListener('click', () => {
-                        const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
-                        renderTestimonial(idx);
-                        startTestimonialAutoPlay();
-                    });
                 });
+            }, { threshold: 0.5 });
 
-                renderTestimonial(0);
-                startTestimonialAutoPlay();
+            document.querySelectorAll('.stat-item').forEach(el => {
+                statObserver.observe(el);
+            });
+
+            // Simple testimonials slider
+            const testimonials = [
+                {
+                    quote: '\"Great investment advice and clear dealings. My portfolio has grown a lot with their help.\"',
+                    name: 'Priya Patel',
+                    role: 'Property Investor',
+                    initials: 'PP',
+                    tag: 'Commercial Space',
+                    location: 'Indore'
+                },
+                {
+                    quote: '\"DeepRealties made selling our family home smooth and stress-free. We got the right buyer at the right price.\"',
+                    name: 'Rahul Sharma',
+                    role: 'Home Seller',
+                    initials: 'RS',
+                    tag: 'Residential Villa',
+                    location: 'Bhopal'
+                },
+                {
+                    quote: '\"From shortlisting properties to final registration, their team guided us at every step. Highly recommended.\"',
+                    name: 'Neha & Amit Verma',
+                    role: 'First‑time Home Buyers',
+                    initials: 'NV',
+                    tag: '3BHK Apartment',
+                    location: 'Indore'
+                }
+            ];
+
+            const quoteEl = document.getElementById('testimonialQuote');
+            const nameEl = document.getElementById('testimonialName');
+            const roleEl = document.getElementById('testimonialRole');
+            const initialsEl = document.getElementById('testimonialInitials');
+            const tagEl = document.getElementById('testimonialTag');
+            const locationEl = document.getElementById('testimonialLocation');
+            const dots = document.querySelectorAll('.testimonial-dot');
+
+            let currentTestimonial = 0;
+            let testimonialTimer;
+
+            function renderTestimonial(index) {
+                const t = testimonials[index];
+                if (!t) return;
+
+                currentTestimonial = index;
+
+                if (quoteEl) quoteEl.textContent = t.quote;
+                if (nameEl) nameEl.textContent = t.name;
+                if (roleEl) roleEl.textContent = t.role;
+                if (initialsEl) initialsEl.textContent = t.initials;
+                if (tagEl) tagEl.textContent = t.tag;
+                if (locationEl) locationEl.textContent = t.location;
+
+                if (dots && dots.length) {
+                    dots.forEach((dot, i) => {
+                        if (i === index) {
+                            dot.classList.remove('bg-slate-300', 'dark:bg-white/20', 'bg-slate-200', 'dark:bg-white/10');
+                            dot.classList.add('bg-emerald-600', 'dark:bg-emerald-400');
+                            dot.style.width = '2.5rem';
+                        } else {
+                            dot.classList.add('bg-slate-200', 'dark:bg-white/10');
+                            dot.classList.remove('bg-emerald-600', 'dark:bg-emerald-400');
+                            dot.style.width = '1rem';
+                        }
+                    });
+                }
             }
-        }
 
-        initTestimonials();
+            function startTestimonialAutoPlay() {
+                if (testimonialTimer) clearInterval(testimonialTimer);
+                testimonialTimer = setInterval(() => {
+                    const next = (currentTestimonial + 1) % testimonials.length;
+                    renderTestimonial(next);
+                }, 2000); // faster, feels like continuous sliding
+            }
 
-        // Load latest blog posts
-        async function loadLatestBlogs() {
-            const blogGrid = document.getElementById('blogGrid');
-            if (!blogGrid) return;
+            // If testimonials API is available, load dynamically; otherwise fallback to static array.
+            // If there is only ONE testimonial in DB, we blend it into the default set so the slider still cycles.
+            async function initTestimonials() {
+                try {
+                    const res = await fetch('/api/testimonials');
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (Array.isArray(data.testimonials) && data.testimonials.length) {
+                            const fromApi = data.testimonials.map(t => ({
+                                quote: '\"' + (t.quote || '') + '\"',
+                                name: t.name || '',
+                                role: t.role || '',
+                                initials: t.initials || (t.name || '').split(' ').map(p => p[0]).join('').slice(0, 2).toUpperCase(),
+                                tag: t.tag || '',
+                                location: t.location || ''
+                            }));
+                            if (fromApi.length >= 2) {
+                                // Fully replace when we have 2+ real testimonials
+                                testimonials.splice(0, testimonials.length, ...fromApi);
+                            } else if (fromApi.length === 1) {
+                                // Blend single real testimonial into first slot but keep defaults for continuous cycling
+                                testimonials[0] = fromApi[0];
+                            }
+                        }
+                    }
+                } catch (e) {
+                    console.warn('Unable to load testimonials from API, using defaults');
+                }
 
-            try {
-                const res = await fetch('/api/blogs');
-                if (!res.ok) throw new Error('Failed to fetch blogs');
-                
-                const data = await res.json();
-                const blogs = data.blogs || [];
-                
-                if (blogs.length === 0) {
-                    blogGrid.innerHTML = \`
+                if (quoteEl && dots.length) {
+                    dots.forEach(dot => {
+                        dot.addEventListener('click', () => {
+                            const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
+                            renderTestimonial(idx);
+                            startTestimonialAutoPlay();
+                        });
+                    });
+
+                    renderTestimonial(0);
+                    startTestimonialAutoPlay();
+                }
+            }
+
+            initTestimonials();
+
+            // Load latest blog posts
+            async function loadLatestBlogs() {
+                const blogGrid = document.getElementById('blogGrid');
+                if (!blogGrid) return;
+
+                try {
+                    const res = await fetch('/api/blogs');
+                    if (!res.ok) throw new Error('Failed to fetch blogs');
+
+                    const data = await res.json();
+                    const blogs = data.blogs || [];
+
+                    if (blogs.length === 0) {
+                        blogGrid.innerHTML = \`
                         <div class="col-span-full text-center py-12">
                             <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
                                 <svg class="w-8 h-8 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -718,5 +841,5 @@
 
         loadLatestBlogs();
     });
-</script>
-` }) %>
+    </script>
+    ` }) %>
