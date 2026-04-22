@@ -27,9 +27,10 @@
     /* Premium Glassmorphism */
     .glass-panel {
     background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .dark .glass-panel {
@@ -190,30 +191,51 @@
         </div>
     </section>
 
-    <div class="hero-stats grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-3xl mx-auto px-4">
-        <div class="stat-item">
-            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
-                data-target="100" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Properties</div>
+    <!-- Stats Section Overlay -->
+    <section class="relative z-20 -mt-12 sm:-mt-16 lg:-mt-24 pb-8 sm:pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="glass-panel bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl border border-white/40 dark:border-gray-700/50 shadow-2xl rounded-3xl p-8 sm:p-12 overflow-hidden relative">
+            
+            <!-- Decorative Elements -->
+            <div class="absolute -top-10 -right-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl"></div>
+
+            <div class="hero-stats grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 relative z-10">
+                
+                <div class="stat-item flex flex-col items-center justify-center group relative">
+                    <div class="counter-number text-4xl sm:text-5xl font-black text-emerald-600 dark:text-emerald-400 mb-2 tracking-tight drop-shadow-sm group-hover:scale-110 transition-transform duration-300"
+                        data-target="100" data-unit="+" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+                    <div class="stat-label text-xs sm:text-sm font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest text-center">Properties</div>
+                    
+                    <!-- Divider for mobile/desktop -->
+                    <div class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-12 bg-gray-200 dark:bg-gray-700"></div>
+                </div>
+
+                <div class="stat-item flex flex-col items-center justify-center group relative">
+                    <div class="counter-number text-4xl sm:text-5xl font-black text-emerald-600 dark:text-emerald-400 mb-2 tracking-tight drop-shadow-sm group-hover:scale-110 transition-transform duration-300"
+                        data-target="50" data-unit="+" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+                    <div class="stat-label text-xs sm:text-sm font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest text-center">Happy Clients</div>
+                    
+                    <!-- Divider for desktop -->
+                    <div class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-12 bg-gray-200 dark:bg-gray-700"></div>
+                </div>
+
+                <div class="stat-item flex flex-col items-center justify-center group relative">
+                    <div class="counter-number text-4xl sm:text-5xl font-black text-emerald-600 dark:text-emerald-400 mb-2 tracking-tight drop-shadow-sm group-hover:scale-110 transition-transform duration-300"
+                        data-target="5" data-unit="+" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+                    <div class="stat-label text-xs sm:text-sm font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest text-center">Years Experience</div>
+                    
+                    <!-- Divider for desktop -->
+                    <div class="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-px h-12 bg-gray-200 dark:bg-gray-700"></div>
+                </div>
+
+                <div class="stat-item flex flex-col items-center justify-center group relative">
+                    <div class="counter-number text-4xl sm:text-5xl font-black text-emerald-600 dark:text-emerald-400 mb-2 tracking-tight drop-shadow-sm group-hover:scale-110 transition-transform duration-300"
+                        data-target="2" data-unit="+" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
+                    <div class="stat-label text-xs sm:text-sm font-bold text-slate-500 dark:text-gray-400 uppercase tracking-widest text-center">Cities Covered</div>
+                </div>
+
+            </div>
         </div>
-        <div class="stat-item">
-            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
-                data-target="50" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Happy Clients</div>
-        </div>
-        <div class="stat-item">
-            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
-                data-target="5" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Years Experience</div>
-        </div>
-        <div class="stat-item">
-            <div class="counter-number text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-700 dark:text-gray-400 mb-1"
-                data-target="2" style="font-family: 'Outfit', system-ui, sans-serif;">0</div>
-            <div class="stat-label text-xs sm:text-sm text-gray-500 dark:text-gray-400">Cities Covered</div>
-        </div>
-    </div>
-    </div>
-    </div>
     </section>
 
     <!-- Services Section -->
@@ -256,8 +278,8 @@
                     </div>
                     <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Buy Property</h3>
                     <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                        A curated portfolio of the finest estates, villas, and apartments across Indore's prime
-                        locations.
+                        Discover premium estates, plots, villas, and apartments in Indore’s most sought-after locations.
+                        Explore verified listings designed for modern living and smart investments.
                     </p>
                     <span
                         class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
@@ -282,9 +304,8 @@
                     </div>
                     <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Sell Property</h3>
                     <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                        Maximize your property's value with our data-driven valuation and high-impact marketing
-                        strategies.
-                    </p>
+                        Unlock your property’s real market value with data-driven valuation, strategic marketing, and
+                        expert support. Connect with genuine buyers and sell faster. </p>
                     <span
                         class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
                         Request Valuation <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor"
@@ -307,10 +328,10 @@
                             </path>
                         </svg>
                     </div>
-                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Rent Luxury</h3>
+                    <h3 class="card-title text-2xl text-slate-900 dark:text-white mb-4">Rent Property</h3>
                     <p class="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                        Experience elite living with our premium rental management services for both tenants and
-                        landlords.
+                        Experience refined living with our exclusive luxury rentals across prime neighborhoods. Enjoy
+                        premium amenities, flexible leasing options, and seamless tenant support.
                     </p>
                     <span
                         class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center group-hover:translate-x-2 transition-transform">
@@ -374,25 +395,25 @@
                     <div class="grid grid-cols-2 gap-8">
                         <div class="stat-item">
                             <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="150"
-                                data-unit="+">0+</div>
+                                data-unit="+">150+</div>
                             <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
                                 Elite Properties</div>
                         </div>
                         <div class="stat-item">
                             <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="200"
-                                data-unit="+">0+</div>
+                                data-unit="+">10+</div>
                             <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
                                 Premium Clients</div>
                         </div>
                         <div class="stat-item">
                             <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="12"
-                                data-unit="+">0+</div>
+                                data-unit="+">2+</div>
                             <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
                                 Awards Won</div>
                         </div>
                         <div class="stat-item">
                             <div class="text-4xl font-bold text-slate-900 dark:text-white mb-1" data-target="100"
-                                data-unit="%">0%</div>
+                                data-unit="%">99%</div>
                             <div class="text-slate-600 dark:text-gray-500 text-sm font-bold uppercase tracking-wide">
                                 Transparency</div>
                         </div>

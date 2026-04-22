@@ -102,10 +102,10 @@
     <script>
         (function() {
             const darkMode = localStorage.getItem('darkMode');
-            if (darkMode === 'true') {
-                document.documentElement.classList.add('dark');
-            } else {
+            if (darkMode === 'false') {
                 document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
             }
         })();
     </script>
@@ -1495,14 +1495,14 @@
         
         function initializePage() {
             // Initialize dark mode
-            const darkMode = localStorage.getItem('darkMode') === 'true';
+            const darkMode = localStorage.getItem('darkMode') !== 'false';
             if (darkMode) {
                 document.documentElement.classList.add('dark');
+                if (localStorage.getItem('darkMode') === null) {
+                    localStorage.setItem('darkMode', 'true');
+                }
             } else {
                 document.documentElement.classList.remove('dark');
-                if (localStorage.getItem('darkMode') === null) {
-                    localStorage.setItem('darkMode', 'false');
-                }
             }
             if (window.updateThemeToggle) updateThemeToggle(darkMode);
             

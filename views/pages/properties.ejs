@@ -31,6 +31,26 @@
     </div>
 </section>
 
+<style>
+    @media (min-width: 1024px) {
+        section#filterSection {
+            width: 20% !important;
+            max-width: 20% !important;
+            flex: 0 0 20% !important;
+        }
+
+        section#filterSection + section {
+            width: 80% !important;
+            flex: 0 0 80% !important;
+        }
+
+        #propertiesContentScroll {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+</style>
+
 <!-- Mobile Filter Toggle Button -->
 <button onclick="toggleMobileFilters()" class="lg:hidden fixed bottom-6 right-6 z-[95] bg-emerald-600 text-white p-4 rounded-full shadow-[0_8px_30px_rgb(16,185,129,0.4)] hover:shadow-[0_8px_30px_rgb(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center group" title="Filters">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
@@ -38,10 +58,11 @@
 
 <!-- Mobile Filter Overlay -->
 <div id="filterOverlay" class="fixed inset-0 bg-lux-midnight/40 backdrop-blur-md z-[100] hidden transition-opacity duration-500" onclick="toggleMobileFilters()"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:flex lg:items-start lg:gap-8 lg:h-[calc(100vh-9rem)] lg:overflow-hidden">
 
 <!-- Filter & Search Section -->
-<section id="filterSection" class="fixed inset-y-0 right-0 z-[110] w-full max-w-sm bg-white dark:bg-lux-midnight shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out lg:static lg:w-auto lg:max-w-none lg:bg-transparent lg:shadow-none lg:transform-none lg:z-30 py-6 lg:py-12 border-l lg:border-l-0 lg:border-b border-gray-100 dark:border-white/5 lg:sticky lg:top-20 lg:backdrop-blur-xl lg:bg-white/80 dark:lg:bg-lux-midnight/80 h-full lg:h-auto overflow-y-auto lg:overflow-visible">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 h-full flex flex-col lg:block">
+<section id="filterSection" class="fixed inset-y-0 right-0 z-[110] w-full max-w-sm bg-white dark:bg-lux-midnight shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out lg:static lg:w-1/5 lg:min-w-[260px] lg:max-w-none lg:bg-transparent lg:shadow-none lg:transform-none lg:z-30 p-6 lg:p-0 h-full lg:overflow-visible">
+    <div class="h-full flex flex-col lg:block">
         
         <!-- Mobile Header inside Drawer -->
         <div class="flex items-center justify-between lg:hidden mb-8 pb-4 border-b border-gray-100 dark:border-white/5 sticky top-0 bg-white dark:bg-lux-midnight z-10 pt-2">
@@ -51,10 +72,10 @@
             </button>
         </div>
 
-        <div class="flex flex-col lg:flex-row lg:items-end gap-6 flex-1 lg:flex-none">
+        <div class="flex flex-col gap-6 flex-1 lg:flex-none lg:glass-panel lg:rounded-3xl lg:border-gray-100 dark:lg:border-white/10 lg:p-6">
             <!-- Search Bar Search -->
-            <div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="md:col-span-1">
+            <div class="grid grid-cols-1 gap-4">
+                <div>
                     <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2 tracking-widest pl-1">City</label>
                     <input type="text" id="searchCity" placeholder="Any City" 
                            class="w-full px-5 py-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:border-emerald-500 focus:ring-0 transition-all">
@@ -81,12 +102,12 @@
                 </div>
             </div>
             
-            <div class="flex flex-col lg:flex-row gap-4 mt-8 lg:mt-0 pt-6 lg:pt-0 border-t border-gray-100 dark:border-white/5 lg:border-none pb-6 lg:pb-0">
-                <button onclick="applyFiltersAndClose()" class="w-full lg:w-auto px-8 py-4 lg:py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center">
+            <div class="flex flex-col gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-white/5 pb-2">
+                <button onclick="applyFiltersAndClose()" class="w-full px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     Apply Filters
                 </button>
-                <button onclick="clearFilters()" class="w-full lg:w-auto px-5 py-4 lg:py-3 bg-gray-50 lg:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all font-semibold">
+                <button onclick="clearFilters()" class="w-full px-5 py-4 bg-gray-50 lg:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all font-semibold">
                     Reset
                 </button>
             </div>
@@ -95,8 +116,8 @@
 </section>
 
 <!-- Main Inventory Section -->
-<section class="py-16 bg-gray-50 dark:bg-black/20 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-16 lg:py-0 bg-gray-50 dark:bg-black/20 min-h-screen lg:w-4/5 lg:h-full">
+    <div id="propertiesContentScroll" class="flex-1 lg:h-full lg:overflow-y-auto lg:pl-4 lg:pr-4">
         <div class="flex items-center justify-between mb-10">
             <h2 id="resultsCount" class="text-lg font-bold text-gray-900 dark:text-white">
                 <span id="resultsNumber" class="text-emerald-500">0</span> Properties Available
@@ -112,7 +133,7 @@
         </div>
 
         <!-- Grid -->
-        <div id="propertiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div id="propertiesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-2 lg:p-4">
             <!-- Populate via JS -->
         </div>
 
@@ -131,43 +152,20 @@
         </div>
 
         <!-- Pagination -->
-        <div id="pagination" class="hidden mt-16 flex justify-center items-center space-x-3">
+        <div id="pagination" class="hidden mt-10 flex flex-wrap justify-center items-center gap-2">
         </div>
+</div>
     </div>
 </section>
 
 <script>
     let currentPage = 1;
-    const limit = 12;
+    let totalPages = 1;
+    let activeFilters = {};
+    const limit = 10;
 
-    async function loadProperties(filters = {}, page = 1) {
-        const grid = document.getElementById('propertiesGrid');
-        const loading = document.getElementById('loadingState');
-        const empty = document.getElementById('emptyState');
-        const pagination = document.getElementById('pagination');
-        
-        grid.innerHTML = '';
-        grid.classList.add('hidden');
-        loading.classList.remove('hidden');
-        empty.classList.add('hidden');
-        pagination.classList.add('hidden');
-        
-        try {
-            const params = new URLSearchParams(filters);
-            params.append('status', 'approved');
-            params.append('page', page);
-            params.append('limit', limit);
-            
-            const response = await fetch('/api/properties?' + params.toString());
-            const data = await response.json();
-            
-            loading.classList.add('hidden');
-            const total = data.pagination ? data.pagination.total : (data.properties ? data.properties.length : 0);
-            document.getElementById('resultsNumber').textContent = total;
-            
-            if (data.properties && data.properties.length > 0) {
-                grid.classList.remove('hidden');
-                grid.innerHTML = data.properties.map(prop => \`
+    function renderPropertiesCards(properties) {
+        return properties.map(prop => \`
                     <div class="glass-panel group rounded-[2rem] overflow-hidden hover:border-emerald-500/50 transition-all duration-500">
                         <div class="relative h-72 overflow-hidden">
                             <img src="\${prop.images && prop.images[0] || 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80'}" 
@@ -206,20 +204,61 @@
                         </div>
                     </div>
                 \`).join('');
-                
-                if (data.pagination && data.pagination.pages > 1) {
-                    pagination.classList.remove('hidden');
-                    let html = '';
-                    for (let i = 1; i <= data.pagination.pages; i++) {
-                        html += \`
-                            <button onclick="loadProperties(getFilters(), \${i})" 
-                                    class="w-12 h-12 rounded-xl text-sm font-bold transition-all \${i === page ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 hover:border-emerald-500'}">
-                                \${i}
-                            </button>
-                        \`;
-                    }
-                    pagination.innerHTML = html;
-                }
+    }
+
+    function renderPaginationControls() {
+        const pagination = document.getElementById('pagination');
+        if (totalPages > 1) {
+            pagination.classList.remove('hidden');
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            let html = '';
+
+            html += \`<button onclick="changePropertiesPage(\${currentPage - 1})" class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-semibold \${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:border-emerald-500'}" \${currentPage === 1 ? 'disabled' : ''}>Prev</button>\`;
+
+            for (let i = startPage; i <= endPage; i++) {
+                html += \`<button onclick="changePropertiesPage(\${i})" class="w-10 h-10 rounded-lg text-sm font-semibold transition-all \${i === currentPage ? 'bg-emerald-600 text-white' : 'border border-gray-200 dark:border-white/10 hover:border-emerald-500'}">\${i}</button>\`;
+            }
+
+            html += \`<button onclick="changePropertiesPage(\${currentPage + 1})" class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-semibold \${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:border-emerald-500'}" \${currentPage === totalPages ? 'disabled' : ''}>Next</button>\`;
+            pagination.innerHTML = html;
+        } else {
+            pagination.classList.add('hidden');
+            pagination.innerHTML = '';
+        }
+    }
+
+    async function loadProperties(filters = activeFilters, page = 1) {
+        const grid = document.getElementById('propertiesGrid');
+        const loading = document.getElementById('loadingState');
+        const empty = document.getElementById('emptyState');
+        const pagination = document.getElementById('pagination');
+        
+        grid.innerHTML = '';
+        grid.classList.add('hidden');
+        loading.classList.remove('hidden');
+        empty.classList.add('hidden');
+        pagination.classList.add('hidden');
+        
+        try {
+            const params = new URLSearchParams(filters);
+            params.append('status', 'approved');
+            params.append('page', page);
+            params.append('limit', limit);
+            
+            const response = await fetch('/api/properties?' + params.toString());
+            const data = await response.json();
+            
+            loading.classList.add('hidden');
+            const total = data.pagination ? data.pagination.total : (data.properties ? data.properties.length : 0);
+            document.getElementById('resultsNumber').textContent = total;
+            totalPages = data.pagination ? data.pagination.pages : 1;
+            currentPage = page;
+            
+            if (data.properties && data.properties.length > 0) {
+                grid.classList.remove('hidden');
+                grid.innerHTML = renderPropertiesCards(data.properties);
+                renderPaginationControls();
             } else {
                 empty.classList.remove('hidden');
             }
@@ -240,7 +279,8 @@
     }
 
     function searchProperties() {
-        loadProperties(getFilters(), 1);
+        activeFilters = getFilters();
+        loadProperties(activeFilters, 1);
     }
 
     function clearFilters() {
@@ -248,10 +288,21 @@
         document.getElementById('searchPropertyType').value = '';
         document.getElementById('searchMinPrice').value = '';
         document.getElementById('searchMaxPrice').value = '';
-        loadProperties({}, 1);
+        activeFilters = {};
+        loadProperties(activeFilters, 1);
+    }
+
+    function changePropertiesPage(page) {
+        if (page < 1 || page > totalPages || page === currentPage) return;
+        loadProperties(activeFilters, page);
+        const contentScroll = document.getElementById('propertiesContentScroll');
+        if (contentScroll) {
+            contentScroll.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     }
     
     function toggleMobileFilters() {
+        if (window.innerWidth >= 1024) return;
         const filterSection = document.getElementById('filterSection');
         const filterOverlay = document.getElementById('filterOverlay');
         const isHidden = filterSection.classList.contains('translate-x-full');
@@ -269,9 +320,13 @@
     
     function applyFiltersAndClose() {
         searchProperties();
-        toggleMobileFilters();
+        if (window.innerWidth < 1024) {
+            toggleMobileFilters();
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', () => loadProperties());
+    document.addEventListener('DOMContentLoaded', () => {
+        loadProperties(activeFilters, 1);
+    });
 </script>
 ` }) %>

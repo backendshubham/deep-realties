@@ -62,6 +62,26 @@
     </div>
 </section>
 
+<style>
+    @media (min-width: 1024px) {
+        section#filterSection {
+            width: 20% !important;
+            max-width: 20% !important;
+            flex: 0 0 20% !important;
+        }
+
+        section#filterSection + section {
+            width: 80% !important;
+            flex: 0 0 80% !important;
+        }
+
+        #projectsContentScroll {
+            height: 100%;
+            overflow-y: auto;
+        }
+    }
+</style>
+
 <!-- Mobile Filter Toggle Button -->
 <button onclick="toggleMobileFilters()" class="lg:hidden fixed bottom-6 right-6 z-[95] bg-emerald-600 text-white p-4 rounded-full shadow-[0_8px_30px_rgb(16,185,129,0.4)] hover:shadow-[0_8px_30px_rgb(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center justify-center group" title="Filters">
     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
@@ -70,9 +90,10 @@
 <!-- Mobile Filter Overlay -->
 <div id="filterOverlay" class="fixed inset-0 bg-lux-midnight/40 backdrop-blur-md z-[100] hidden transition-opacity duration-500" onclick="toggleMobileFilters()"></div>
 
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 lg:flex lg:items-start lg:gap-8 lg:h-[calc(100vh-9rem)] lg:overflow-hidden">
 <!-- Filter & Search Section -->
-<section id="filterSection" class="fixed inset-y-0 right-0 z-[110] w-full max-w-sm bg-white dark:bg-lux-midnight shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out lg:static lg:w-auto lg:max-w-none lg:bg-transparent lg:shadow-none lg:transform-none lg:z-30 py-6 lg:py-12 border-l lg:border-l-0 lg:border-b border-gray-100 dark:border-white/5 lg:sticky lg:top-20 lg:backdrop-blur-xl lg:bg-white/80 dark:lg:bg-lux-midnight/80 h-full lg:h-auto overflow-y-auto lg:overflow-visible">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 h-full flex flex-col lg:block">
+<section id="filterSection" class="fixed inset-y-0 right-0 z-[110] w-full max-w-sm bg-white dark:bg-lux-midnight shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out lg:static lg:w-1/5 lg:min-w-[260px] lg:max-w-none lg:bg-transparent lg:shadow-none lg:transform-none lg:z-30 p-6 lg:p-0 h-full lg:overflow-visible">
+    <div class="h-full flex flex-col lg:block">
         
         <!-- Mobile Header inside Drawer -->
         <div class="flex items-center justify-between lg:hidden mb-8 pb-4 border-b border-gray-100 dark:border-white/5 sticky top-0 bg-white dark:bg-lux-midnight z-10 pt-2">
@@ -82,9 +103,9 @@
             </button>
         </div>
 
-        <div class="flex flex-col lg:flex-row lg:items-center justify-center gap-6 flex-1 lg:flex-none">
+        <div class="flex flex-col gap-6 flex-1 lg:flex-none lg:glass-panel lg:rounded-3xl lg:border-gray-100 dark:lg:border-white/10 lg:p-6">
             <!-- Search Bar Search -->
-            <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-center gap-4 max-w-2xl mx-auto w-full">
+            <div class="grid grid-cols-1 gap-4 w-full">
                 <div class="w-full">
                     <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2 tracking-widest pl-1">City</label>
                     <input type="text" id="searchCity" placeholder="Any City" 
@@ -101,12 +122,12 @@
                 </div>
             </div>
             
-            <div class="flex flex-col lg:flex-row gap-4 mt-8 lg:mt-0 pt-6 lg:pt-0 border-t border-gray-100 dark:border-white/5 lg:border-none pb-6 lg:pb-0">
-                <button onclick="applyFiltersAndClose()" class="w-full lg:w-auto px-8 py-4 lg:py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center lg:mt-6">
+            <div class="flex flex-col gap-4 mt-8 pt-6 border-t border-gray-100 dark:border-white/5 pb-2">
+                <button onclick="applyFiltersAndClose()" class="w-full px-8 py-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20 flex items-center justify-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     Apply Filters
                 </button>
-                <button onclick="clearFilters()" class="w-full lg:w-auto px-5 py-4 lg:py-3 bg-gray-50 lg:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all font-semibold lg:mt-6">
+                <button onclick="clearFilters()" class="w-full px-5 py-4 bg-gray-50 lg:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10 rounded-xl hover:bg-gray-100 dark:hover:bg-white/10 transition-all font-semibold">
                     Reset
                 </button>
             </div>
@@ -115,8 +136,8 @@
 </section>
 
 <!-- Projects Display Section -->
-<section class="py-24 bg-gray-50 dark:bg-black/20 min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-24 lg:py-0 bg-gray-50 dark:bg-black/20 min-h-screen lg:w-4/5 lg:h-full">
+    <div id="projectsContentScroll" class="lg:h-full lg:overflow-y-auto lg:pl-4 lg:pr-4">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">Portfolio Showcase</h2>
             <div class="w-20 h-1 bg-emerald-500 mx-auto"></div>
@@ -130,11 +151,19 @@
             <div class="inline-loader-spinner mx-auto mb-4 border-t-emerald-500"></div>
             <p class="text-gray-500 dark:text-gray-400 font-medium font-display uppercase tracking-widest text-xs">Curating architectural masterpieces...</p>
         </div>
+
+        <div id="projectsPagination" class="hidden mt-10 flex flex-wrap justify-center items-center gap-2"></div>
     </div>
 </section>
+</div>
 
 <script>
+    let currentProjectPage = 1;
+    let totalProjectPages = 1;
+    const projectsPerPage = 10;
+
     function toggleMobileFilters() {
+        if (window.innerWidth >= 1024) return;
         const filterSection = document.getElementById('filterSection');
         const filterOverlay = document.getElementById('filterOverlay');
         const isHidden = filterSection.classList.contains('translate-x-full');
@@ -158,14 +187,101 @@
     
     function applyFiltersAndClose() {
         loadProjects();
-        toggleMobileFilters();
+        if (window.innerWidth < 1024) {
+            toggleMobileFilters();
+        }
     }
+
+    function renderProjectsCards(projects) {
+        return projects.map(project => {
+            const statusConfig = {
+                'completed': { color: 'bg-emerald-500', text: 'Delivered' },
+                'ongoing': { color: 'bg-blue-500', text: 'In Development' },
+                'upcoming': { color: 'bg-lux-gold', text: 'Coming Soon' }
+            };
+            const status = statusConfig[project.status.toLowerCase()] || { color: 'bg-gray-500', text: project.status };
+            
+            return \`
+                <div class="glass-panel group rounded-[2.5rem] overflow-hidden hover:border-emerald-500/30 transition-all duration-700 bg-white dark:bg-lux-midnight shadow-xl">
+                    <div class="relative h-80 overflow-hidden">
+                        <img src="\${project.images && project.images[0] || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80'}" 
+                             class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000">
+                        <div class="absolute inset-0 bg-gradient-to-t from-lux-midnight/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="absolute top-6 left-6 flex space-x-2">
+                            <span class="\${status.color} text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg">
+                                \${status.text}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <div class="flex items-center text-emerald-500 text-[10px] font-bold mb-3 uppercase tracking-[0.2em]">
+                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                            \${project.location}, \${project.city}
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-6 group-hover:text-emerald-500 transition-colors">
+                            \${project.name}
+                        </h3>
+                        <div class="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-white/10">
+                            <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Verified Development</span>
+                            <a href="/projects/\${project.id}" class="inline-flex items-center text-emerald-500 font-bold text-sm group/btn hover:text-emerald-400 transition-colors">
+                                Explore Scope
+                                <svg class="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            \`;
+        }).join('');
+    }
+
+    function renderProjectsPagination() {
+        const pagination = document.getElementById('projectsPagination');
+        if (totalProjectPages <= 1) {
+            pagination.classList.add('hidden');
+            pagination.innerHTML = '';
+            return;
+        }
+
+        pagination.classList.remove('hidden');
+        const startPage = Math.max(1, currentProjectPage - 2);
+        const endPage = Math.min(totalProjectPages, currentProjectPage + 2);
+        let html = '';
+
+        html += \`<button onclick="changeProjectPage(\${currentProjectPage - 1})" class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-semibold \${currentProjectPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:border-emerald-500'}" \${currentProjectPage === 1 ? 'disabled' : ''}>Prev</button>\`;
+        for (let i = startPage; i <= endPage; i++) {
+            html += \`<button onclick="changeProjectPage(\${i})" class="w-10 h-10 rounded-lg text-sm font-semibold transition-all \${i === currentProjectPage ? 'bg-emerald-600 text-white' : 'border border-gray-200 dark:border-white/10 hover:border-emerald-500'}">\${i}</button>\`;
+        }
+        html += \`<button onclick="changeProjectPage(\${currentProjectPage + 1})" class="px-3 py-2 rounded-lg border border-gray-200 dark:border-white/10 text-sm font-semibold \${currentProjectPage === totalProjectPages ? 'opacity-50 cursor-not-allowed' : 'hover:border-emerald-500'}" \${currentProjectPage === totalProjectPages ? 'disabled' : ''}>Next</button>\`;
+        pagination.innerHTML = html;
+    }
+
+    function renderProjectsPage(projects, page) {
+        const grid = document.getElementById('projectsGrid');
+        currentProjectPage = page;
+        const start = (page - 1) * projectsPerPage;
+        const pagedProjects = projects.slice(start, start + projectsPerPage);
+        grid.innerHTML = renderProjectsCards(pagedProjects);
+        renderProjectsPagination();
+    }
+
+    function changeProjectPage(page) {
+        if (page < 1 || page > totalProjectPages || page === currentProjectPage) return;
+        renderProjectsPage(window.currentProjectsData || [], page);
+        const contentScroll = document.getElementById('projectsContentScroll');
+        if (contentScroll) {
+            contentScroll.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    }
+
+    window.changeProjectPage = changeProjectPage;
 
     async function loadProjects() {
         const grid = document.getElementById('projectsGrid');
         const loading = document.getElementById('loadingState');
+        const pagination = document.getElementById('projectsPagination');
         
         grid.innerHTML = '';
+        pagination.classList.add('hidden');
         loading.classList.remove('hidden');
         
         try {
@@ -181,46 +297,11 @@
             loading.classList.add('hidden');
             
             if (data.projects && data.projects.length > 0) {
-                grid.innerHTML = data.projects.map(project => {
-                    const statusConfig = {
-                        'completed': { color: 'bg-emerald-500', text: 'Delivered' },
-                        'ongoing': { color: 'bg-blue-500', text: 'In Development' },
-                        'upcoming': { color: 'bg-lux-gold', text: 'Coming Soon' }
-                    };
-                    const status = statusConfig[project.status.toLowerCase()] || { color: 'bg-gray-500', text: project.status };
-                    
-                    return \`
-                        <div class="glass-panel group rounded-[2.5rem] overflow-hidden hover:border-emerald-500/30 transition-all duration-700 bg-white dark:bg-lux-midnight shadow-xl">
-                            <div class="relative h-80 overflow-hidden">
-                                <img src="\${project.images && project.images[0] || 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80'}" 
-                                     class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000">
-                                <div class="absolute inset-0 bg-gradient-to-t from-lux-midnight/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div class="absolute top-6 left-6 flex space-x-2">
-                                    <span class="\${status.color} text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg">
-                                        \${status.text}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="p-8">
-                                <div class="flex items-center text-emerald-500 text-[10px] font-bold mb-3 uppercase tracking-[0.2em]">
-                                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"></path></svg>
-                                    \${project.location}, \${project.city}
-                                </div>
-                                <h3 class="text-2xl font-display font-bold text-gray-900 dark:text-white mb-6 group-hover:text-emerald-500 transition-colors">
-                                    \${project.name}
-                                </h3>
-                                <div class="flex items-center justify-between pt-6 border-t border-gray-100 dark:border-white/10">
-                                    <span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Verified Development</span>
-                                    <a href="/projects/\${project.id}" class="inline-flex items-center text-emerald-500 font-bold text-sm group/btn hover:text-emerald-400 transition-colors">
-                                        Explore Scope
-                                        <svg class="w-5 h-5 ml-2 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    \`;
-                }).join('');
+                window.currentProjectsData = data.projects;
+                totalProjectPages = Math.ceil(data.projects.length / projectsPerPage);
+                renderProjectsPage(data.projects, 1);
             } else {
+                window.currentProjectsData = [];
                 grid.innerHTML = '<div class="col-span-full py-20 text-center"><p class="text-gray-500">No active projects matching your request.</p></div>';
             }
         } catch (e) {
